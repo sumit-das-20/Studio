@@ -13,7 +13,7 @@ const portalLinks = [
     {
         href: '/buyer/login',
         title: 'Buyer Portal',
-        description: 'Manage your ad campaigns.',
+        description: 'Buy services to grow your YouTube, Facebook, and Instagram channels.',
         icon: Building,
     },
 ]
