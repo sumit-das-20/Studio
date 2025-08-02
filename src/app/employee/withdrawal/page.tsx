@@ -45,7 +45,10 @@ import { verifyUpiId } from '../actions';
 import { cn } from '@/lib/utils';
 
 const formSchema = z.object({
-    amount: z.coerce.number().min(100, { message: 'Withdrawal amount must be at least 100 INR.' }),
+    amount: z.coerce
+        .number()
+        .min(100, { message: 'Withdrawal amount must be at least 100 INR.' })
+        .max(3000, { message: 'Withdrawal amount cannot exceed 3000 INR.' }),
     paymentMethod: z.string({ required_error: 'Please select a payment method.' }),
     paypalEmail: z.string().optional(),
     upiId: z.string().optional(),
@@ -160,8 +163,9 @@ export default function WithdrawalPage() {
     // Simulate API call to process withdrawal
     setTimeout(() => {
       console.log('Withdrawal Request:', values);
-      if (values.amount > 5000) {
-          setError("Withdrawal limit exceeded for this transaction.");
+       // The form validation should handle this, but as a safeguard:
+      if (values.amount < 100 || values.amount > 3000) {
+          setError("Withdrawal amount must be between 100 and 3000 INR.");
       } else {
         setSuccess(true);
         form.reset({ amount: 100, paymentMethod: form.getValues('paymentMethod'), upiId: '', paypalEmail: '' });
@@ -218,7 +222,7 @@ export default function WithdrawalPage() {
                             <div>
                                 <CardTitle className="text-2xl font-bold font-headline">Request a Withdrawal</CardTitle>
                                 <CardDescription>
-                                    Transfer your earnings to your preferred account. Minimum withdrawal is 100 INR.
+                                    Transfer your earnings. Min withdrawal: 100 INR, Max: 3,000 INR.
                                 </CardDescription>
                             </div>
                         </div>
@@ -413,4 +417,5 @@ export default function WithdrawalPage() {
   );
 }
 
+    
     
