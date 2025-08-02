@@ -35,7 +35,7 @@ export function Portals() {
                         href={portal.href}
                         className={cn(
                             buttonVariants({ variant: portal.variant, size: 'lg' }),
-                           "h-24 text-xl flex-col"
+                           "h-24 text-xl flex flex-col justify-center items-center text-center"
                         )}
                     >
                         <portal.icon className="h-8 w-8 mb-2" />
