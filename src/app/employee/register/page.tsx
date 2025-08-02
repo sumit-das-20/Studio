@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useFormState, useFormStatus } from 'react-dom';
+import { useActionState, useFormStatus } from 'react';
 import { signUpWithEmail } from '@/app/employee/actions';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -36,7 +36,7 @@ function SubmitButton() {
 }
 
 export default function EmployeeRegisterPage() {
-  const [state, formAction] = useFormState(signUpWithEmail, initialState);
+  const [state, formAction] = useActionState(signUpWithEmail, initialState);
   const { toast } = useToast();
   const formRef = useRef<HTMLFormElement>(null);
 

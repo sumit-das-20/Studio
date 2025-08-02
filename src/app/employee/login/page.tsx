@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useFormState, useFormStatus } from 'react-dom';
+import { useActionState, useFormStatus } from 'react';
 import { signInWithEmail } from '@/app/employee/actions';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -33,7 +33,7 @@ function SubmitButton() {
 }
 
 export default function EmployeeLoginPage() {
-  const [state, formAction] = useFormState(signInWithEmail, initialState);
+  const [state, formAction] = useActionState(signInWithEmail, initialState);
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-background p-4">

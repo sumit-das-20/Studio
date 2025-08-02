@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useFormState, useFormStatus } from 'react-dom';
+import { useActionState, useFormStatus } from 'react';
 import { resetPassword } from '@/app/employee/actions';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -33,7 +33,7 @@ function SubmitButton() {
 }
 
 export default function ForgotPasswordPage() {
-  const [state, formAction] = useFormState(resetPassword, initialState);
+  const [state, formAction] = useActionState(resetPassword, initialState);
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-background p-4">
@@ -56,7 +56,8 @@ export default function ForgotPasswordPage() {
               <AlertTitle>Success</AlertTitle>
               <AlertDescription>
                 Password reset email sent! Please check your inbox.
-              </AlertDescription>
+              </Aler
+tDescription>
             </Alert>
           )}
           <form action={formAction} className="space-y-4">
