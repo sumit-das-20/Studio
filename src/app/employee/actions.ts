@@ -1,4 +1,3 @@
-
 'use server';
 
 import {
@@ -31,7 +30,7 @@ export async function signUpWithEmail(prevState: any, formData: FormData) {
   try {
     await createUserWithEmailAndPassword(auth, email, password);
     // In a real app, you might want to create a user profile in a database here.
-    return { success: true };
+    return { success: true, error: null };
   } catch (error: any) {
     return { success: false, error: error.message };
   }
@@ -71,7 +70,7 @@ export async function resetPassword(prevState: any, formData: FormData) {
 
   try {
     await sendPasswordResetEmail(auth, email);
-    return { success: true };
+    return { success: true, error: null };
   } catch (error: any) {
     return { success: false, error: error.message };
   }

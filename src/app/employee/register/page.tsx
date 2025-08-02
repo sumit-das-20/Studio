@@ -16,7 +16,7 @@ import Link from 'next/link';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Loader2 } from 'lucide-react';
 import { Label } from '@/components/ui/label';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { useToast } from '@/hooks/use-toast';
 
 const initialState = {
@@ -37,6 +37,7 @@ function SubmitButton() {
 export default function EmployeeRegisterPage() {
   const [state, formAction] = useFormState(signUpWithEmail, initialState);
   const { toast } = useToast();
+  const formRef = useRef<HTMLFormElement>(null);
 
   useEffect(() => {
     if (state.success) {
@@ -44,6 +45,7 @@ export default function EmployeeRegisterPage() {
         title: 'Account Created',
         description: 'Your employee account has been created successfully! You can now log in.',
       });
+      formRef.current?.reset();
     }
   }, [state.success, toast]);
 
@@ -64,7 +66,7 @@ export default function EmployeeRegisterPage() {
               <AlertDescription>{state.error}</AlertDescription>
             </Alert>
           )}
-          <form action={formAction} className="space-y-4">
+          <form ref={formRef} action={formAction} className="space-y-4">
             <div className="space-y-2">
                 <Label htmlFor='name'>Name</Label>
                 <Input id="name" name="name" placeholder="John Doe" required />

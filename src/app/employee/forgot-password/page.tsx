@@ -15,6 +15,7 @@ import {
 import Link from 'next/link';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Loader2 } from 'lucide-react';
+import { Label } from '@/components/ui/label';
 
 const initialState = {
   success: false,
@@ -60,7 +61,7 @@ export default function ForgotPasswordPage() {
           )}
           <form action={formAction} className="space-y-4">
             <div className="space-y-2">
-              <label htmlFor="email" className="font-medium">Email</label>
+              <Label htmlFor="email" className="font-medium">Email</Label>
               <Input
                 id="email"
                 name="email"
