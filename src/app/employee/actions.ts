@@ -10,9 +10,12 @@ import { auth } from '@/lib/firebase';
 import { z } from 'zod';
 import { redirect } from 'next/navigation';
 import { cookies } from 'next/headers';
+import { verifyUpi } from '@/ai/flows/verify-upi-flow';
 
 const emailSchema = z.string().email({ message: 'Invalid email address.' });
 const passwordSchema = z.string().min(6, { message: 'Password must be at least 6 characters.' });
+const upiIdSchema = z.string().min(3, { message: 'UPI ID cannot be empty.' });
+
 
 export async function signUpWithEmail(prevState: any, formData: FormData) {
   const name = formData.get('name') as string;
@@ -102,4 +105,23 @@ export async function resetPassword(prevState: any, formData: FormData) {
 export async function signOut() {
   cookies().delete('firebaseAuth');
   redirect('/employee/login');
+}
+
+
+export async function verifyUpiId(upiId: string) {
+  const upiIdValidation = upiIdSchema.safeParse(upiId);
+  if (!upiIdValidation.success) {
+    return { isValid: false, message: upiIdValidation.error.errors[0].message };
+  }
+
+  try {
+    const result = await verifyUpi({ upiId });
+    return result;
+  } catch (error) {
+    console.error('UPI verification failed:', error);
+    return {
+      isValid: false,
+      message: 'An error occurred during UPI verification.',
+    };
+  }
 }

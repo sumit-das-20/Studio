@@ -21,8 +21,8 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { useState } from 'react';
-import { Banknote, CheckCircle, Loader2 } from 'lucide-react';
+import { useState, useTransition } from 'react';
+import { Banknote, CheckCircle, Loader2, ShieldCheck, ShieldX } from 'lucide-react';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import {
   Select,
@@ -42,27 +42,64 @@ import {
 } from '@/components/ui/sidebar';
 import { Trophy } from 'lucide-react';
 import { SidebarNav } from '@/components/sidebar-nav';
+import { verifyUpiId } from '../actions';
+import { cn } from '@/lib/utils';
 
 const formSchema = z.object({
   amount: z.coerce.number().min(100, { message: 'Withdrawal amount must be at least 100 INR.' }),
   paymentMethod: z.string({ required_error: 'Please select a payment method.' }),
   paymentDetails: z.string().min(10, { message: 'Please provide valid and complete payment details.' }),
+  upiId: z.string().optional(),
 });
+
+type FormSchemaType = z.infer<typeof formSchema>;
+
 
 export default function WithdrawalPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
+  
+  const [isVerifying, startVerificationTransition] = useTransition();
+  const [verificationResult, setVerificationResult] = useState<{isValid: boolean; message: string; verifiedName?: string} | null>(null);
 
-  const form = useForm<z.infer<typeof formSchema>>({
+
+  const form = useForm<FormSchemaType>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       amount: 100,
       paymentDetails: '',
+      upiId: '',
     },
   });
 
-  const onSubmit = (values: z.infer<typeof formSchema>) => {
+  const paymentMethod = form.watch('paymentMethod');
+  const isUpiSelected = paymentMethod === 'upi';
+  const isUpiVerified = verificationResult?.isValid === true;
+
+
+  const handleVerifyUpi = async () => {
+    const upiId = form.getValues('upiId');
+    if (!upiId) {
+        setVerificationResult({ isValid: false, message: 'Please enter a UPI ID.' });
+        return;
+    }
+    setVerificationResult(null);
+    startVerificationTransition(async () => {
+        const result = await verifyUpiId(upiId);
+        setVerificationResult(result);
+        if (result.isValid) {
+            form.setValue('paymentDetails', `UPI: ${upiId} (Verified for ${result.verifiedName})`);
+        }
+    });
+  }
+
+  const onSubmit = (values: FormSchemaType) => {
+    if (isUpiSelected && !isUpiVerified) {
+        setError("Please verify your UPI ID before submitting.");
+        return;
+    }
+
     setIsSubmitting(true);
     setError(null);
     setSuccess(false);
@@ -74,11 +111,19 @@ export default function WithdrawalPage() {
           setError("Withdrawal limit exceeded for this transaction.");
       } else {
         setSuccess(true);
-        form.reset({ amount: 100, paymentDetails: '', paymentMethod: form.getValues('paymentMethod')});
+        form.reset({ amount: 100, paymentDetails: '', paymentMethod: form.getValues('paymentMethod'), upiId: '' });
+        setVerificationResult(null);
       }
       setIsSubmitting(false);
     }, 2000);
   };
+
+  const resetForm = () => {
+    setSuccess(false);
+    setError(null);
+    setVerificationResult(null);
+    form.reset({ amount: 100, paymentDetails: '', paymentMethod: undefined, upiId: ''});
+  }
 
   return (
     <SidebarProvider>
@@ -122,7 +167,7 @@ export default function WithdrawalPage() {
                                 <CheckCircle className="h-12 w-12 text-primary" />
                                 <h3 className="text-xl font-bold text-primary">Request Submitted!</h3>
                                 <p className="text-muted-foreground">Your withdrawal request has been received and will be processed within 3-5 business days.</p>
-                                <Button onClick={() => setSuccess(false)} variant="outline" className="mt-4">
+                                <Button onClick={resetForm} variant="outline" className="mt-4">
                                     Make Another Withdrawal
                                 </Button>
                             </div>
@@ -148,7 +193,12 @@ export default function WithdrawalPage() {
                                         render={({ field }) => (
                                             <FormItem>
                                                 <FormLabel>Payment Method</FormLabel>
-                                                 <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                                 <Select onValueChange={(value) => {
+                                                    field.onChange(value);
+                                                    setVerificationResult(null);
+                                                    form.setValue('paymentDetails', '');
+                                                    form.setValue('upiId', '');
+                                                 }} defaultValue={field.value}>
                                                     <FormControl>
                                                     <SelectTrigger>
                                                         <SelectValue placeholder="Select a payment method" />
@@ -164,20 +214,54 @@ export default function WithdrawalPage() {
                                             </FormItem>
                                         )}
                                     />
-                                    <FormField
-                                        control={form.control}
-                                        name="paymentDetails"
-                                        render={({ field }) => (
-                                            <FormItem>
-                                                <FormLabel>Payment Details</FormLabel>
-                                                <FormControl>
-                                                    <Textarea placeholder="Enter your Bank Account Number & IFSC Code, UPI ID, or PayPal Email Address." {...field} className="min-h-[100px]" />
-                                                </FormControl>
-                                                <FormMessage />
-                                            </FormItem>
-                                        )}
-                                    />
-                                    <Button type="submit" className="w-full" disabled={isSubmitting}>
+
+                                    {isUpiSelected ? (
+                                        <div className='space-y-2'>
+                                            <FormField
+                                                control={form.control}
+                                                name="upiId"
+                                                render={({ field }) => (
+                                                    <FormItem>
+                                                        <FormLabel>UPI ID</FormLabel>
+                                                        <div className="flex gap-2">
+                                                        <FormControl>
+                                                            <Input placeholder="yourname@bank" {...field} disabled={isVerifying || isUpiVerified} />
+                                                        </FormControl>
+                                                        <Button type="button" onClick={handleVerifyUpi} disabled={isVerifying || isUpiVerified}>
+                                                            {isVerifying && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                                                            {isUpiVerified ? 'Verified' : 'Verify'}
+                                                        </Button>
+                                                        </div>
+                                                        <FormMessage />
+                                                    </FormItem>
+                                                )}
+                                                />
+                                            {verificationResult && (
+                                                <div className={cn("flex items-center gap-2 text-sm", verificationResult.isValid ? 'text-green-600' : 'text-destructive')}>
+                                                    {verificationResult.isValid ? <ShieldCheck className='h-4 w-4' /> : <ShieldX className='h-4 w-4' />}
+                                                    <p>{verificationResult.message} {verificationResult.isValid && <b>{verificationResult.verifiedName}</b>}</p>
+                                                </div>
+                                            )}
+                                        </div>
+
+                                    ) : (
+                                         <FormField
+                                            control={form.control}
+                                            name="paymentDetails"
+                                            render={({ field }) => (
+                                                <FormItem>
+                                                    <FormLabel>Payment Details</FormLabel>
+                                                    <FormControl>
+                                                        <Textarea placeholder="Enter your Bank Account Number & IFSC Code, or PayPal Email Address." {...field} className="min-h-[100px]" />
+                                                    </FormControl>
+                                                    <FormMessage />
+                                                </FormItem>
+                                            )}
+                                        />
+                                    )}
+                                   
+
+                                    <Button type="submit" className="w-full" disabled={isSubmitting || (isUpiSelected && !isUpiVerified)}>
                                         {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                                         Submit Withdrawal Request
                                     </Button>
