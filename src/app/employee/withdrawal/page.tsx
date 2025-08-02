@@ -46,11 +46,52 @@ import { verifyUpiId } from '../actions';
 import { cn } from '@/lib/utils';
 
 const formSchema = z.object({
-  amount: z.coerce.number().min(100, { message: 'Withdrawal amount must be at least 100 INR.' }),
-  paymentMethod: z.string({ required_error: 'Please select a payment method.' }),
-  paymentDetails: z.string().min(10, { message: 'Please provide valid and complete payment details.' }),
-  upiId: z.string().optional(),
+    amount: z.coerce.number().min(100, { message: 'Withdrawal amount must be at least 100 INR.' }),
+    paymentMethod: z.string({ required_error: 'Please select a payment method.' }),
+    paymentDetails: z.string().optional(),
+    upiId: z.string().optional(),
+    accountHolderName: z.string().optional(),
+    bankName: z.string().optional(),
+    accountNumber: z.string().optional(),
+    confirmAccountNumber: z.string().optional(),
+    ifscCode: z.string().optional(),
+}).refine(data => {
+    if (data.paymentMethod === 'bank-transfer') {
+        return !!data.accountHolderName && !!data.bankName && !!data.accountNumber && !!data.confirmAccountNumber && !!data.ifscCode;
+    }
+    return true;
+}, {
+    message: "Please fill all bank details.",
+    path: ["accountHolderName"], // Show error on one of the fields
+})
+.refine(data => {
+    if (data.paymentMethod === 'bank-transfer') {
+        return data.accountNumber === data.confirmAccountNumber;
+    }
+    return true;
+}, {
+    message: "Account numbers do not match.",
+    path: ["confirmAccountNumber"],
+})
+.refine(data => {
+    if (data.paymentMethod === 'upi') {
+        return !!data.upiId;
+    }
+    return true;
+}, {
+    message: "Please enter a UPI ID.",
+    path: ["upiId"],
+})
+.refine(data => {
+    if (data.paymentMethod === 'paypal') {
+        return !!data.paymentDetails && data.paymentDetails.length > 10;
+    }
+    return true;
+}, {
+    message: "Please provide valid and complete payment details.",
+    path: ["paymentDetails"],
 });
+
 
 type FormSchemaType = z.infer<typeof formSchema>;
 
@@ -70,11 +111,18 @@ export default function WithdrawalPage() {
       amount: 100,
       paymentDetails: '',
       upiId: '',
+      accountHolderName: '',
+      bankName: '',
+      accountNumber: '',
+      confirmAccountNumber: '',
+      ifscCode: '',
     },
   });
 
   const paymentMethod = form.watch('paymentMethod');
   const isUpiSelected = paymentMethod === 'upi';
+  const isBankTransferSelected = paymentMethod === 'bank-transfer';
+  const isPaypalSelected = paymentMethod === 'paypal';
   const isUpiVerified = verificationResult?.isValid === true;
 
 
@@ -123,6 +171,22 @@ export default function WithdrawalPage() {
     setError(null);
     setVerificationResult(null);
     form.reset({ amount: 100, paymentDetails: '', paymentMethod: undefined, upiId: ''});
+  }
+
+  const handlePaymentMethodChange = (value: string) => {
+    form.setValue('paymentMethod', value);
+    setVerificationResult(null);
+    form.reset({
+        ...form.getValues(),
+        paymentMethod: value,
+        paymentDetails: '',
+        upiId: '',
+        accountHolderName: '',
+        bankName: '',
+        accountNumber: '',
+        confirmAccountNumber: '',
+        ifscCode: '',
+    });
   }
 
   return (
@@ -193,12 +257,7 @@ export default function WithdrawalPage() {
                                         render={({ field }) => (
                                             <FormItem>
                                                 <FormLabel>Payment Method</FormLabel>
-                                                 <Select onValueChange={(value) => {
-                                                    field.onChange(value);
-                                                    setVerificationResult(null);
-                                                    form.setValue('paymentDetails', '');
-                                                    form.setValue('upiId', '');
-                                                 }} defaultValue={field.value}>
+                                                 <Select onValueChange={handlePaymentMethodChange} defaultValue={field.value}>
                                                     <FormControl>
                                                     <SelectTrigger>
                                                         <SelectValue placeholder="Select a payment method" />
@@ -215,7 +274,7 @@ export default function WithdrawalPage() {
                                         )}
                                     />
 
-                                    {isUpiSelected ? (
+                                    {isUpiSelected && (
                                         <div className='space-y-2'>
                                             <FormField
                                                 control={form.control}
@@ -243,16 +302,87 @@ export default function WithdrawalPage() {
                                                 </div>
                                             )}
                                         </div>
+                                    )}
 
-                                    ) : (
+                                    {isBankTransferSelected && (
+                                        <div className="space-y-4 rounded-md border p-4">
+                                            <FormField
+                                                control={form.control}
+                                                name="accountHolderName"
+                                                render={({ field }) => (
+                                                    <FormItem>
+                                                        <FormLabel>Account Holder Name</FormLabel>
+                                                        <FormControl>
+                                                            <Input placeholder="Enter the name on the bank account" {...field} />
+                                                        </FormControl>
+                                                        <FormMessage />
+                                                    </FormItem>
+                                                )}
+                                            />
+                                            <FormField
+                                                control={form.control}
+                                                name="bankName"
+                                                render={({ field }) => (
+                                                    <FormItem>
+                                                        <FormLabel>Bank Name</FormLabel>
+                                                        <FormControl>
+                                                            <Input placeholder="e.g., State Bank of India" {...field} />
+                                                        </FormControl>
+                                                        <FormMessage />
+                                                    </FormItem>
+                                                )}
+                                            />
+                                            <FormField
+                                                control={form.control}
+                                                name="accountNumber"
+                                                render={({ field }) => (
+                                                    <FormItem>
+                                                        <FormLabel>Bank Account Number</FormLabel>
+                                                        <FormControl>
+                                                            <Input placeholder="Enter account number" {...field} />
+                                                        </FormControl>
+                                                        <FormMessage />
+                                                    </FormItem>
+                                                )}
+                                            />
+                                            <FormField
+                                                control={form.control}
+                                                name="confirmAccountNumber"
+                                                render={({ field }) => (
+                                                    <FormItem>
+                                                        <FormLabel>Confirm Bank Account Number</FormLabel>
+                                                        <FormControl>
+                                                            <Input placeholder="Enter account number again" {...field} />
+                                                        </FormControl>
+                                                        <FormMessage />
+                                                    </FormItem>
+                                                )}
+                                            />
+                                            <FormField
+                                                control={form.control}
+                                                name="ifscCode"
+                                                render={({ field }) => (
+                                                    <FormItem>
+                                                        <FormLabel>IFSC Code</FormLabel>
+                                                        <FormControl>
+                                                            <Input placeholder="Enter bank's IFSC code" {...field} />
+                                                        </FormControl>
+                                                        <FormMessage />
+                                                    </FormItem>
+                                                )}
+                                            />
+                                        </div>
+                                    )}
+
+                                     {isPaypalSelected && (
                                          <FormField
                                             control={form.control}
                                             name="paymentDetails"
                                             render={({ field }) => (
                                                 <FormItem>
-                                                    <FormLabel>Payment Details</FormLabel>
+                                                    <FormLabel>PayPal Email Address</FormLabel>
                                                     <FormControl>
-                                                        <Textarea placeholder="Enter your Bank Account Number & IFSC Code, or PayPal Email Address." {...field} className="min-h-[100px]" />
+                                                        <Textarea placeholder="Enter your PayPal email address." {...field} className="min-h-[100px]" />
                                                     </FormControl>
                                                     <FormMessage />
                                                 </FormItem>
