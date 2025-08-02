@@ -54,7 +54,7 @@ export default function UserLoginPage() {
       // For demonstration, we'll just log the values and show a success message.
       // In a real application, you would make an API call to your backend for authentication.
       console.log(values);
-      if (values.email === 'test@example.com' && values.password === 'password') {
+      if (values.email === 'employee@example.com' && values.password === 'password') {
          setSuccess(true);
       } else {
         setError('Invalid email or password.');
@@ -67,7 +67,7 @@ export default function UserLoginPage() {
     <div className="flex min-h-screen items-center justify-center bg-background p-4">
       <Card className="w-full max-w-md">
         <CardHeader>
-          <CardTitle className="text-2xl">User Login</CardTitle>
+          <CardTitle className="text-2xl">Employee Login</CardTitle>
           <CardDescription>
             Enter your email and password to access your account.
           </CardDescription>

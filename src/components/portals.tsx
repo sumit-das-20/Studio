@@ -6,8 +6,8 @@ import { Button } from './ui/button';
 const portalLinks = [
     {
         href: '/user/login',
-        title: 'User Portal',
-        description: 'Access your tasks and earnings.',
+        title: 'Employee Portal',
+        description: 'Complete tasks and see your earnings.',
         icon: User,
     },
     {
@@ -16,12 +16,6 @@ const portalLinks = [
         description: 'Manage your ad campaigns.',
         icon: Building,
     },
-    {
-        href: '/employee/login',
-        title: 'Employee Portal',
-        description: 'Internal employee access.',
-        icon: Briefcase,
-    }
 ]
 
 export function Portals() {
@@ -35,7 +29,7 @@ export function Portals() {
                     </p>
                 </div>
             </div>
-            <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                 {portalLinks.map((portal) => (
                     <Card key={portal.title} className="flex flex-col justify-between transition-all hover:shadow-lg">
                         <CardHeader>

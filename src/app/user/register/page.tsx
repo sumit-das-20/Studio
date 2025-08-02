@@ -66,7 +66,7 @@ export default function UserRegisterPage() {
         <div className="flex min-h-screen items-center justify-center bg-background p-4">
             <Card className="w-full max-w-md">
                 <CardHeader>
-                    <CardTitle className="text-2xl">Create a User Account</CardTitle>
+                    <CardTitle className="text-2xl">Create an Employee Account</CardTitle>
                     <CardDescription>
                         Enter your details below to create your account.
                     </CardDescription>
