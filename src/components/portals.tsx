@@ -5,8 +5,8 @@ import { cn } from '@/lib/utils';
 
 const portalLinks = [
     {
-        href: '/employee/login',
-        title: 'Join as an Employee and Earn Money',
+        href: '/employee/register',
+        title: 'Sign up as an Employee and Earn Money',
         icon: Coins,
         variant: 'default' as 'default',
     },
@@ -45,13 +45,13 @@ export function Portals() {
                 ))}
             </div>
              <div className="mt-8 text-center text-sm">
-                Don't have an account?{' '}
-                <Link href="/employee/register" className="underline font-semibold">
-                    Employee Sign Up
+                Already have an account?{' '}
+                <Link href="/employee/login" className="underline font-semibold">
+                    Employee Log In
                 </Link>
                 {' or '}
-                <Link href="/buyer/register" className="underline font-semibold">
-                    Buyer Sign Up
+                <Link href="/buyer/login" className="underline font-semibold">
+                    Buyer Log In
                 </Link>
             </div>
         </section>
