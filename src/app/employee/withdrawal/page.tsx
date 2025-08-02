@@ -239,7 +239,7 @@ export default function WithdrawalPage() {
                              <div className="flex flex-col items-center justify-center gap-4 rounded-lg border-2 border-dashed border-primary bg-primary/5 p-8 text-center">
                                 <CheckCircle className="h-12 w-12 text-primary" />
                                 <h3 className="text-xl font-bold text-primary">Request Submitted!</h3>
-                                <p className="text-muted-foreground">Your withdrawal request has been received and will be processed within 3-5 business days.</p>
+                                <p className="text-muted-foreground">Your withdrawal request has been received. The amount will be credited to your account within 72 hours.</p>
                                 <Button onClick={resetForm} variant="outline" className="mt-4">
                                     Make Another Withdrawal
                                 </Button>
@@ -416,6 +416,3 @@ export default function WithdrawalPage() {
 
   );
 }
-
-    
-    
