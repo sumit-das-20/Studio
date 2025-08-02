@@ -6,14 +6,14 @@ import { Button } from './ui/button';
 const portalLinks = [
     {
         href: '/employee/register',
-        title: 'join Employee Start income',
+        title: 'Join as an Employee and Earn Money',
         description: 'Complete tasks and see your earnings.',
         icon: Coins,
         variant: 'default' as 'default',
     },
     {
         href: '/buyer/register',
-        title: 'join as a buyer to grow you social media accounts',
+        title: 'Join as a buyer to grow your social media accounts',
         description: 'Buy services to grow your YouTube, Facebook, and Instagram channels.',
         icon: TrendingUp,
         variant: 'outline' as 'outline',
