@@ -11,9 +11,9 @@ export function Header() {
       </div>
       <div className="flex flex-1 items-center justify-end gap-4">
         <EarningsCounter />
-        <Link href="/user/login">
-            <Button>Login</Button>
-        </Link>
+        <Button asChild>
+            <Link href="/user/login">Login</Link>
+        </Button>
       </div>
     </header>
   );
