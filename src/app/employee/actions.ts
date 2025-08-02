@@ -1,3 +1,4 @@
+
 'use server';
 
 import {
@@ -57,7 +58,7 @@ export async function signInWithEmail(prevState: any, formData: FormData) {
   } catch (error: any) {
     return { success: false, error: error.message };
   }
-  redirect('/');
+  redirect('/dashboard');
 }
 
 export async function resetPassword(prevState: any, formData: FormData) {
