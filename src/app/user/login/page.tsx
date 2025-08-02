@@ -113,6 +113,11 @@ export default function UserLoginPage() {
                   </FormItem>
                 )}
               />
+               <div className="flex items-center justify-end text-sm">
+                <Link href="#" className="underline">
+                  Forgot Password?
+                </Link>
+              </div>
               <Button type="submit" className="w-full" disabled={isSubmitting}>
                 {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                 Log In
