@@ -51,7 +51,7 @@ export function EarningsCounter() {
       <span className="text-xl font-bold font-headline tabular-nums">
         {earnings.toFixed(2)}
       </span>
-      <span className="text-sm font-semibold">Rewards</span>
+      <span className="text-sm font-semibold">INR</span>
     </div>
   );
 }
