@@ -8,7 +8,7 @@ import type { LinkTask } from '@/lib/types';
 const initialTasks: LinkTask[] = Array.from({ length: 12 }, (_, i) => ({
   id: i + 1,
   url: `https://short.link/example${i + 1}`,
-  reward: 0.01,
+  reward: 0.83,
 }));
 
 export function LinkShortener() {
@@ -54,7 +54,7 @@ export function LinkShortener() {
               ) : (
                 <>
                   <ExternalLink className="h-6 w-6" />
-                  <span className="text-xs">+${task.reward.toFixed(2)}</span>
+                  <span className="text-xs">+₹{task.reward.toFixed(2)}</span>
                 </>
               )}
             </Button>
