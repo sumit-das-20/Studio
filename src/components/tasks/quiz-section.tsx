@@ -51,7 +51,7 @@ export function QuizSection() {
               <CardHeader>
                 <CardTitle className="flex items-center justify-between">
                   <span>Quiz #{task.id}</span>
-                   <span className="text-sm font-medium text-primary">+₹{task.reward.toFixed(2)}</span>
+                   <span className="text-sm font-medium text-primary">+{task.reward.toFixed(2)}</span>
                 </CardTitle>
                 <CardDescription>{task.question}</CardDescription>
               </CardHeader>

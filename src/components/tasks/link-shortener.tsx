@@ -54,7 +54,7 @@ export function LinkShortener() {
               ) : (
                 <>
                   <ExternalLink className="h-6 w-6" />
-                  <span className="text-xs">+₹{task.reward.toFixed(2)}</span>
+                  <span className="text-xs">+{task.reward.toFixed(2)}</span>
                 </>
               )}
             </Button>
