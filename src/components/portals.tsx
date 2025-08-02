@@ -1,6 +1,5 @@
-import { ArrowRight, Briefcase, Building, User, Coins, TrendingUp } from 'lucide-react';
+import { Coins, TrendingUp } from 'lucide-react';
 import Link from 'next/link';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from './ui/button';
 
 const portalLinks = [
@@ -31,14 +30,14 @@ export function Portals() {
             </div>
             <div className="grid grid-cols-1 gap-6">
                 {portalLinks.map((portal) => (
-                   <Link href={portal.href} key={portal.title}>
-                        <Button className="w-full h-24 text-xl flex flex-col" variant={portal.variant}>
-                             <div className='flex items-center gap-3'>
+                   <Button key={portal.title} asChild className="w-full h-24 text-xl" variant={portal.variant}>
+                        <Link href={portal.href}>
+                             <div className='flex items-center gap-3 text-center'>
                                 <portal.icon className="h-8 w-8" />
                                 <span>{portal.title}</span>
                             </div>
-                        </Button>
-                    </Link>
+                        </Link>
+                    </Button>
                 ))}
             </div>
              <div className="mt-8 text-center text-sm">
