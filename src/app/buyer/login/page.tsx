@@ -1,19 +1,9 @@
 
 'use client';
 
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm } from 'react-hook-form';
-import { z } from 'zod';
+import { useActionState, useEffect } from 'react';
+import { useFormStatus } from 'react-dom';
 import { Button } from '@/components/ui/button';
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
 import {
   Card,
   CardContent,
@@ -21,51 +11,43 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { useState } from 'react';
 import { Loader2 } from 'lucide-react';
 import Link from 'next/link';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { useRouter } from 'next/navigation';
 import { BackButton } from '@/components/back-button';
+import { Label } from '@/components/ui/label';
+import { Input } from '@/components/ui/input';
+import { signInBuyer } from '../actions';
+import { useToast } from '@/hooks/use-toast';
 
-const formSchema = z.object({
-  email: z.string().email({ message: 'Invalid email address.' }),
-  password: z.string().min(6, { message: 'Password must be at least 6 characters.' }),
-});
+const initialState = {
+  success: false,
+  error: null,
+};
+
+function SubmitButton() {
+  const { pending } = useFormStatus();
+  return (
+    <Button type="submit" className="w-full" disabled={pending}>
+      {pending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+      Log In
+    </Button>
+  );
+}
 
 export default function BuyerLoginPage() {
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const router = useRouter();
+  const [state, formAction] = useActionState(signInBuyer, initialState);
+  const { toast } = useToast();
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      email: '',
-      password: '',
-    },
-  });
-
-  // This is a mock authentication function.
-  // In a real application, you would replace this with a call to your authentication service (e.g., Firebase Auth).
-  const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    setIsSubmitting(true);
-    setError(null);
-
-    // Simulate an API call
-    await new Promise(resolve => setTimeout(resolve, 1000));
-
-    // Mock logic: For demonstration, we'll accept a specific email/password.
-    if (values.email === 'buyer@example.com' && values.password === 'password') {
-      // On success, redirect to the dashboard.
-      router.push('/buyer/dashboard');
-    } else {
-      // On failure, show an error message.
-      setError('Invalid email or password. Please try again.');
+   useEffect(() => {
+    if (state?.success) {
+      toast({
+        title: 'Login Successful',
+        description: "Welcome back! You're being redirected to your dashboard.",
+      });
     }
+  }, [state?.success, toast]);
 
-    setIsSubmitting(false);
-  };
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-background p-4">
@@ -80,51 +62,40 @@ export default function BuyerLoginPage() {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          {error && (
+          {state?.error && (
              <Alert variant="destructive" className="mb-4">
                 <AlertTitle>Error</AlertTitle>
-                <AlertDescription>{error}</AlertDescription>
+                <AlertDescription>{state.error}</AlertDescription>
             </Alert>
           )}
-          <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-              <FormField
-                control={form.control}
+          <form action={formAction} className="space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="email">Email</Label>
+              <Input
+                id="email"
                 name="email"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Email</FormLabel>
-                    <FormControl>
-                      <Input placeholder="buyer@example.com" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
+                type="email"
+                placeholder="buyer@example.com"
+                required
               />
-              <FormField
-                control={form.control}
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="password">Password</Label>
+              <Input
+                id="password"
                 name="password"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Password</FormLabel>
-                    <FormControl>
-                      <Input type="password" placeholder="••••••••" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
+                type="password"
+                placeholder="••••••••"
+                required
               />
-              <div className="flex items-center justify-end text-sm">
+            </div>
+            <div className="flex items-center justify-end text-sm">
                 <Link href="#" className="underline">
                   Forgot Password?
                 </Link>
               </div>
-              <Button type="submit" className="w-full" disabled={isSubmitting}>
-                {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                Log In
-              </Button>
-            </form>
-          </Form>
+            <SubmitButton />
+          </form>
            <div className="mt-4 text-center text-sm">
             Don't have a buyer account?{' '}
             <Link href="/buyer/register" className="underline">
