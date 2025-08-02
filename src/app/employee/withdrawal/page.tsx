@@ -22,7 +22,7 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { useState, useTransition } from 'react';
-import { Banknote, CheckCircle, Loader2, ShieldCheck, ShieldX } from 'lucide-react';
+import { Banknote, CheckCircle, History, Loader2, ShieldCheck, ShieldX } from 'lucide-react';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import {
   Select,
@@ -43,6 +43,8 @@ import { Trophy } from 'lucide-react';
 import { SidebarNav } from '@/components/sidebar-nav';
 import { verifyUpiId } from '../actions';
 import { cn } from '@/lib/utils';
+import Link from 'next/link';
+import { buttonVariants } from '@/components/ui/button';
 
 const formSchema = z.object({
     amount: z.coerce
@@ -217,21 +219,26 @@ export default function WithdrawalPage() {
             <div className="max-w-2xl mx-auto">
                  <Card>
                     <CardHeader>
-                        <div className="flex items-center gap-4">
-                             <Banknote className="h-8 w-8 text-primary" />
-                            <div>
-                                <CardTitle className="text-2xl font-bold font-headline">Request a Withdrawal</CardTitle>
-                                <CardDescription>
-                                    Transfer your earnings. Please read the terms below before withdrawing.
-                                    <ul className="list-disc pl-5 mt-2 text-xs">
-                                        <li>Minimum withdrawal amount is 100 INR.</li>
-                                        <li>Maximum withdrawal amount is 3,000 INR.</li>
-                                        <li>Amount will be credited to your account within 72 hours.</li>
-                                    </ul>
-                                </CardDescription>
+                        <div className="flex items-center justify-between gap-4">
+                            <div className="flex items-center gap-4">
+                                <Banknote className="h-8 w-8 text-primary" />
+                                <div>
+                                    <CardTitle className="text-2xl font-bold font-headline">Request a Withdrawal</CardTitle>
+                                    <CardDescription>
+                                        Transfer your earnings. Please read the terms below before withdrawing.
+                                    </CardDescription>
+                                </div>
                             </div>
+                            <Link href="/employee/withdrawal/history" className={cn(buttonVariants({ variant: 'outline', size: 'sm' }))}>
+                                <History className="mr-2 h-4 w-4" />
+                                View History
+                            </Link>
                         </div>
-
+                        <ul className="list-disc pl-5 mt-4 text-xs text-muted-foreground">
+                            <li>Minimum withdrawal amount is 100 INR.</li>
+                            <li>Maximum withdrawal amount is 3,000 INR.</li>
+                            <li>Amount will be credited to your account within 72 hours.</li>
+                        </ul>
                     </CardHeader>
                     <CardContent>
                         {error && (
@@ -421,3 +428,5 @@ export default function WithdrawalPage() {
 
   );
 }
+
+    
