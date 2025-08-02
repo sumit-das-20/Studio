@@ -18,6 +18,7 @@ import { Loader2 } from 'lucide-react';
 import { Label } from '@/components/ui/label';
 import { useEffect, useRef } from 'react';
 import { useToast } from '@/hooks/use-toast';
+import { Textarea } from '@/components/ui/textarea';
 
 const initialState = {
   success: false,
@@ -68,7 +69,7 @@ export default function EmployeeRegisterPage() {
           )}
           <form ref={formRef} action={formAction} className="space-y-4">
             <div className="space-y-2">
-                <Label htmlFor='name'>Name</Label>
+                <Label htmlFor='name'>Full Name</Label>
                 <Input id="name" name="name" placeholder="John Doe" required />
             </div>
             <div className="space-y-2">
@@ -80,6 +81,18 @@ export default function EmployeeRegisterPage() {
                 placeholder="you@example.com"
                 required
               />
+            </div>
+             <div className="space-y-2">
+                <Label htmlFor='phone'>Phone Number</Label>
+                <Input id="phone" name="phone" type="tel" placeholder="+1234567890" required />
+            </div>
+             <div className="space-y-2">
+                <Label htmlFor='address'>Address</Label>
+                <Textarea id="address" name="address" placeholder="123 Main St, Anytown, USA" required />
+            </div>
+             <div className="space-y-2">
+                <Label htmlFor='idProof'>ID Proof Number</Label>
+                <Input id="idProof" name="idProof" placeholder="e.g., Driver's License or National ID" required />
             </div>
             <div className="space-y-2">
                 <Label htmlFor='password'>Password</Label>

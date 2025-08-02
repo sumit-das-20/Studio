@@ -17,6 +17,10 @@ export async function signUpWithEmail(prevState: any, formData: FormData) {
   const name = formData.get('name') as string;
   const email = formData.get('email') as string;
   const password = formData.get('password') as string;
+  const phone = formData.get('phone') as string;
+  const address = formData.get('address') as string;
+  const idProof = formData.get('idProof') as string;
+
 
   const emailValidation = emailSchema.safeParse(email);
   if (!emailValidation.success) {
@@ -28,9 +32,24 @@ export async function signUpWithEmail(prevState: any, formData: FormData) {
     return { success: false, error: passwordValidation.error.errors[0].message };
   }
 
+  // Basic validation for new fields
+  if (!name || !phone || !address || !idProof) {
+      return { success: false, error: 'Please fill out all fields.' };
+  }
+
+
   try {
-    await createUserWithEmailAndPassword(auth, email, password);
-    // In a real app, you might want to create a user profile in a database here.
+    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+    // In a real app, you would now save the extra details (name, phone, address, idProof)
+    // to a database like Firestore, linked to the user's UID (userCredential.user.uid).
+    console.log('New user signed up:', {
+        uid: userCredential.user.uid,
+        name,
+        email,
+        phone,
+        address,
+        idProof
+    });
     return { success: true, error: null };
   } catch (error: any) {
     return { success: false, error: error.message };
