@@ -31,7 +31,7 @@ const formSchema = z.object({
   password: z.string().min(6, { message: 'Password must be at least 6 characters.' }),
 });
 
-export default function UserLoginPage() {
+export default function EmployeeLoginPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
@@ -126,7 +126,7 @@ export default function UserLoginPage() {
           </Form>
            <div className="mt-4 text-center text-sm">
             Don't have an account?{' '}
-            <Link href="/user/register" className="underline">
+            <Link href="/employee/register" className="underline">
               Sign up
             </Link>
           </div>

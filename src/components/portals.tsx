@@ -5,7 +5,7 @@ import { Button } from './ui/button';
 
 const portalLinks = [
     {
-        href: '/user/login',
+        href: '/employee/login',
         title: 'Employee Portal',
         description: 'Complete tasks and see your earnings.',
         icon: User,
