@@ -17,31 +17,23 @@ const emailSchema = z.string().email({ message: 'Invalid email address.' });
 const passwordSchema = z.string().min(6, { message: 'Password must be at least 6 characters.' });
 const upiIdSchema = z.string().min(3, { message: 'UPI ID cannot be empty.' });
 
+const signUpSchema = z.object({
+  name: z.string().min(2, { message: 'Please enter your full name.' }),
+  email: emailSchema,
+  password: passwordSchema,
+  phone: z.string().min(10, { message: 'Please enter a valid phone number.' }),
+  address: z.string().min(5, { message: 'Please enter your address.' }),
+  idProof: z.string().min(3, { message: 'Please enter a valid ID proof number.' }),
+});
 
 export async function signUpWithEmail(prevState: any, formData: FormData) {
-  const name = formData.get('name') as string;
-  const email = formData.get('email') as string;
-  const password = formData.get('password') as string;
-  const phone = formData.get('phone') as string;
-  const address = formData.get('address') as string;
-  const idProof = formData.get('idProof') as string;
+  const validatedFields = signUpSchema.safeParse(Object.fromEntries(formData.entries()));
 
-
-  const emailValidation = emailSchema.safeParse(email);
-  if (!emailValidation.success) {
-    return { success: false, error: emailValidation.error.errors[0].message };
+  if (!validatedFields.success) {
+      return { success: false, error: validatedFields.error.errors[0].message };
   }
 
-  const passwordValidation = passwordSchema.safeParse(password);
-  if (!passwordValidation.success) {
-    return { success: false, error: passwordValidation.error.errors[0].message };
-  }
-
-  // Basic validation for new fields
-  if (!name || !phone || !address || !idProof) {
-      return { success: false, error: 'Please fill out all fields.' };
-  }
-
+  const { name, email, password, phone, address, idProof } = validatedFields.data;
 
   try {
     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
@@ -64,20 +56,20 @@ export async function signUpWithEmail(prevState: any, formData: FormData) {
   }
 }
 
+const signInSchema = z.object({
+  email: emailSchema,
+  password: passwordSchema,
+});
+
+
 export async function signInWithEmail(prevState: any, formData: FormData) {
-  const email = formData.get('email') as string;
-  const password = formData.get('password') as string;
+  const validatedFields = signInSchema.safeParse(Object.fromEntries(formData.entries()));
 
-   const emailValidation = emailSchema.safeParse(email);
-  if (!emailValidation.success) {
-    return { success: false, error: emailValidation.error.errors[0].message };
+  if (!validatedFields.success) {
+    return { success: false, error: validatedFields.error.errors[0].message };
   }
 
-  const passwordValidation = passwordSchema.safeParse(password);
-  if (!passwordValidation.success) {
-    return { success: false, error: passwordValidation.error.errors[0].message };
-  }
-
+  const { email, password } = validatedFields.data;
 
   try {
     await signInWithEmailAndPassword(auth, email, password);
@@ -125,7 +117,8 @@ export async function resetPassword(prevState: any, formData: FormData) {
 
 export async function signOut() {
   cookies().delete('firebaseAuth');
-  redirect('/employee/login');
+  cookies().delete('firebaseBuyerAuth');
+  redirect('/');
 }
 
 

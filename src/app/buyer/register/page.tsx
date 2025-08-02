@@ -21,7 +21,7 @@ import { signUpBuyer } from '../actions';
 import { useToast } from '@/hooks/use-toast';
 
 const initialState = {
-    isSuccess: false,
+    success: false,
     error: null,
 };
 
@@ -42,14 +42,14 @@ export default function BuyerRegisterPage() {
 
 
     useEffect(() => {
-        if (state?.isSuccess) {
+        if (state?.success) {
         toast({
             title: 'Account Created',
             description: 'Your buyer account has been created successfully! You can now log in.',
         });
         formRef.current?.reset();
         }
-    }, [state?.isSuccess, toast]);
+    }, [state?.success, toast]);
 
 
     return (
@@ -70,6 +70,12 @@ export default function BuyerRegisterPage() {
                             <AlertTitle>Error</AlertTitle>
                             <AlertDescription>{state.error}</AlertDescription>
                         </Alert>
+                    )}
+                    {state?.success && !state?.error && (
+                         <Alert variant="default" className="mb-4 border-green-500 text-green-700">
+                             <AlertTitle>Success!</AlertTitle>
+                             <AlertDescription>Account created successfully. You can now <Link href="/buyer/login" className="underline font-bold">log in</Link>.</AlertDescription>
+                         </Alert>
                     )}
                     <form ref={formRef} action={formAction} className="space-y-4">
                         <div className="space-y-2">

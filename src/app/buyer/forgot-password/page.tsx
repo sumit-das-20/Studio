@@ -20,7 +20,7 @@ import { BackButton } from '@/components/back-button';
 import { resetPasswordBuyer } from '../actions';
 
 const initialState = {
-  isSuccess: false,
+  success: false,
   error: null,
 };
 
@@ -56,7 +56,7 @@ export default function BuyerForgotPasswordPage() {
               <AlertDescription>{state.error}</AlertDescription>
             </Alert>
           )}
-          {state.isSuccess && (
+          {state.success && (
             <Alert variant="default" className="mb-4 border-green-500 text-green-700 dark:border-green-600 dark:text-green-400">
               <AlertTitle>Success</AlertTitle>
               <AlertDescription>
@@ -64,7 +64,7 @@ export default function BuyerForgotPasswordPage() {
               </AlertDescription>
             </Alert>
           )}
-          {!state.isSuccess && (
+          {!state.success && (
             <form action={formAction} className="space-y-4">
                 <div className="space-y-2">
                 <Label htmlFor="email" className="font-medium">Email</Label>

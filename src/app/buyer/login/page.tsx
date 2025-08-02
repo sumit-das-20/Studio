@@ -21,7 +21,7 @@ import { signInBuyer } from '../actions';
 import { useToast } from '@/hooks/use-toast';
 
 const initialState = {
-  isSuccess: false,
+  success: false,
   error: null,
 };
 
@@ -40,13 +40,13 @@ export default function BuyerLoginPage() {
   const { toast } = useToast();
 
    useEffect(() => {
-    if (state?.isSuccess) {
+    if (state?.success) {
       toast({
         title: 'Login Successful',
         description: "Welcome back! You're being redirected to your dashboard.",
       });
     }
-  }, [state?.isSuccess, toast]);
+  }, [state?.success, toast]);
 
 
   return (

@@ -31,7 +31,7 @@ export async function signUpBuyer(prevState: any, formData: FormData) {
   const validatedFields = signUpSchema.safeParse(Object.fromEntries(formData.entries()));
 
   if (!validatedFields.success) {
-    return { success: false, error: validatedFields.error.errors[0].message, isSuccess: false };
+    return { success: false, error: validatedFields.error.errors[0].message };
   }
 
   const { companyName, email, password } = validatedFields.data;
@@ -45,12 +45,12 @@ export async function signUpBuyer(prevState: any, formData: FormData) {
         companyName,
         email,
     });
-    return { success: true, error: null, isSuccess: true };
+    return { success: true, error: null };
   } catch (error: any) {
      if (error instanceof FirebaseError) {
-      return { success: false, error: error.message.replace('Firebase: ', ''), isSuccess: false };
+      return { success: false, error: error.message.replace('Firebase: ', '') };
     }
-    return { success: false, error: "An unexpected error occurred.", isSuccess: false };
+    return { success: false, error: "An unexpected error occurred." };
   }
 }
 
@@ -58,7 +58,7 @@ export async function signInBuyer(prevState: any, formData: FormData) {
   const validatedFields = signInSchema.safeParse(Object.fromEntries(formData.entries()));
 
   if (!validatedFields.success) {
-    return { success: false, error: validatedFields.error.errors[0].message, isSuccess: false };
+    return { success: false, error: validatedFields.error.errors[0].message };
   }
 
   const { email, password } = validatedFields.data;
@@ -70,16 +70,17 @@ export async function signInBuyer(prevState: any, formData: FormData) {
     if (error instanceof FirebaseError) {
         switch (error.code) {
             case 'auth/invalid-credential':
-                return { success: false, error: 'Invalid email or password. Please try again.', isSuccess: false };
+                return { success: false, error: 'Invalid email or password. Please try again.' };
+            // These cases are often covered by auth/invalid-credential, but good to have
             case 'auth/user-not-found':
-                 return { success: false, error: 'No account found with this email address.', isSuccess: false };
+                 return { success: false, error: 'No account found with this email address.' };
             case 'auth/wrong-password':
-                return { success: false, error: 'Incorrect password. Please try again.', isSuccess: false };
+                return { success: false, error: 'Incorrect password. Please try again.' };
             default:
-                return { success: false, error: error.message.replace('Firebase: ', ''), isSuccess: false };
+                return { success: false, error: error.message.replace('Firebase: ', '') };
         }
     }
-    return { success: false, error: "An unexpected error occurred during sign-in.", isSuccess: false };
+    return { success: false, error: "An unexpected error occurred during sign-in." };
   }
 
   redirect('/buyer/dashboard');
@@ -90,16 +91,16 @@ export async function resetPasswordBuyer(prevState: any, formData: FormData) {
 
   const emailValidation = emailSchema.safeParse(email);
   if (!emailValidation.success) {
-    return { success: false, error: emailValidation.error.errors[0].message, isSuccess: false };
+    return { success: false, error: emailValidation.error.errors[0].message };
   }
 
   try {
     await sendPasswordResetEmail(auth, email);
-    return { success: true, error: null, isSuccess: true };
+    return { success: true, error: null };
   } catch (error: any) {
     if (error instanceof FirebaseError) {
-      return { success: false, error: error.message.replace('Firebase: ', ''), isSuccess: false };
+      return { success: false, error: error.message.replace('Firebase: ', '') };
     }
-    return { success: false, error: "An unexpected error occurred.", isSuccess: false };
+    return { success: false, error: "An unexpected error occurred." };
   }
 }

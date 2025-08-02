@@ -19,7 +19,6 @@ import { Loader2 } from 'lucide-react';
 import { Label } from '@/components/ui/label';
 import { BackButton } from '@/components/back-button';
 import { useToast } from '@/hooks/use-toast';
-import { useRouter } from 'next/navigation';
 
 const initialState = {
   success: false,
@@ -39,7 +38,6 @@ function SubmitButton() {
 export default function EmployeeLoginPage() {
   const [state, formAction] = useActionState(signInWithEmail, initialState);
   const { toast } = useToast();
-  const router = useRouter();
 
   useEffect(() => {
     if (state.success) {
@@ -47,10 +45,9 @@ export default function EmployeeLoginPage() {
         title: 'Login Successful',
         description: "Welcome back! You're being redirected to your dashboard.",
       });
-      // The server action will handle the redirect, but we could push here as a fallback
-      // router.push('/employee/dashboard');
+      // The server action will handle the redirect
     }
-  }, [state.success, toast, router]);
+  }, [state.success, toast]);
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-background p-4">
