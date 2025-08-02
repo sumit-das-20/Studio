@@ -2,6 +2,7 @@
 import { Coins, TrendingUp } from 'lucide-react';
 import Link from 'next/link';
 import { Button } from './ui/button';
+import { cn } from '@/lib/utils';
 
 const portalLinks = [
     {
@@ -31,14 +32,20 @@ export function Portals() {
             </div>
             <div className="grid grid-cols-1 gap-6">
                 {portalLinks.map((portal) => (
-                   <Button key={portal.title} asChild className="w-full h-24 text-xl" variant={portal.variant}>
-                        <Link href={portal.href}>
-                             <div className='flex items-center gap-3 text-center'>
-                                <portal.icon className="h-8 w-8" />
-                                <span>{portal.title}</span>
-                            </div>
-                        </Link>
-                    </Button>
+                    <Link
+                        key={portal.title}
+                        href={portal.href}
+                        className={cn(
+                            "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
+                            "w-full h-24 text-xl",
+                             portal.variant === 'default' ? "bg-primary text-primary-foreground hover:bg-primary/90" : "border border-input bg-background hover:bg-accent hover:text-accent-foreground"
+                        )}
+                    >
+                         <div className='flex items-center gap-3 text-center'>
+                            <portal.icon className="h-8 w-8" />
+                            <span>{portal.title}</span>
+                        </div>
+                    </Link>
                 ))}
             </div>
              <div className="mt-8 text-center text-sm">
