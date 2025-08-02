@@ -3,9 +3,9 @@ import { Clapperboard } from 'lucide-react';
 import { SimpleTask } from './simple-task';
 
 const tasks: SimpleTaskType[] = [
-  { id: 4, question: 'What is your age?', reward: 8.30 },
-  { id: 5, question: 'What is your favorite movie genre?', reward: 8.30 },
-  { id: 6, question: 'What brand of phone do you use?', reward: 8.30 },
+  { id: 4, question: 'What is your age?', reward: 0.10 },
+  { id: 5, question: 'What is your favorite movie genre?', reward: 0.10 },
+  { id: 6, question: 'What brand of phone do you use?', reward: 0.10 },
 ];
 
 export function WatchAndEarn() {
