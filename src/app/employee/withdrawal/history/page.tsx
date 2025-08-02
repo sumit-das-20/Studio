@@ -2,7 +2,6 @@
 import { Header } from '@/components/header';
 import { SidebarNav } from '@/components/sidebar-nav';
 import { Badge } from '@/components/ui/badge';
-import { Button, buttonVariants } from '@/components/ui/button';
 import {
   Card,
   CardContent,
@@ -25,9 +24,9 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { cn } from '@/lib/utils';
-import { ArrowLeft, History, Trophy } from 'lucide-react';
-import Link from 'next/link';
+import { History, Trophy } from 'lucide-react';
+import { BackToWithdrawalLink } from '@/components/back-to-withdrawal-link';
+
 
 const withdrawalHistory = [
   {
@@ -96,10 +95,7 @@ export default function WithdrawalHistoryPage() {
         <main className="p-4 sm:p-6 lg:p-8">
           <div className="max-w-4xl mx-auto">
             <div className="mb-4">
-                <Link href="/employee/withdrawal" className={cn(buttonVariants({ variant: 'outline', size: 'sm' }))}>
-                    <ArrowLeft className="mr-2 h-4 w-4"/>
-                    Back to Withdrawal
-                </Link>
+                <BackToWithdrawalLink />
             </div>
             <Card>
               <CardHeader>

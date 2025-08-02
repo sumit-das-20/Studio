@@ -61,7 +61,7 @@ export default function ForgotPasswordPage() {
               <AlertTitle>Success</AlertTitle>
               <AlertDescription>
                 Password reset email sent! Please check your inbox.
-              </AlertDescription>
+              </Aler_description>
             </Alert>
           )}
           <form action={formAction} className="space-y-4">

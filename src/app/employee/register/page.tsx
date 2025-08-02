@@ -96,8 +96,7 @@ export default function EmployeeRegisterPage() {
                 <Textarea id="address" name="address" placeholder="123 Main St, Anytown, USA" required />
             </div>
              <div className="space-y-2">
-                <Label htmlFor='idProof'>ID Proof Number</Label>
-                <Input id="idProof" name="idProof" placeholder="e.g., Driver's License or National ID" required />
+                <Label htmlFor='idProof'>ID Proof Number</Label>                <Input id="idProof" name="idProof" placeholder="e.g., Driver's License or National ID" required />
             </div>
             <div className="space-y-2">
                 <Label htmlFor='password'>Password</Label>
