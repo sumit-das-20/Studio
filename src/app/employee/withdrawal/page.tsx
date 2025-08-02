@@ -31,7 +31,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { Textarea } from '@/components/ui/textarea';
 import { Header } from '@/components/header';
 import {
   Sidebar,
@@ -48,7 +47,7 @@ import { cn } from '@/lib/utils';
 const formSchema = z.object({
     amount: z.coerce.number().min(100, { message: 'Withdrawal amount must be at least 100 INR.' }),
     paymentMethod: z.string({ required_error: 'Please select a payment method.' }),
-    paymentDetails: z.string().optional(),
+    paypalEmail: z.string().optional(),
     upiId: z.string().optional(),
     accountHolderName: z.string().optional(),
     bankName: z.string().optional(),
@@ -84,12 +83,18 @@ const formSchema = z.object({
 })
 .refine(data => {
     if (data.paymentMethod === 'paypal') {
-        return !!data.paymentDetails && data.paymentDetails.length > 10;
+        if (!data.paypalEmail) return false;
+        try {
+            z.string().email().parse(data.paypalEmail);
+            return true;
+        } catch (e) {
+            return false;
+        }
     }
     return true;
 }, {
-    message: "Please provide valid and complete payment details.",
-    path: ["paymentDetails"],
+    message: "Please provide a valid PayPal email address.",
+    path: ["paypalEmail"],
 });
 
 
@@ -109,7 +114,7 @@ export default function WithdrawalPage() {
     resolver: zodResolver(formSchema),
     defaultValues: {
       amount: 100,
-      paymentDetails: '',
+      paypalEmail: '',
       upiId: '',
       accountHolderName: '',
       bankName: '',
@@ -137,7 +142,7 @@ export default function WithdrawalPage() {
         const result = await verifyUpiId(upiId);
         setVerificationResult(result);
         if (result.isValid) {
-            form.setValue('paymentDetails', `UPI: ${upiId} (Verified for ${result.verifiedName})`);
+            form.setValue('upiId', `${upiId}`);
         }
     });
   }
@@ -159,7 +164,7 @@ export default function WithdrawalPage() {
           setError("Withdrawal limit exceeded for this transaction.");
       } else {
         setSuccess(true);
-        form.reset({ amount: 100, paymentDetails: '', paymentMethod: form.getValues('paymentMethod'), upiId: '' });
+        form.reset({ amount: 100, paymentMethod: form.getValues('paymentMethod'), upiId: '', paypalEmail: '' });
         setVerificationResult(null);
       }
       setIsSubmitting(false);
@@ -170,7 +175,7 @@ export default function WithdrawalPage() {
     setSuccess(false);
     setError(null);
     setVerificationResult(null);
-    form.reset({ amount: 100, paymentDetails: '', paymentMethod: undefined, upiId: ''});
+    form.reset({ amount: 100, paymentMethod: undefined, upiId: '', paypalEmail: ''});
   }
 
   const handlePaymentMethodChange = (value: string) => {
@@ -179,7 +184,7 @@ export default function WithdrawalPage() {
     form.reset({
         ...form.getValues(),
         paymentMethod: value,
-        paymentDetails: '',
+        paypalEmail: '',
         upiId: '',
         accountHolderName: '',
         bankName: '',
@@ -377,12 +382,12 @@ export default function WithdrawalPage() {
                                      {isPaypalSelected && (
                                          <FormField
                                             control={form.control}
-                                            name="paymentDetails"
+                                            name="paypalEmail"
                                             render={({ field }) => (
                                                 <FormItem>
                                                     <FormLabel>PayPal Email Address</FormLabel>
                                                     <FormControl>
-                                                        <Textarea placeholder="Enter your PayPal email address." {...field} className="min-h-[100px]" />
+                                                        <Input type="email" placeholder="Enter your PayPal email address." {...field} />
                                                     </FormControl>
                                                     <FormMessage />
                                                 </FormItem>
@@ -407,3 +412,5 @@ export default function WithdrawalPage() {
 
   );
 }
+
+    
