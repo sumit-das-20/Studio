@@ -222,7 +222,12 @@ export default function WithdrawalPage() {
                             <div>
                                 <CardTitle className="text-2xl font-bold font-headline">Request a Withdrawal</CardTitle>
                                 <CardDescription>
-                                    Transfer your earnings. Min withdrawal: 100 INR, Max: 3,000 INR.
+                                    Transfer your earnings. Please read the terms below before withdrawing.
+                                    <ul className="list-disc pl-5 mt-2 text-xs">
+                                        <li>Minimum withdrawal amount is 100 INR.</li>
+                                        <li>Maximum withdrawal amount is 3,000 INR.</li>
+                                        <li>Amount will be credited to your account within 72 hours.</li>
+                                    </ul>
                                 </CardDescription>
                             </div>
                         </div>
