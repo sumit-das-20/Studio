@@ -11,6 +11,7 @@ import {
   ShoppingBag,
   Briefcase,
   Settings,
+  Wallet,
 } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 
@@ -22,6 +23,11 @@ export function SidebarNav() {
       href: '/employee/dashboard',
       label: 'Dashboard',
       icon: LayoutDashboard,
+    },
+     {
+      href: '/employee/withdrawal',
+      label: 'Withdrawals',
+      icon: Wallet,
     },
     {
       href: '/marketplace',
