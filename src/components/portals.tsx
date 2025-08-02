@@ -1,4 +1,3 @@
-
 import { Coins, TrendingUp } from 'lucide-react';
 import Link from 'next/link';
 import { buttonVariants } from './ui/button';
@@ -15,7 +14,7 @@ const portalLinks = [
         href: '/buyer/register',
         title: 'Join as a buyer to grow your social media accounts',
         icon: TrendingUp,
-        variant: 'outline' as 'outline',
+        variant: 'accent' as 'accent',
     },
 ]
 
@@ -35,11 +34,13 @@ export function Portals() {
                         href={portal.href}
                         className={cn(
                             buttonVariants({ variant: portal.variant, size: 'lg' }),
-                           "h-24 text-xl flex flex-col justify-center items-center text-center"
+                           "h-24 text-xl"
                         )}
                     >
-                        <portal.icon className="h-8 w-8 mb-2" />
-                        <span>{portal.title}</span>
+                        <div className='flex flex-col justify-center items-center text-center gap-2'>
+                             <portal.icon className="h-8 w-8" />
+                            <span>{portal.title}</span>
+                        </div>
                     </Link>
                 ))}
             </div>
