@@ -21,7 +21,7 @@ import { signUpBuyer } from '../actions';
 import { useToast } from '@/hooks/use-toast';
 
 const initialState = {
-    success: false,
+    isSuccess: false,
     error: null,
 };
 
@@ -42,14 +42,14 @@ export default function BuyerRegisterPage() {
 
 
     useEffect(() => {
-        if (state.success) {
+        if (state?.isSuccess) {
         toast({
             title: 'Account Created',
             description: 'Your buyer account has been created successfully! You can now log in.',
         });
         formRef.current?.reset();
         }
-    }, [state.success, toast]);
+    }, [state?.isSuccess, toast]);
 
 
     return (
