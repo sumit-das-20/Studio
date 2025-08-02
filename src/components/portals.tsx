@@ -1,21 +1,19 @@
 
 import { Coins, TrendingUp } from 'lucide-react';
 import Link from 'next/link';
-import { Button } from './ui/button';
+import { buttonVariants } from './ui/button';
 import { cn } from '@/lib/utils';
 
 const portalLinks = [
     {
         href: '/employee/register',
         title: 'Join as an Employee and Earn Money',
-        description: 'Complete tasks and see your earnings.',
         icon: Coins,
         variant: 'default' as 'default',
     },
     {
         href: '/buyer/register',
         title: 'Join as a buyer to grow your social media accounts',
-        description: 'Buy services to grow your YouTube, Facebook, and Instagram channels.',
         icon: TrendingUp,
         variant: 'outline' as 'outline',
     },
@@ -36,15 +34,12 @@ export function Portals() {
                         key={portal.title}
                         href={portal.href}
                         className={cn(
-                            "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
-                            "w-full h-24 text-xl",
-                             portal.variant === 'default' ? "bg-primary text-primary-foreground hover:bg-primary/90" : "border border-input bg-background hover:bg-accent hover:text-accent-foreground"
+                            buttonVariants({ variant: portal.variant, size: 'lg' }),
+                           "h-24 text-xl flex-col"
                         )}
                     >
-                         <div className='flex items-center gap-3 text-center'>
-                            <portal.icon className="h-8 w-8" />
-                            <span>{portal.title}</span>
-                        </div>
+                        <portal.icon className="h-8 w-8 mb-2" />
+                        <span>{portal.title}</span>
                     </Link>
                 ))}
             </div>
