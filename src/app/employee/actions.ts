@@ -9,6 +9,7 @@ import {
 import { auth } from '@/lib/firebase';
 import { z } from 'zod';
 import { redirect } from 'next/navigation';
+import { cookies } from 'next/headers';
 
 const emailSchema = z.string().email({ message: 'Invalid email address.' });
 const passwordSchema = z.string().min(6, { message: 'Password must be at least 6 characters.' });
@@ -72,8 +73,10 @@ export async function signInWithEmail(prevState: any, formData: FormData) {
 
 
   try {
-    await signInWithEmailAndPassword(auth, email, password);
-    // On successful login, redirect to the main app page.
+    const userCredential = await signInWithEmailAndPassword(auth, email, password);
+    // This is a simple way to signal to the server on the next request that the user is logged in.
+    // In a real app, you would handle session management more securely (e.g., with httpOnly cookies and token verification).
+    cookies().set('firebaseAuth', 'true', { maxAge: 60 * 60 * 24 }); // Expires in 24 hours
   } catch (error: any) {
     return { success: false, error: error.message };
   }
@@ -94,4 +97,9 @@ export async function resetPassword(prevState: any, formData: FormData) {
   } catch (error: any) {
     return { success: false, error: error.message };
   }
+}
+
+export async function signOut() {
+  cookies().delete('firebaseAuth');
+  redirect('/employee/login');
 }

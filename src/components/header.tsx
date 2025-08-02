@@ -1,7 +1,10 @@
+
 import Link from 'next/link';
 import { Button } from './ui/button';
 import { EarningsCounter } from './earnings-counter';
 import { SidebarTrigger } from './ui/sidebar';
+import { signOut } from '@/app/employee/actions';
+import { Power } from 'lucide-react';
 
 export function Header() {
   return (
@@ -11,9 +14,11 @@ export function Header() {
       </div>
       <div className="flex flex-1 items-center justify-end gap-4">
         <EarningsCounter />
-        <Button asChild>
-            <Link href="/user/login">Login</Link>
-        </Button>
+         <form action={signOut}>
+          <Button variant="ghost" size="icon" type="submit" aria-label="Sign Out">
+            <Power />
+          </Button>
+        </form>
       </div>
     </header>
   );
