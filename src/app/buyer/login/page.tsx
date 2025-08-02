@@ -46,20 +46,25 @@ export default function BuyerLoginPage() {
     },
   });
 
-  const onSubmit = (values: z.infer<typeof formSchema>) => {
+  // This is a mock authentication function.
+  // In a real application, you would replace this with a call to your authentication service (e.g., Firebase Auth).
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
     setIsSubmitting(true);
     setError(null);
 
-    // Simulate API call
-    setTimeout(() => {
-      console.log(values);
-      if (values.email === 'buyer@example.com' && values.password === 'password') {
-         router.push('/buyer/dashboard');
-      } else {
-        setError('Invalid email or password.');
-      }
-      setIsSubmitting(false);
-    }, 1500);
+    // Simulate an API call
+    await new Promise(resolve => setTimeout(resolve, 1000));
+
+    // Mock logic: For demonstration, we'll accept a specific email/password.
+    if (values.email === 'buyer@example.com' && values.password === 'password') {
+      // On success, redirect to the dashboard.
+      router.push('/buyer/dashboard');
+    } else {
+      // On failure, show an error message.
+      setError('Invalid email or password. Please try again.');
+    }
+
+    setIsSubmitting(false);
   };
 
   return (

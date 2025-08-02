@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useActionState } from 'react';
+import { useActionState, useEffect } from 'react';
 import { useFormStatus } from 'react-dom';
 import { signInWithEmail } from '@/app/employee/actions';
 import { Button } from '@/components/ui/button';
@@ -18,6 +18,8 @@ import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Loader2 } from 'lucide-react';
 import { Label } from '@/components/ui/label';
 import { BackButton } from '@/components/back-button';
+import { useToast } from '@/hooks/use-toast';
+import { useRouter } from 'next/navigation';
 
 const initialState = {
   success: false,
@@ -36,6 +38,19 @@ function SubmitButton() {
 
 export default function EmployeeLoginPage() {
   const [state, formAction] = useActionState(signInWithEmail, initialState);
+  const { toast } = useToast();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (state.success) {
+      toast({
+        title: 'Login Successful',
+        description: "Welcome back! You're being redirected to your dashboard.",
+      });
+      // The server action will handle the redirect, but we could push here as a fallback
+      // router.push('/employee/dashboard');
+    }
+  }, [state.success, toast, router]);
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-background p-4">
@@ -52,7 +67,7 @@ export default function EmployeeLoginPage() {
         <CardContent>
           {state?.error && (
             <Alert variant="destructive" className="mb-4">
-              <AlertTitle>Error</AlertTitle>
+              <AlertTitle>Login Failed</AlertTitle>
               <AlertDescription>{state.error}</AlertDescription>
             </Alert>
           )}

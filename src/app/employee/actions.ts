@@ -11,6 +11,7 @@ import { z } from 'zod';
 import { redirect } from 'next/navigation';
 import { cookies } from 'next/headers';
 import { verifyUpi } from '@/ai/flows/verify-upi-flow';
+import { FirebaseError } from 'firebase/app';
 
 const emailSchema = z.string().email({ message: 'Invalid email address.' });
 const passwordSchema = z.string().min(6, { message: 'Password must be at least 6 characters.' });
@@ -56,7 +57,10 @@ export async function signUpWithEmail(prevState: any, formData: FormData) {
     });
     return { success: true, error: null };
   } catch (error: any) {
-    return { success: false, error: error.message };
+     if (error instanceof FirebaseError) {
+      return { success: false, error: error.message.replace('Firebase: ', '') };
+    }
+    return { success: false, error: "An unexpected error occurred." };
   }
 }
 
@@ -76,13 +80,27 @@ export async function signInWithEmail(prevState: any, formData: FormData) {
 
 
   try {
-    const userCredential = await signInWithEmailAndPassword(auth, email, password);
-    // This is a simple way to signal to the server on the next request that the user is logged in.
-    // In a real app, you would handle session management more securely (e.g., with httpOnly cookies and token verification).
+    await signInWithEmailAndPassword(auth, email, password);
+    // Upon successful sign-in, set a session cookie.
     cookies().set('firebaseAuth', 'true', { maxAge: 60 * 60 * 24 }); // Expires in 24 hours
   } catch (error: any) {
-    return { success: false, error: error.message };
+    if (error instanceof FirebaseError) {
+        // Provide user-friendly error messages
+        switch (error.code) {
+            case 'auth/invalid-credential':
+                return { success: false, error: 'Invalid email or password. Please try again.' };
+            case 'auth/user-not-found':
+                 return { success: false, error: 'No account found with this email address.' };
+            case 'auth/wrong-password':
+                return { success: false, error: 'Incorrect password. Please try again.' };
+            default:
+                return { success: false, error: error.message.replace('Firebase: ', '') };
+        }
+    }
+    return { success: false, error: "An unexpected error occurred during sign-in." };
   }
+
+  // Redirect to the dashboard on successful login. This must be called outside the try-catch block.
   redirect('/employee/dashboard');
 }
 
@@ -98,7 +116,10 @@ export async function resetPassword(prevState: any, formData: FormData) {
     await sendPasswordResetEmail(auth, email);
     return { success: true, error: null };
   } catch (error: any) {
-    return { success: false, error: error.message };
+    if (error instanceof FirebaseError) {
+      return { success: false, error: error.message.replace('Firebase: ', '') };
+    }
+    return { success: false, error: "An unexpected error occurred." };
   }
 }
 
