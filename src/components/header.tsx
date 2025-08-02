@@ -1,3 +1,5 @@
+import Link from 'next/link';
+import { Button } from './ui/button';
 import { EarningsCounter } from './earnings-counter';
 import { SidebarTrigger } from './ui/sidebar';
 
@@ -7,8 +9,11 @@ export function Header() {
       <div className="md:hidden">
         <SidebarTrigger />
       </div>
-      <div className="flex-1 text-right">
+      <div className="flex flex-1 items-center justify-end gap-4">
         <EarningsCounter />
+        <Link href="/user/login">
+            <Button>Login</Button>
+        </Link>
       </div>
     </header>
   );

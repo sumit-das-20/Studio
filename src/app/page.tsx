@@ -1,4 +1,5 @@
 import { Header } from "@/components/header";
+import { Portals } from "@/components/portals";
 import { SidebarNav } from "@/components/sidebar-nav";
 import { ClickAndEarn } from "@/components/tasks/click-and-earn";
 import { LinkShortener } from "@/components/tasks/link-shortener";
@@ -32,6 +33,8 @@ export default function Home() {
       <SidebarInset>
         <Header />
         <main className="p-4 sm:p-6 lg:p-8 space-y-12">
+          <Portals />
+          <Separator />
           <ClickAndEarn />
           <Separator />
           <WatchAndEarn />
