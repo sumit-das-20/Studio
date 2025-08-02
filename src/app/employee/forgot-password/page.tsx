@@ -17,6 +17,7 @@ import Link from 'next/link';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Loader2 } from 'lucide-react';
 import { Label } from '@/components/ui/label';
+import { BackButton } from '@/components/back-button';
 
 const initialState = {
   success: false,
@@ -37,7 +38,10 @@ export default function ForgotPasswordPage() {
   const [state, formAction] = useActionState(resetPassword, initialState);
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background p-4">
+    <div className="flex min-h-screen flex-col items-center justify-center bg-background p-4">
+      <div className="absolute top-4 left-4">
+        <BackButton />
+      </div>
       <Card className="w-full max-w-md">
         <CardHeader>
           <CardTitle className="text-2xl">Forgot Password</CardTitle>

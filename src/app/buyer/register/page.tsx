@@ -25,6 +25,7 @@ import { useState } from 'react';
 import { Loader2 } from 'lucide-react';
 import Link from 'next/link';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { BackButton } from '@/components/back-button';
 
 const formSchema = z.object({
     companyName: z.string().min(2, { message: 'Company name must be at least 2 characters.' }),
@@ -61,7 +62,10 @@ export default function BuyerRegisterPage() {
     };
 
     return (
-        <div className="flex min-h-screen items-center justify-center bg-background p-4">
+        <div className="flex min-h-screen flex-col items-center justify-center bg-background p-4">
+             <div className="absolute top-4 left-4">
+                <BackButton />
+            </div>
             <Card className="w-full max-w-md">
                 <CardHeader>
                     <CardTitle className="text-2xl">Create a Buyer Account</CardTitle>

@@ -20,6 +20,7 @@ import { Label } from '@/components/ui/label';
 import { useEffect, useRef } from 'react';
 import { useToast } from '@/hooks/use-toast';
 import { Textarea } from '@/components/ui/textarea';
+import { BackButton } from '@/components/back-button';
 
 const initialState = {
   success: false,
@@ -53,7 +54,10 @@ export default function EmployeeRegisterPage() {
 
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background p-4">
+    <div className="flex min-h-screen flex-col items-center justify-center bg-background p-4">
+        <div className="absolute top-4 left-4">
+            <BackButton />
+        </div>
       <Card className="w-full max-w-md">
         <CardHeader>
           <CardTitle className="text-2xl">Create an Employee Account</CardTitle>
