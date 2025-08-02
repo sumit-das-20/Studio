@@ -74,7 +74,7 @@ export function SimpleTask({ task, adType }: SimpleTaskProps) {
         <CardTitle className="flex items-start justify-between">
           <span>Task #{task.id}</span>
           <Badge variant="outline" className="bg-primary/10 text-primary">
-            +$${task.reward.toFixed(2)}
+            +₹{task.reward.toFixed(2)}
           </Badge>
         </CardTitle>
         <CardDescription>{task.question}</CardDescription>
