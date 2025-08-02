@@ -3,7 +3,6 @@
 
 import { useActionState } from 'react';
 import { useFormStatus } from 'react-dom';
-import { resetPassword } from '@/app/employee/actions';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import {
@@ -18,9 +17,10 @@ import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Loader2 } from 'lucide-react';
 import { Label } from '@/components/ui/label';
 import { BackButton } from '@/components/back-button';
+import { resetPasswordBuyer } from '../actions';
 
 const initialState = {
-  success: false,
+  isSuccess: false,
   error: null,
 };
 
@@ -34,8 +34,8 @@ function SubmitButton() {
   );
 }
 
-export default function ForgotPasswordPage() {
-  const [state, formAction] = useActionState(resetPassword, initialState);
+export default function BuyerForgotPasswordPage() {
+  const [state, formAction] = useActionState(resetPasswordBuyer, initialState);
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-background p-4">
@@ -56,7 +56,7 @@ export default function ForgotPasswordPage() {
               <AlertDescription>{state.error}</AlertDescription>
             </Alert>
           )}
-          {state.success && (
+          {state.isSuccess && (
             <Alert variant="default" className="mb-4 border-green-500 text-green-700 dark:border-green-600 dark:text-green-400">
               <AlertTitle>Success</AlertTitle>
               <AlertDescription>
@@ -64,7 +64,7 @@ export default function ForgotPasswordPage() {
               </AlertDescription>
             </Alert>
           )}
-          {!state.success && (
+          {!state.isSuccess && (
             <form action={formAction} className="space-y-4">
                 <div className="space-y-2">
                 <Label htmlFor="email" className="font-medium">Email</Label>
@@ -81,7 +81,7 @@ export default function ForgotPasswordPage() {
           )}
           <div className="mt-4 text-center text-sm">
             Remembered your password?{' '}
-            <Link href="/employee/login" className="underline">
+            <Link href="/buyer/login" className="underline">
               Log in
             </Link>
           </div>

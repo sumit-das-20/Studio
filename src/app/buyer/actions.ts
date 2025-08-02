@@ -3,6 +3,7 @@
 
 import {
   createUserWithEmailAndPassword,
+  sendPasswordResetEmail,
   signInWithEmailAndPassword,
 } from 'firebase/auth';
 import { auth } from '@/lib/firebase';
@@ -23,12 +24,14 @@ const signInSchema = z.object({
     password: z.string().min(6, { message: 'Password must be at least 6 characters.' }),
 });
 
+const emailSchema = z.string().email({ message: 'Invalid email address.' });
+
 
 export async function signUpBuyer(prevState: any, formData: FormData) {
   const validatedFields = signUpSchema.safeParse(Object.fromEntries(formData.entries()));
 
   if (!validatedFields.success) {
-    return { success: false, error: validatedFields.error.errors[0].message };
+    return { success: false, error: validatedFields.error.errors[0].message, isSuccess: false };
   }
 
   const { companyName, email, password } = validatedFields.data;
@@ -42,12 +45,12 @@ export async function signUpBuyer(prevState: any, formData: FormData) {
         companyName,
         email,
     });
-    return { success: true, error: null };
+    return { success: true, error: null, isSuccess: true };
   } catch (error: any) {
      if (error instanceof FirebaseError) {
-      return { success: false, error: error.message.replace('Firebase: ', '') };
+      return { success: false, error: error.message.replace('Firebase: ', ''), isSuccess: false };
     }
-    return { success: false, error: "An unexpected error occurred." };
+    return { success: false, error: "An unexpected error occurred.", isSuccess: false };
   }
 }
 
@@ -55,7 +58,7 @@ export async function signInBuyer(prevState: any, formData: FormData) {
   const validatedFields = signInSchema.safeParse(Object.fromEntries(formData.entries()));
 
   if (!validatedFields.success) {
-    return { success: false, error: validatedFields.error.errors[0].message };
+    return { success: false, error: validatedFields.error.errors[0].message, isSuccess: false };
   }
 
   const { email, password } = validatedFields.data;
@@ -67,17 +70,36 @@ export async function signInBuyer(prevState: any, formData: FormData) {
     if (error instanceof FirebaseError) {
         switch (error.code) {
             case 'auth/invalid-credential':
-                return { success: false, error: 'Invalid email or password. Please try again.' };
+                return { success: false, error: 'Invalid email or password. Please try again.', isSuccess: false };
             case 'auth/user-not-found':
-                 return { success: false, error: 'No account found with this email address.' };
+                 return { success: false, error: 'No account found with this email address.', isSuccess: false };
             case 'auth/wrong-password':
-                return { success: false, error: 'Incorrect password. Please try again.' };
+                return { success: false, error: 'Incorrect password. Please try again.', isSuccess: false };
             default:
-                return { success: false, error: error.message.replace('Firebase: ', '') };
+                return { success: false, error: error.message.replace('Firebase: ', ''), isSuccess: false };
         }
     }
-    return { success: false, error: "An unexpected error occurred during sign-in." };
+    return { success: false, error: "An unexpected error occurred during sign-in.", isSuccess: false };
   }
 
   redirect('/buyer/dashboard');
+}
+
+export async function resetPasswordBuyer(prevState: any, formData: FormData) {
+  const email = formData.get('email') as string;
+
+  const emailValidation = emailSchema.safeParse(email);
+  if (!emailValidation.success) {
+    return { success: false, error: emailValidation.error.errors[0].message, isSuccess: false };
+  }
+
+  try {
+    await sendPasswordResetEmail(auth, email);
+    return { success: true, error: null, isSuccess: true };
+  } catch (error: any) {
+    if (error instanceof FirebaseError) {
+      return { success: false, error: error.message.replace('Firebase: ', ''), isSuccess: false };
+    }
+    return { success: false, error: "An unexpected error occurred.", isSuccess: false };
+  }
 }

@@ -21,7 +21,7 @@ import { signInBuyer } from '../actions';
 import { useToast } from '@/hooks/use-toast';
 
 const initialState = {
-  success: false,
+  isSuccess: false,
   error: null,
 };
 
@@ -40,13 +40,13 @@ export default function BuyerLoginPage() {
   const { toast } = useToast();
 
    useEffect(() => {
-    if (state?.success) {
+    if (state?.isSuccess) {
       toast({
         title: 'Login Successful',
         description: "Welcome back! You're being redirected to your dashboard.",
       });
     }
-  }, [state?.success, toast]);
+  }, [state?.isSuccess, toast]);
 
 
   return (
@@ -80,7 +80,14 @@ export default function BuyerLoginPage() {
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="password">Password</Label>
+              <div className="flex items-center justify-between">
+                <Label htmlFor="password">Password</Label>
+                <Link href="/buyer/forgot-password"
+                  className="text-sm underline"
+                >
+                  Forgot Password?
+                </Link>
+              </div>
               <Input
                 id="password"
                 name="password"
@@ -89,11 +96,6 @@ export default function BuyerLoginPage() {
                 required
               />
             </div>
-            <div className="flex items-center justify-end text-sm">
-                <Link href="#" className="underline">
-                  Forgot Password?
-                </Link>
-              </div>
             <SubmitButton />
           </form>
            <div className="mt-4 text-center text-sm">
