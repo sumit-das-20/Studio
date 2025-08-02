@@ -80,7 +80,7 @@ export async function signInWithEmail(prevState: any, formData: FormData) {
   } catch (error: any) {
     return { success: false, error: error.message };
   }
-  redirect('/dashboard');
+  redirect('/employee/dashboard');
 }
 
 export async function resetPassword(prevState: any, formData: FormData) {

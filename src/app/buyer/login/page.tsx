@@ -25,6 +25,7 @@ import { useState } from 'react';
 import { Loader2 } from 'lucide-react';
 import Link from 'next/link';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { useRouter } from 'next/navigation';
 
 const formSchema = z.object({
   email: z.string().email({ message: 'Invalid email address.' }),
@@ -34,7 +35,7 @@ const formSchema = z.object({
 export default function BuyerLoginPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [success, setSuccess] = useState(false);
+  const router = useRouter();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -47,13 +48,12 @@ export default function BuyerLoginPage() {
   const onSubmit = (values: z.infer<typeof formSchema>) => {
     setIsSubmitting(true);
     setError(null);
-    setSuccess(false);
 
     // Simulate API call
     setTimeout(() => {
       console.log(values);
       if (values.email === 'buyer@example.com' && values.password === 'password') {
-         setSuccess(true);
+         router.push('/buyer/dashboard');
       } else {
         setError('Invalid email or password.');
       }
@@ -75,12 +75,6 @@ export default function BuyerLoginPage() {
              <Alert variant="destructive" className="mb-4">
                 <AlertTitle>Error</AlertTitle>
                 <AlertDescription>{error}</AlertDescription>
-            </Alert>
-          )}
-           {success && (
-             <Alert variant="default" className="mb-4 border-green-500 text-green-700 dark:border-green-600 dark:text-green-400">
-                <AlertTitle>Success</AlertTitle>
-                <AlertDescription>You have been successfully logged in!</AlertDescription>
             </Alert>
           )}
           <Form {...form}>

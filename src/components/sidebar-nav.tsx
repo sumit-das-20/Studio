@@ -1,3 +1,4 @@
+
 'use client';
 
 import {
@@ -18,7 +19,7 @@ export function SidebarNav() {
 
   const menuItems = [
     {
-      href: '/dashboard',
+      href: '/employee/dashboard',
       label: 'Dashboard',
       icon: LayoutDashboard,
     },
@@ -49,7 +50,7 @@ export function SidebarNav() {
             isActive={pathname.startsWith(item.href)}
             tooltip={item.label}
           >
-            <a href="#">
+            <a href={item.href}>
               <item.icon />
               <span>{item.label}</span>
             </a>

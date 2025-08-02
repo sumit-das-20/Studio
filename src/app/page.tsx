@@ -14,7 +14,7 @@ export default async function Home() {
   if (userCookie) {
     // This doesn't verify the token, it just checks for presence.
     // For a production app, you should verify the token's validity.
-    return redirect('/dashboard');
+    return redirect('/employee/dashboard');
   }
 
   return (
