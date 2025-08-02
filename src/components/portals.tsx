@@ -50,8 +50,8 @@ export function Portals() {
                     Employee login
                 </Link>
                 {' or '}
-                <Link href="/buyer/register" className="underline font-semibold">
-                    Create a Buyer Account
+                <Link href="/buyer/login" className="underline font-semibold">
+                   Buyer login
                 </Link>
             </div>
         </section>
