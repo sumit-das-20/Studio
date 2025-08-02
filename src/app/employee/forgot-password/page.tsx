@@ -1,7 +1,8 @@
 
 'use client';
 
-import { useActionState, useFormStatus } from 'react';
+import { useActionState } from 'react';
+import { useFormStatus } from 'react-dom';
 import { resetPassword } from '@/app/employee/actions';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -56,8 +57,7 @@ export default function ForgotPasswordPage() {
               <AlertTitle>Success</AlertTitle>
               <AlertDescription>
                 Password reset email sent! Please check your inbox.
-              </Aler
-tDescription>
+              </AlertDescription>
             </Alert>
           )}
           <form action={formAction} className="space-y-4">
