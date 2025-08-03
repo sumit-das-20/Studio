@@ -53,7 +53,7 @@ export let initialBuyers: AdminBuyer[] = [
 
 
 // --- All Tasks for Admin Panel & Employee Pages ---
-export let allTasks: AdminTask[] = [
+export let initialAllTasks: AdminTask[] = [
   {
     id: 'TASK-001',
     type: 'Click and Earn',
@@ -99,7 +99,7 @@ export let allTasks: AdminTask[] = [
 
 // This is a representation of tasks generated from a buyer's campaign.
 // In a real app, this data would be fetched from a database.
-export let socialTasks: SocialTask[] = [
+export let initialSocialTasks: SocialTask[] = [
     // YouTube
     ...Array.from({ length: 4 }, (_, i) => ({
         id: 100 + i,
@@ -113,7 +113,7 @@ export let socialTasks: SocialTask[] = [
 
 
 // --- Employee Data ---
-export let employees: AdminEmployee[] = [
+export let initialEmployees: AdminEmployee[] = [
   {
     id: 'EMP-001',
     email: 'john.doe@example.com',
@@ -146,7 +146,7 @@ export let employees: AdminEmployee[] = [
 
 
 // --- Withdrawal Requests ---
-export let withdrawalRequests: AdminWithdrawalRequest[] = [
+export let initialWithdrawalRequests: AdminWithdrawalRequest[] = [
   {
     id: 'WR-001',
     employeeId: 'EMP-001',
@@ -179,21 +179,21 @@ export let withdrawalRequests: AdminWithdrawalRequest[] = [
 
 // Function to add new tasks to the list.
 export function addAdminTask(newTask: AdminTask) {
-    allTasks.unshift(newTask);
+    initialAllTasks.unshift(newTask);
 }
 
 // Function to update an existing task.
 export function updateAdminTask(updatedTask: AdminTask) {
-    allTasks = allTasks.map(task => (task.id === updatedTask.id ? updatedTask : task));
+    initialAllTasks = initialAllTasks.map(task => (task.id === updatedTask.id ? updatedTask : task));
 }
 
 // Function to delete a task.
 export function deleteAdminTask(taskId: string) {
-    allTasks = allTasks.filter(task => task.id !== taskId);
+    initialAllTasks = initialAllTasks.filter(task => task.id !== taskId);
 }
 
 export function addSocialTasks(newTasks: SocialTask[]) {
-    socialTasks = [...newTasks, ...socialTasks];
+    initialSocialTasks = [...newTasks, ...initialSocialTasks];
 }
 
 export function completeSocialTask(taskId: number, campaignId: string) {
@@ -212,15 +212,15 @@ export function completeSocialTask(taskId: number, campaignId: string) {
     });
 
     if (campaignCompleted) {
-        socialTasks = socialTasks.filter(task => task.campaignId !== campaignId);
+        initialSocialTasks = initialSocialTasks.filter(task => task.campaignId !== campaignId);
         console.log(`Campaign ${campaignId} completed. Associated tasks removed.`);
     }
 }
 
 export function updateEmployee(employeeId: string, updates: Partial<AdminEmployee>) {
-    employees = employees.map(emp => emp.id === employeeId ? { ...emp, ...updates } : emp);
+    initialEmployees = initialEmployees.map(emp => emp.id === employeeId ? { ...emp, ...updates } : emp);
 }
 
 export function updateWithdrawalRequest(requestId: string, updates: Partial<AdminWithdrawalRequest>) {
-    withdrawalRequests = withdrawalRequests.map(req => req.id === requestId ? { ...req, ...updates } : req);
+    initialWithdrawalRequests = initialWithdrawalRequests.map(req => req.id === requestId ? { ...req, ...updates } : req);
 }

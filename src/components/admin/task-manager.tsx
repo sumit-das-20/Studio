@@ -24,11 +24,13 @@ import { DeleteTaskDialog } from './delete-task-dialog';
 import { Facebook, Instagram, Youtube, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Button } from '../ui/button';
 import { useMockData } from '@/hooks/use-mock-data';
+import { Skeleton } from '../ui/skeleton';
 
 const TASKS_PER_PAGE = 10;
 
 const TaskTable = ({ tasks, onTaskUpdated, onTaskDeleted, onTaskCreated }: { tasks: AdminTask[], onTaskUpdated: (task: AdminTask) => void, onTaskDeleted: (taskId: string) => void, onTaskCreated: (task: AdminTask) => void }) => {
   const [currentPage, setCurrentPage] = useState(1);
+  const { isLoading } = useMockData();
 
   const totalPages = Math.ceil(tasks.length / TASKS_PER_PAGE);
 
@@ -44,6 +46,33 @@ const TaskTable = ({ tasks, onTaskUpdated, onTaskDeleted, onTaskCreated }: { tas
     Facebook: <Facebook className="h-5 w-5 text-blue-600" />,
     Instagram: <Instagram className="h-5 w-5 text-pink-600" />,
   };
+  
+  if (isLoading) {
+    return (
+        <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Task ID</TableHead>
+                <TableHead>Type</TableHead>
+                <TableHead>Details</TableHead>
+                <TableHead className="text-right">Reward (INR)</TableHead>
+                <TableHead>Actions</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+                {Array.from({ length: 5 }).map((_, index) => (
+                    <TableRow key={index}>
+                        <TableCell><Skeleton className="h-4 w-20" /></TableCell>
+                        <TableCell><Skeleton className="h-6 w-24 rounded-full" /></TableCell>
+                        <TableCell><Skeleton className="h-4 w-48" /></TableCell>
+                        <TableCell className="text-right"><Skeleton className="h-4 w-12 ml-auto" /></TableCell>
+                        <TableCell><div className="flex items-center gap-2"><Skeleton className="h-8 w-8 rounded-md" /><Skeleton className="h-8 w-8 rounded-md" /></div></TableCell>
+                    </TableRow>
+                ))}
+            </TableBody>
+        </Table>
+    )
+  }
   
   if (tasks.length === 0) {
     return (
