@@ -22,7 +22,7 @@ import {
 } from '@/components/ui/select';
 import { BackButton } from '@/components/back-button';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { Loader2, Sparkles, CheckCircle } from 'lucide-react';
+import { Loader2, Sparkles, CheckCircle, Users, CircleDollarSign } from 'lucide-react';
 import { createCampaign } from '../../actions';
 import { useToast } from '@/hooks/use-toast';
 
@@ -80,10 +80,39 @@ export default function NewCampaignPage() {
                 </CardHeader>
                 <CardContent>
                     {state.success ? (
-                         <div className="flex flex-col items-center justify-center gap-4 rounded-lg border-2 border-dashed border-primary bg-primary/5 p-8 text-center">
+                         <div className="flex flex-col items-center justify-center gap-6 rounded-lg border-2 border-dashed border-primary bg-primary/5 p-8 text-center">
                             <CheckCircle className="h-12 w-12 text-primary" />
-                            <h3 className="text-xl font-bold text-primary">Campaign Launched!</h3>
-                            <p className="text-muted-foreground">Your campaign is now live and will be shown to employees.</p>
+                            <div>
+                                <h3 className="text-xl font-bold text-primary">Campaign Launched!</h3>
+                                <p className="text-muted-foreground">Your campaign is now live and will be shown to employees.</p>
+                            </div>
+                            <div className="w-full space-y-4 text-left rounded-lg border bg-background p-4">
+                                <h4 className="font-bold text-lg">Campaign Summary:</h4>
+                                <p><strong>Name:</strong> {state.data?.campaignName}</p>
+                                <div className="grid grid-cols-2 gap-4">
+                                    <div className="flex items-center gap-2">
+                                        <Users className="h-5 w-5 text-muted-foreground" />
+                                        <div>
+                                            <p className="text-sm text-muted-foreground">Tasks</p>
+                                            <p className="font-bold">{state.data?.numberOfTasks}</p>
+                                        </div>
+                                    </div>
+                                    <div className="flex items-center gap-2">
+                                        <CircleDollarSign className="h-5 w-5 text-muted-foreground" />
+                                        <div>
+                                            <p className="text-sm text-muted-foreground">Reward/Task</p>
+                                            <p className="font-bold">${state.data?.rewardPerTask.toFixed(2)}</p>
+                                        </div>
+                                    </div>
+                                     <div className="flex items-center gap-2">
+                                        <Users className="h-5 w-5 text-muted-foreground" />
+                                        <div>
+                                            <p className="text-sm text-muted-foreground">Total Budget</p>
+                                            <p className="font-bold">${(state.data?.numberOfTasks * state.data?.rewardPerTask).toFixed(2)}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                             <Button onClick={() => window.location.reload()} variant="outline" className="mt-4">
                                 Create Another Campaign
                             </Button>
@@ -136,10 +165,17 @@ export default function NewCampaignPage() {
                                      {state.error?.targetAudience && <p className="text-sm text-destructive">{state.error.targetAudience[0]}</p>}
                                 </div>
                             </div>
-                            <div className="space-y-2">
-                                <Label htmlFor="budget">Budget (in USD)</Label>
-                                <Input id="budget" name="budget" type="number" placeholder="e.g., 100" />
-                                 {state.error?.budget && <p className="text-sm text-destructive">{state.error.budget[0]}</p>}
+                             <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+                                <div className="space-y-2">
+                                    <Label htmlFor="numberOfTasks">Number of Tasks</Label>
+                                    <Input id="numberOfTasks" name="numberOfTasks" type="number" placeholder="e.g., 1000" />
+                                    {state.error?.numberOfTasks && <p className="text-sm text-destructive">{state.error.numberOfTasks[0]}</p>}
+                                </div>
+                                <div className="space-y-2">
+                                    <Label htmlFor="rewardPerTask">Reward per Task (in USD)</Label>
+                                    <Input id="rewardPerTask" name="rewardPerTask" type="number" step="0.01" placeholder="e.g., 0.50" />
+                                    {state.error?.rewardPerTask && <p className="text-sm text-destructive">{state.error.rewardPerTask[0]}</p>}
+                                </div>
                             </div>
                            
                             <SubmitButton />

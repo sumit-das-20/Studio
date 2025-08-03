@@ -109,7 +109,8 @@ const campaignSchema = z.object({
     campaignName: z.string().min(3, 'Campaign name must be at least 3 characters.'),
     campaignGoal: z.string().min(1, 'Please select a campaign goal.'),
     targetAudience: z.string().min(1, 'Please select a target audience.'),
-    budget: z.coerce.number().min(10, 'Budget must be at least $10.'),
+    numberOfTasks: z.coerce.number().min(1, 'Please enter at least 1 task.'),
+    rewardPerTask: z.coerce.number().min(0.01, 'Reward must be at least $0.01.'),
 });
 
 
