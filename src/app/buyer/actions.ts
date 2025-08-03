@@ -124,6 +124,21 @@ export async function createCampaign(prevState: any, formData: FormData) {
     // In a real app, you would save this data to a database like Firestore.
     console.log('New Campaign Data:', validatedFields.data);
 
-    // Simulate a successful submission
+    // This now returns the data to the client to proceed to the payment step.
     return { success: true, error: null, data: validatedFields.data };
+}
+
+
+// This is a new simulated action for processing a payment.
+export async function processPayment(prevState: any, formData: FormData) {
+    // In a real app, this would integrate with a payment gateway like Stripe.
+    // It would take the payment method details and amount, and make an API call.
+    // For this simulation, we'll just pretend it was successful.
+    
+    await new Promise(resolve => setTimeout(resolve, 2000)); // Simulate network delay
+
+    console.log("Simulating payment processing for:", formData.get('amount'));
+    
+    // Always return success for the simulation
+    return { success: true };
 }

@@ -18,7 +18,7 @@ import {
 } from '@/components/ui/table';
 import { Badge } from '../ui/badge';
 import { Button } from '../ui/button';
-import { Banknote, Check, Hourglass, X, Eye } from 'lucide-react';
+import { Banknote, Check, Hourglass, X, Eye, Loader2, Send } from 'lucide-react';
 import type { AdminWithdrawalRequest } from '@/lib/types';
 import { useState } from 'react';
 import {
@@ -26,6 +26,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover';
+import { useToast } from '@/hooks/use-toast';
 
 // This is a representation of withdrawal requests fetched from the database.
 const initialRequests: AdminWithdrawalRequest[] = [
@@ -64,6 +65,16 @@ const initialRequests: AdminWithdrawalRequest[] = [
     createdAt: '2024-07-28',
     paypalEmail: 'emily.white@paypal.com'
   },
+    {
+    id: 'WR-004',
+    employeeId: 'EMP-002',
+    employeeEmail: 'jane.smith@example.com',
+    amount: 750.00,
+    method: 'UPI',
+    status: 'Approved',
+    createdAt: '2024-07-27',
+    upiId: 'jane.s@okicici',
+  },
 ];
 
 const statusConfig = {
@@ -71,11 +82,14 @@ const statusConfig = {
     Approved: { variant: "secondary", icon: Check, label: 'Approved' },
     'On Hold': { variant: "outline", icon: Hourglass, label: 'On Hold' },
     Cancelled: { variant: "destructive", icon: X, label: 'Cancelled' },
+    Paid: { variant: "default", icon: Send, label: 'Paid', className: 'bg-green-600 text-white' },
 } as const;
 
 
 export function WithdrawalRequestManager() {
   const [requests, setRequests] = useState<AdminWithdrawalRequest[]>(initialRequests);
+  const [processingPayout, setProcessingPayout] = useState<string | null>(null);
+  const { toast } = useToast();
 
   const handleUpdateStatus = (
     id: string,
@@ -85,6 +99,19 @@ export function WithdrawalRequestManager() {
       requests.map((req) => (req.id === id ? { ...req, status } : req))
     );
   };
+
+  const handleProcessPayout = (id: string) => {
+    setProcessingPayout(id);
+    // Simulate API call to payment gateway
+    setTimeout(() => {
+        setRequests(requests.map(req => req.id === id ? { ...req, status: 'Paid' } : req));
+        setProcessingPayout(null);
+        toast({
+            title: 'Payout Processed!',
+            description: `The payout for request ${id} has been successfully processed.`
+        });
+    }, 2000);
+  }
 
   return (
     <Card>
@@ -109,7 +136,7 @@ export function WithdrawalRequestManager() {
             </TableHeader>
             <TableBody>
               {requests.map((request) => {
-                const { variant, icon: Icon, label } = statusConfig[request.status];
+                const { variant, icon: Icon, label, className } = statusConfig[request.status];
 
                 return (
                   <TableRow key={request.id}>
@@ -173,13 +200,13 @@ export function WithdrawalRequestManager() {
                       </Popover>
                     </TableCell>
                     <TableCell>
-                      <Badge variant={variant as any}>
+                      <Badge variant={variant as any} className={className}>
                         <Icon className="mr-1 h-3 w-3" />
                         {label}
                       </Badge>
                     </TableCell>
                     <TableCell className="text-center">
-                      {request.status === 'Pending' ? (
+                      {request.status === 'Pending' && (
                         <div className="flex items-center justify-center gap-2">
                           <Button
                             variant="outline"
@@ -208,9 +235,25 @@ export function WithdrawalRequestManager() {
                             Cancel
                           </Button>
                         </div>
-                      ) : (
-                        <span className="text-xs text-muted-foreground">Action Taken</span>
                       )}
+                      {request.status === 'Approved' && (
+                        <Button
+                            size="sm"
+                            onClick={() => handleProcessPayout(request.id)}
+                            disabled={processingPayout === request.id}
+                            className="bg-blue-600 hover:bg-blue-700 text-white"
+                        >
+                            {processingPayout === request.id ? (
+                                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                            ) : (
+                                <Send className="mr-2 h-4 w-4" />
+                            )}
+                            Process Payout
+                        </Button>
+                      )}
+                       {(request.status === 'Cancelled' || request.status === 'Paid' || request.status === 'On Hold') && (
+                         <span className="text-xs text-muted-foreground">Action Taken</span>
+                       )}
                     </TableCell>
                   </TableRow>
                 );
