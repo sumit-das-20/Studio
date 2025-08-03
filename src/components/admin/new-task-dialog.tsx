@@ -81,7 +81,7 @@ export function TaskDialog({ onTaskCreated, onTaskUpdated, task, isFirstTask = f
       } else {
         onTaskCreated({
           ...state.data,
-          id: `TASK-${Math.floor(Math.random() * 1000)}`,
+          id: `TASK-${Date.now()}-${Math.floor(Math.random() * 1000)}`,
           createdAt: new Date().toISOString().split('T')[0],
         } as AdminTask);
       }
