@@ -194,6 +194,19 @@ export function deleteAdminTask(taskId: string) {
 
 export function addSocialTasks(newTasks: SocialTask[]) {
     initialSocialTasks = [...newTasks, ...initialSocialTasks];
+
+    // Also add to the main task list for admin view
+    const newAdminTasks: AdminTask[] = newTasks.map(task => ({
+        id: `SOCIAL-${task.id}`,
+        type: 'Social Media',
+        reward: task.reward || 0,
+        createdAt: new Date().toISOString().split('T')[0],
+        platform: task.platform,
+        socialTaskType: task.type,
+        title: task.title,
+        link: task.link,
+    }));
+    addAdminTask(...newAdminTasks);
 }
 
 export function completeSocialTask(taskId: number, campaignId: string) {
@@ -221,6 +234,31 @@ export function updateEmployee(employeeId: string, updates: Partial<AdminEmploye
     initialEmployees = initialEmployees.map(emp => emp.id === employeeId ? { ...emp, ...updates } : emp);
 }
 
+export function addWithdrawalRequest(request: AdminWithdrawalRequest) {
+    initialWithdrawalRequests.unshift(request);
+}
+
 export function updateWithdrawalRequest(requestId: string, updates: Partial<AdminWithdrawalRequest>) {
     initialWithdrawalRequests = initialWithdrawalRequests.map(req => req.id === requestId ? { ...req, ...updates } : req);
+}
+
+export function updateBuyer(buyerId: string, updates: Partial<AdminBuyer>) {
+    initialBuyers = initialBuyers.map(b => b.id === buyerId ? { ...b, ...updates } : b);
+}
+
+export function updateCampaign(buyerId: string, campaignId: string, updates: Partial<AdminCampaign>) {
+    initialBuyers = initialBuyers.map(b => {
+        if (b.id === buyerId) {
+            return {
+                ...b,
+                campaigns: b.campaigns.map(c => {
+                    if (c.id === campaignId) {
+                        return { ...c, ...updates };
+                    }
+                    return c;
+                })
+            };
+        }
+        return b;
+    });
 }

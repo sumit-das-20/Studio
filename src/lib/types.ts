@@ -10,7 +10,7 @@ export type SimpleTaskType = {
 };
 
 export type LinkTask = {
-  id: string; // Changed to string
+  id: string;
   url: string;
   reward?: number;
 };

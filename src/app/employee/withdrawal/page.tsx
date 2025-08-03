@@ -1,4 +1,5 @@
 
+
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -45,6 +46,9 @@ import { verifyUpiId } from '../actions';
 import { cn } from '@/lib/utils';
 import Link from 'next/link';
 import { buttonVariants } from '@/components/ui/button';
+import { useMockData } from '@/hooks/use-mock-data';
+import type { AdminWithdrawalRequest } from '@/lib/types';
+
 
 const formSchema = z.object({
     amount: z.coerce
@@ -110,6 +114,7 @@ export default function WithdrawalPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
+  const { addWithdrawalRequest } = useMockData();
   
   const [isVerifying, startVerificationTransition] = useTransition();
   const [verificationResult, setVerificationResult] = useState<{isValid: boolean; message: string; verifiedName?: string} | null>(null);
@@ -174,6 +179,26 @@ export default function WithdrawalPage() {
       if (values.amount < 100 || values.amount > 3000) {
           setError("Withdrawal amount must be between 100 and 3000 INR.");
       } else {
+        
+        const newRequest: AdminWithdrawalRequest = {
+            id: `WR-${Date.now()}`,
+            employeeId: 'EMP-CURRENT', // In a real app, this would be the logged-in user's ID
+            employeeEmail: 'employee@example.com', // Logged-in user's email
+            amount: values.amount,
+            method: values.paymentMethod as any,
+            status: 'Pending',
+            createdAt: new Date().toISOString().split('T')[0],
+            upiId: values.upiId,
+            paypalEmail: values.paypalEmail,
+            bankDetails: values.paymentMethod === 'bank-transfer' ? {
+                accountHolderName: values.accountHolderName || '',
+                bankName: values.bankName || '',
+                accountNumber: values.accountNumber || '',
+                ifscCode: values.ifscCode || ''
+            } : undefined
+        };
+        addWithdrawalRequest(newRequest);
+
         setSuccess(true);
         form.reset({ amount: 100, paymentMethod: form.getValues('paymentMethod'), upiId: '', paypalEmail: '' });
         setVerificationResult(null);

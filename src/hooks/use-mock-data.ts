@@ -1,4 +1,5 @@
 
+
 'use client';
 
 import { useState, useCallback, useEffect } from 'react';
@@ -13,15 +14,20 @@ import {
     initialEmployees,
     updateEmployee as apiUpdateEmployee,
     initialWithdrawalRequests,
-    updateWithdrawalRequest as apiUpdateWithdrawalRequest
+    addWithdrawalRequest as apiAddWithdrawalRequest,
+    updateWithdrawalRequest as apiUpdateWithdrawalRequest,
+    initialBuyers,
+    updateBuyer as apiUpdateBuyer,
+    updateCampaign as apiUpdateCampaign
 } from '@/lib/mock-data';
-import type { SocialTask, AdminTask, AdminEmployee, AdminWithdrawalRequest } from '@/lib/types';
+import type { SocialTask, AdminTask, AdminEmployee, AdminWithdrawalRequest, AdminBuyer, AdminCampaign } from '@/lib/types';
 
 export const useMockData = () => {
     const [socialTasks, setSocialTasks] = useState<SocialTask[]>([]);
     const [allTasks, setAllTasks] = useState<AdminTask[]>([]);
     const [employees, setEmployees] = useState<AdminEmployee[]>([]);
     const [withdrawalRequests, setWithdrawalRequests] = useState<AdminWithdrawalRequest[]>([]);
+    const [buyers, setBuyers] = useState<AdminBuyer[]>([]);
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
@@ -31,6 +37,7 @@ export const useMockData = () => {
             setAllTasks(initialAllTasks);
             setEmployees(initialEmployees);
             setWithdrawalRequests(initialWithdrawalRequests);
+            setBuyers(initialBuyers);
             setIsLoading(false);
         }, 500); // Reduced delay
         return () => clearTimeout(timer);
@@ -39,14 +46,12 @@ export const useMockData = () => {
     const addSocialTasks = useCallback((newTasks: SocialTask[]) => {
         apiAddSocialTasks(newTasks);
         setSocialTasks(prev => [...newTasks, ...prev]); 
+        setAllTasks(initialAllTasks); // Refresh allTasks from source
     }, []);
 
     const completeSocialTask = useCallback((taskId: number, campaignId: string) => {
         apiCompleteSocialTask(taskId, campaignId);
-        // This is tricky without a full state management solution.
-        // For now, we'll just have to rely on the mock data file being the source of truth
-        // and re-initializing won't show the change immediately.
-        // In a real app, this would be an API call and a state update.
+        setBuyers([...initialBuyers]); // Refresh buyers from source
     }, []);
 
     const addAdminTask = useCallback((newTask: AdminTask) => {
@@ -69,9 +74,19 @@ export const useMockData = () => {
         setEmployees(prev => prev.map(emp => emp.id === employeeId ? { ...emp, ...updates } : emp));
     }, []);
 
+    const addWithdrawalRequest = useCallback((request: AdminWithdrawalRequest) => {
+        apiAddWithdrawalRequest(request);
+        setWithdrawalRequests(prev => [request, ...prev]);
+    }, []);
+
     const updateWithdrawalRequest = useCallback((requestId: string, updates: Partial<AdminWithdrawalRequest>) => {
         apiUpdateWithdrawalRequest(requestId, updates);
         setWithdrawalRequests(prev => prev.map(req => req.id === requestId ? { ...req, ...updates } : req));
+    }, []);
+
+    const updateCampaign = useCallback((buyerId: string, campaignId: string, updates: Partial<AdminCampaign>) => {
+        apiUpdateCampaign(buyerId, campaignId, updates);
+        setBuyers([...initialBuyers]);
     }, []);
 
     return { 
@@ -85,7 +100,10 @@ export const useMockData = () => {
         employees,
         updateEmployee,
         withdrawalRequests,
+        addWithdrawalRequest,
         updateWithdrawalRequest,
+        buyers,
+        updateCampaign,
         isLoading
     };
 };

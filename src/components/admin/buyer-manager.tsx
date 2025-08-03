@@ -1,4 +1,5 @@
 
+
 'use client';
 
 import {
@@ -29,15 +30,14 @@ import type { AdminBuyer, AdminCampaign, SocialTask } from '@/lib/types';
 import { CheckCircle, ExternalLink, Loader2 } from 'lucide-react';
 import Link from 'next/link';
 import { useState } from 'react';
-import { initialBuyers } from '@/lib/mock-data';
 import { useMockData } from '@/hooks/use-mock-data';
 import { Gauge } from '../ui/gauge';
+import { Skeleton } from '../ui/skeleton';
 
 export function BuyerManager() {
   const { toast } = useToast();
-  const [buyers, setBuyers] = useState<AdminBuyer[]>(initialBuyers);
   const [creatingTasks, setCreatingTasks] = useState<Set<string>>(new Set());
-  const { addSocialTasks } = useMockData();
+  const { buyers, addSocialTasks, updateCampaign, isLoading } = useMockData();
 
 
   const handleCreateTasks = (campaign: AdminCampaign, buyer: AdminBuyer) => {
@@ -72,6 +72,8 @@ export function BuyerManager() {
         });
 
         addSocialTasks(newTasks);
+        updateCampaign(buyer.id, campaign.id, { tasksCreated: true });
+
 
         setCreatingTasks(prev => {
             const newSet = new Set(prev);
@@ -84,26 +86,8 @@ export function BuyerManager() {
             description: `${campaign.totalTasks} tasks for campaign "${campaign.serviceType}" have been created and are now available to employees.`
         })
 
-        // Update local state to reflect tasks created
-        setBuyers(prevBuyers => prevBuyers.map(b => {
-            if (b.id === buyer.id) {
-                return {
-                    ...b,
-                    campaigns: b.campaigns.map(c => {
-                        if (c.id === campaign.id) {
-                            return { ...c, tasksCreated: true };
-                        }
-                        return c;
-                    })
-                };
-            }
-            return b;
-        }));
-
-
     }, 2000);
   }
-
 
   return (
     <Card>
@@ -117,71 +101,79 @@ export function BuyerManager() {
         <Button variant="outline">View All Buyers</Button>
       </CardHeader>
       <CardContent>
-        <Accordion type="single" collapsible className="w-full">
-          {buyers.map((buyer) => (
-            <AccordionItem value={buyer.id} key={buyer.id}>
-              <AccordionTrigger>
-                <div className="flex w-full items-center justify-between pr-4">
-                    <div className='text-left'>
-                        <p className="font-bold">{buyer.companyName}</p>
-                        <p className="text-sm text-muted-foreground">{buyer.email}</p>
+        {isLoading ? (
+            <div className="space-y-2">
+                <Skeleton className="h-12 w-full" />
+                <Skeleton className="h-12 w-full" />
+                <Skeleton className="h-12 w-full" />
+            </div>
+        ) : (
+            <Accordion type="single" collapsible className="w-full">
+            {buyers.map((buyer) => (
+                <AccordionItem value={buyer.id} key={buyer.id}>
+                <AccordionTrigger>
+                    <div className="flex w-full items-center justify-between pr-4">
+                        <div className='text-left'>
+                            <p className="font-bold">{buyer.companyName}</p>
+                            <p className="text-sm text-muted-foreground">{buyer.email}</p>
+                        </div>
+                        <Badge variant="outline">
+                            {buyer.campaigns.length} Active Campaign(s)
+                        </Badge>
                     </div>
-                    <Badge variant="outline">
-                        {buyer.campaigns.length} Active Campaign(s)
-                    </Badge>
-                </div>
-              </AccordionTrigger>
-              <AccordionContent>
-                <div className="p-2 bg-muted/50 rounded-md">
-                    <h4 className='font-semibold mb-2'>Campaigns for {buyer.companyName}:</h4>
-                     <Table>
-                        <TableHeader>
-                            <TableRow>
-                                <TableHead>Service Type</TableHead>
-                                <TableHead>Target Link</TableHead>
-                                <TableHead>Progress</TableHead>
-                                <TableHead>Actions</TableHead>
-                            </TableRow>
-                        </TableHeader>
-                        <TableBody>
-                            {buyer.campaigns.map(campaign => {
-                                const isCreating = creatingTasks.has(campaign.id);
-                                const isCreated = campaign.tasksCreated;
-                                const progress = (campaign.tasksCompleted / campaign.totalTasks) * 100;
-                                
-                                return (
-                                <TableRow key={campaign.id}>
-                                    <TableCell><Badge>{campaign.serviceType}</Badge></TableCell>
-                                    <TableCell>
-                                        <Link href={campaign.targetLink} target="_blank" className='flex items-center gap-2 text-blue-500 hover:underline'>
-                                            {campaign.targetLink.length > 40 ? `${campaign.targetLink.substring(0, 40)}...` : campaign.targetLink}
-                                            <ExternalLink className='h-4 w-4' />
-                                        </Link>
-                                    </TableCell>
-                                    <TableCell>
-                                        <div className='flex items-center gap-2'>
-                                             <Gauge value={progress} size="small" showValue={false} />
-                                            <span className='font-mono text-sm'>
-                                                {campaign.tasksCompleted} / {campaign.totalTasks}
-                                            </span>
-                                        </div>
-                                    </TableCell>
-                                    <TableCell>
-                                        <Button size="sm" onClick={() => handleCreateTasks(campaign, buyer)} disabled={isCreating || isCreated}>
-                                            {isCreating && <Loader2 className='mr-2 h-4 w-4 animate-spin' />}
-                                            {isCreated && <CheckCircle className='mr-2 h-4 w-4' />}
-                                            {isCreated ? 'Tasks Created' : 'Create Tasks'}
-                                        </Button>
-                                    </TableCell>
+                </AccordionTrigger>
+                <AccordionContent>
+                    <div className="p-2 bg-muted/50 rounded-md">
+                        <h4 className='font-semibold mb-2'>Campaigns for {buyer.companyName}:</h4>
+                        <Table>
+                            <TableHeader>
+                                <TableRow>
+                                    <TableHead>Service Type</TableHead>
+                                    <TableHead>Target Link</TableHead>
+                                    <TableHead>Progress</TableHead>
+                                    <TableHead>Actions</TableHead>
                                 </TableRow>
-                            )})}
-                        </TableBody>
-                    </Table>
-                </div>
-              </AccordionContent>
-            </AccordionItem>
-          ))}
-        </Accordion>
+                            </TableHeader>
+                            <TableBody>
+                                {buyer.campaigns.map(campaign => {
+                                    const isCreating = creatingTasks.has(campaign.id);
+                                    const isCreated = campaign.tasksCreated;
+                                    const progress = campaign.totalTasks > 0 ? (campaign.tasksCompleted / campaign.totalTasks) * 100 : 0;
+                                    
+                                    return (
+                                    <TableRow key={campaign.id}>
+                                        <TableCell><Badge>{campaign.serviceType}</Badge></TableCell>
+                                        <TableCell>
+                                            <Link href={campaign.targetLink} target="_blank" className='flex items-center gap-2 text-blue-500 hover:underline'>
+                                                {campaign.targetLink.length > 40 ? `${campaign.targetLink.substring(0, 40)}...` : campaign.targetLink}
+                                                <ExternalLink className='h-4 w-4' />
+                                            </Link>
+                                        </TableCell>
+                                        <TableCell>
+                                            <div className='flex items-center gap-2'>
+                                                <Gauge value={progress} size="small" showValue={false} />
+                                                <span className='font-mono text-sm'>
+                                                    {campaign.tasksCompleted} / {campaign.totalTasks}
+                                                </span>
+                                            </div>
+                                        </TableCell>
+                                        <TableCell>
+                                            <Button size="sm" onClick={() => handleCreateTasks(campaign, buyer)} disabled={isCreating || isCreated}>
+                                                {isCreating && <Loader2 className='mr-2 h-4 w-4 animate-spin' />}
+                                                {isCreated && <CheckCircle className='mr-2 h-4 w-4' />}
+                                                {isCreated ? 'Tasks Created' : 'Create Tasks'}
+                                            </Button>
+                                        </TableCell>
+                                    </TableRow>
+                                )})}
+                            </TableBody>
+                        </Table>
+                    </div>
+                </AccordionContent>
+                </AccordionItem>
+            ))}
+            </Accordion>
+        )}
       </CardContent>
     </Card>
   );
