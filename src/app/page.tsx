@@ -8,6 +8,7 @@ export default async function Home() {
   const cookieStore = cookies();
   const employeeCookie = cookieStore.get('firebaseAuth');
   const buyerCookie = cookieStore.get('firebaseBuyerAuth');
+  const adminCookie = cookieStore.get('firebaseAdminAuth');
 
   if (employeeCookie) {
     return redirect('/employee/dashboard');
@@ -15,6 +16,10 @@ export default async function Home() {
 
   if (buyerCookie) {
     return redirect('/buyer/dashboard');
+  }
+
+  if (adminCookie) {
+    return redirect('/admin/dashboard');
   }
 
   return (

@@ -118,6 +118,7 @@ export async function resetPassword(prevState: any, formData: FormData) {
 export async function signOut() {
   cookies().delete('firebaseAuth');
   cookies().delete('firebaseBuyerAuth');
+  cookies().delete('firebaseAdminAuth');
   redirect('/');
 }
 

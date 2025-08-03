@@ -1,4 +1,5 @@
-import { Coins, TrendingUp } from 'lucide-react';
+
+import { Coins, Shield, TrendingUp } from 'lucide-react';
 import Link from 'next/link';
 import { buttonVariants } from './ui/button';
 import { cn } from '@/lib/utils';
@@ -15,6 +16,12 @@ const portalLinks = [
         title: 'Buyer Login',
         icon: TrendingUp,
         variant: 'accent' as 'accent',
+    },
+     {
+        href: '/admin/login',
+        title: 'Admin Login',
+        icon: Shield,
+        variant: 'destructive' as 'destructive',
     },
 ]
 
