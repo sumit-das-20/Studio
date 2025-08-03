@@ -15,10 +15,10 @@ import Link from "next/link";
 
 
 const stats = [
-    { title: "Today's Earnings", value: "₹150.00", icon: DollarSign },
-    { title: "This Month's Earnings", value: "₹2,450.00", icon: DollarSign },
-    { title: "Total Earnings", value: "₹12,800.00", icon: Trophy },
-    { title: "Total Withdrawal", value: "₹8,200.00", icon: Wallet },
+    { title: "Today's Earnings", value: "150.00", icon: DollarSign },
+    { title: "This Month's Earnings", value: "2,450.00", icon: DollarSign },
+    { title: "Total Earnings", value: "12,800.00", icon: Trophy },
+    { title: "Total Withdrawal", value: "8,200.00", icon: Wallet },
 ]
 
 const tasks = [
