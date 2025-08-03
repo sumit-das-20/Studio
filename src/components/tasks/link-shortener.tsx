@@ -8,7 +8,6 @@ import type { LinkTask } from '@/lib/types';
 const initialTasks: LinkTask[] = Array.from({ length: 12 }, (_, i) => ({
   id: i + 1,
   url: `https://short.link/example${i + 1}`,
-  reward: 1,
 }));
 
 export function LinkShortener() {
@@ -19,7 +18,7 @@ export function LinkShortener() {
 
     setClickedLinks(new Set(clickedLinks).add(task.id));
     window.dispatchEvent(
-      new CustomEvent('earn', { detail: { amount: task.reward } })
+      new CustomEvent('earn', { detail: { amount: task.reward || 0.25 } })
     );
     // In a real app, you would open the link: window.open(task.url, '_blank');
   };
@@ -54,7 +53,9 @@ export function LinkShortener() {
               ) : (
                 <>
                   <ExternalLink className="h-6 w-6" />
-                  <span className="text-xs">+{task.reward.toFixed(2)}</span>
+                  {task.reward && (
+                    <span className="text-xs">+{task.reward.toFixed(2)}</span>
+                  )}
                 </>
               )}
             </Button>

@@ -60,7 +60,7 @@ export function SimpleTask({ task, adType }: SimpleTaskProps) {
         setAiResult(result.data);
         setIsCompleted(true);
         window.dispatchEvent(
-          new CustomEvent('earn', { detail: { amount: task.reward } })
+          new CustomEvent('earn', { detail: { amount: task.reward || 1.0 } })
         );
       } else {
         setError(result.error || 'An unexpected error occurred.');
@@ -73,9 +73,11 @@ export function SimpleTask({ task, adType }: SimpleTaskProps) {
       <CardHeader>
         <CardTitle className="flex items-start justify-between">
           <span>Task #{task.id}</span>
-          <Badge variant="outline" className="bg-primary/10 text-primary">
-            +{task.reward.toFixed(2)}
-          </Badge>
+          {task.reward && (
+            <Badge variant="outline" className="bg-primary/10 text-primary">
+              +{task.reward.toFixed(2)}
+            </Badge>
+          )}
         </CardTitle>
         <CardDescription>{task.question}</CardDescription>
       </CardHeader>

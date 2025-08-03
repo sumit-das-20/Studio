@@ -10,9 +10,9 @@ import { MousePointerClick } from 'lucide-react';
 import { SimpleTask } from './simple-task';
 
 const tasks: SimpleTaskType[] = [
-  { id: 1, question: 'Enter Your Full Name.', reward: 4.0 },
-  { id: 2, question: 'What is your primary hobby?', reward: 4.0 },
-  { id: 3, question: 'What city do you live in?', reward: 4.0 },
+  { id: 1, question: 'Enter Your Full Name.' },
+  { id: 2, question: 'What is your primary hobby?' },
+  { id: 3, question: 'What city do you live in?' },
 ];
 
 export function ClickAndEarn() {

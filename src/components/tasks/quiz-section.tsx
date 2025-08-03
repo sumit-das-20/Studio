@@ -14,7 +14,6 @@ const quizTasks: QuizTask[] = [
     id: 1,
     question: 'What is the capital of France?',
     options: ['Berlin', 'Madrid', 'Paris', 'Rome'],
-    reward: 6.0,
   },
 ];
 
@@ -29,7 +28,7 @@ export function QuizSection() {
     setIsSubmitting(true);
     setTimeout(() => {
       setCompletedQuizzes(new Set(completedQuizzes).add(task.id));
-      window.dispatchEvent(new CustomEvent('earn', { detail: { amount: task.reward } }));
+      window.dispatchEvent(new CustomEvent('earn', { detail: { amount: task.reward || 2.0 } }));
       setIsSubmitting(false);
     }, 1000);
   };
@@ -51,7 +50,9 @@ export function QuizSection() {
               <CardHeader>
                 <CardTitle className="flex items-center justify-between">
                   <span>Quiz #{task.id}</span>
+                  {task.reward && (
                    <span className="text-sm font-medium text-primary">+{task.reward.toFixed(2)}</span>
+                  )}
                 </CardTitle>
                 <CardDescription>{task.question}</CardDescription>
               </CardHeader>
