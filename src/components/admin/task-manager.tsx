@@ -1,4 +1,3 @@
-
 'use client';
 
 import {
@@ -20,9 +19,10 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '../ui/badge';
 import { AdminTask } from '@/lib/types';
 import { TaskDialog } from './new-task-dialog';
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { DeleteTaskDialog } from './delete-task-dialog';
-import { Facebook, Instagram, Youtube } from 'lucide-react';
+import { Facebook, Instagram, Youtube, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Button } from '../ui/button';
 
 // This is a representation of tasks fetched from the database.
 const initialTasks: AdminTask[] = [
@@ -69,7 +69,20 @@ const initialTasks: AdminTask[] = [
   }
 ];
 
+const TASKS_PER_PAGE = 10;
+
 const TaskTable = ({ tasks, onTaskUpdated, onTaskDeleted, onTaskCreated }: { tasks: AdminTask[], onTaskUpdated: (task: AdminTask) => void, onTaskDeleted: (taskId: string) => void, onTaskCreated: (task: AdminTask) => void }) => {
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const totalPages = Math.ceil(tasks.length / TASKS_PER_PAGE);
+
+  const paginatedTasks = useMemo(() => {
+    const startIndex = (currentPage - 1) * TASKS_PER_PAGE;
+    const endIndex = startIndex + TASKS_PER_PAGE;
+    return tasks.slice(startIndex, endIndex);
+  }, [tasks, currentPage]);
+
+
   const platformIcons = {
     YouTube: <Youtube className="h-5 w-5 text-red-600" />,
     Facebook: <Facebook className="h-5 w-5 text-blue-600" />,
@@ -86,6 +99,7 @@ const TaskTable = ({ tasks, onTaskUpdated, onTaskDeleted, onTaskCreated }: { tas
   }
 
   return (
+    <>
       <Table>
         <TableHeader>
           <TableRow>
@@ -97,7 +111,7 @@ const TaskTable = ({ tasks, onTaskUpdated, onTaskDeleted, onTaskCreated }: { tas
           </TableRow>
         </TableHeader>
         <TableBody>
-          {tasks.map((task) => (
+          {paginatedTasks.map((task) => (
             <TableRow key={task.id}>
               <TableCell className="font-medium">{task.id}</TableCell>
               <TableCell>
@@ -137,6 +151,30 @@ const TaskTable = ({ tasks, onTaskUpdated, onTaskDeleted, onTaskCreated }: { tas
           ))}
         </TableBody>
       </Table>
+       <div className="flex items-center justify-end space-x-2 py-4">
+        <div className="flex-1 text-sm text-muted-foreground">
+            Page {currentPage} of {totalPages} ({tasks.length} total tasks)
+        </div>
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+          disabled={currentPage === 1}
+        >
+          <ChevronLeft className="h-4 w-4" />
+          <span className='ml-2'>Previous</span>
+        </Button>
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+          disabled={currentPage === totalPages}
+        >
+          <span className='mr-2'>Next</span>
+          <ChevronRight className="h-4 w-4" />
+        </Button>
+      </div>
+    </>
   );
 };
 
