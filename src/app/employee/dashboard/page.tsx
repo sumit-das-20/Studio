@@ -10,13 +10,13 @@ import {
 } from "@/components/ui/sidebar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Clapperboard, DollarSign, HelpCircle, Link as LinkIcon, MousePointerClick, Trophy, Wallet } from "lucide-react";
+import { ArrowRight, Clapperboard, HelpCircle, IndianRupee, Link as LinkIcon, MousePointerClick, Trophy, Wallet } from "lucide-react";
 import Link from "next/link";
 
 
 const stats = [
-    { title: "Today's Earnings", value: "150.00", icon: DollarSign },
-    { title: "This Month's Earnings", value: "2,450.00", icon: DollarSign },
+    { title: "Today's Earnings", value: "150.00", icon: IndianRupee },
+    { title: "This Month's Earnings", value: "2,450.00", icon: IndianRupee },
     { title: "Total Earnings", value: "12,800.00", icon: Trophy },
     { title: "Total Withdrawal", value: "8,200.00", icon: Wallet },
 ]
