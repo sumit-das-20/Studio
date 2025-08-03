@@ -80,3 +80,10 @@ export type AdminBuyer = {
     campaigns: AdminCampaign[];
     createdAt: string;
 }
+
+export type AdPerformance = {
+    adUnitId: string;
+    type: 'Banner' | 'Rewarded Video' | 'Other';
+    impressions: number;
+    earnings: number;
+}
