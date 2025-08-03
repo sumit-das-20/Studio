@@ -119,3 +119,10 @@ export type AdNetwork = {
     icon?: React.ComponentType<{ className?: string }>;
     adUnits: AdUnit[];
 };
+
+export type LinkPerformance = {
+    linkId: string;
+    url: string;
+    clicks: number;
+    earnings: number;
+}

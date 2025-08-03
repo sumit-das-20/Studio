@@ -1,6 +1,7 @@
 
 
 import { AdPerformanceDashboard } from "@/components/admin/ad-performance-dashboard";
+import { LinkShortenerPerformance } from "@/components/admin/link-shortener-performance";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { BarChart, Users, CircleDollarSign, CreditCard, ClipboardList, ShoppingBag } from "lucide-react";
@@ -54,6 +55,7 @@ export default function AdminDashboard() {
       </div>
 
       <AdPerformanceDashboard />
+      <LinkShortenerPerformance />
 
        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
           <Card className="hover:shadow-lg transition-shadow">
@@ -109,6 +111,20 @@ export default function AdminDashboard() {
               <CardContent>
                    <Button asChild>
                       <Link href="/admin/tasks">Manage Tasks</Link>
+                  </Button>
+              </CardContent>
+          </Card>
+           <Card className="hover:shadow-lg transition-shadow">
+              <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                      <ClipboardList className="h-6 w-6 text-primary" />
+                      <span>Ad Networks</span>
+                  </CardTitle>
+                  <CardDescription>Manage ad units from all monetization platforms.</CardDescription>
+              </CardHeader>
+              <CardContent>
+                   <Button asChild>
+                      <Link href="/admin/ad-networks">Manage Ad Networks</Link>
                   </Button>
               </CardContent>
           </Card>
