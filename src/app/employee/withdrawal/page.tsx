@@ -22,7 +22,7 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { useState, useTransition } from 'react';
-import { Banknote, CheckCircle, History, Loader2, ShieldCheck, ShieldX } from 'lucide-react';
+import { Banknote, CheckCircle, History, Loader2, ShieldCheck, ShieldX, Pencil } from 'lucide-react';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import {
   Select,
@@ -151,6 +151,11 @@ export default function WithdrawalPage() {
         }
     });
   }
+
+  const handleEditUpi = () => {
+    setVerificationResult(null);
+    form.setValue('upiId', '');
+  };
 
   const onSubmit = (values: FormSchemaType) => {
     if (isUpiSelected && !isUpiVerified) {
@@ -304,13 +309,20 @@ export default function WithdrawalPage() {
                                                     <FormItem>
                                                         <FormLabel>UPI ID</FormLabel>
                                                         <div className="flex gap-2">
-                                                        <FormControl>
-                                                            <Input placeholder="yourname@bank" {...field} disabled={isVerifying || isUpiVerified} />
-                                                        </FormControl>
-                                                        <Button type="button" onClick={handleVerifyUpi} disabled={isVerifying || isUpiVerified}>
-                                                            {isVerifying && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                                                            {isUpiVerified ? 'Verified' : 'Verify'}
-                                                        </Button>
+                                                            <FormControl>
+                                                                <Input placeholder="yourname@bank" {...field} disabled={isVerifying || isUpiVerified} />
+                                                            </FormControl>
+                                                            {isUpiVerified ? (
+                                                                <Button type="button" variant="outline" onClick={handleEditUpi}>
+                                                                    <Pencil className="mr-2 h-4 w-4" />
+                                                                    Edit
+                                                                </Button>
+                                                            ) : (
+                                                                <Button type="button" onClick={handleVerifyUpi} disabled={isVerifying}>
+                                                                    {isVerifying && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                                                                    Verify
+                                                                </Button>
+                                                            )}
                                                         </div>
                                                         <FormMessage />
                                                     </FormItem>
@@ -428,5 +440,3 @@ export default function WithdrawalPage() {
 
   );
 }
-
-    
