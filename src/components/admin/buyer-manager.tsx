@@ -24,9 +24,11 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import type { AdminBuyer } from '@/lib/types';
-import { ClipboardList, ExternalLink, PlusCircle } from 'lucide-react';
+import { useToast } from '@/hooks/use-toast';
+import type { AdminBuyer, AdminCampaign } from '@/lib/types';
+import { CheckCircle, ClipboardList, ExternalLink, Loader2 } from 'lucide-react';
 import Link from 'next/link';
+import { useState } from 'react';
 
 // This is a representation of buyer data fetched from the database.
 const buyers: AdminBuyer[] = [
@@ -72,7 +74,31 @@ const buyers: AdminBuyer[] = [
   },
 ];
 
+
 export function BuyerManager() {
+  const { toast } = useToast();
+  const [creatingTasks, setCreatingTasks] = useState<Set<string>>(new Set());
+  const [createdTasks, setCreatedTasks] = useState<Set<string>>(new Set());
+
+  const handleCreateTasks = (campaign: AdminCampaign) => {
+    setCreatingTasks(prev => new Set(prev).add(campaign.id));
+
+    // Simulate API call to backend to generate tasks
+    setTimeout(() => {
+        setCreatingTasks(prev => {
+            const newSet = new Set(prev);
+            newSet.delete(campaign.id);
+            return newSet;
+        });
+        setCreatedTasks(prev => new Set(prev).add(campaign.id));
+        toast({
+            title: "Tasks Created!",
+            description: `Tasks for campaign "${campaign.serviceType}" have been created and are now available to employees.`
+        })
+    }, 2000);
+  }
+
+
   return (
     <Card>
       <CardHeader className="flex flex-row items-center justify-between">
@@ -112,7 +138,10 @@ export function BuyerManager() {
                             </TableRow>
                         </TableHeader>
                         <TableBody>
-                            {buyer.campaigns.map(campaign => (
+                            {buyer.campaigns.map(campaign => {
+                                const isCreating = creatingTasks.has(campaign.id);
+                                const isCreated = createdTasks.has(campaign.id);
+                                return (
                                 <TableRow key={campaign.id}>
                                     <TableCell><Badge>{campaign.serviceType}</Badge></TableCell>
                                     <TableCell>
@@ -123,13 +152,14 @@ export function BuyerManager() {
                                     </TableCell>
                                     <TableCell>{campaign.tasksCreated} / {campaign.totalTasks}</TableCell>
                                     <TableCell>
-                                        <Button size="sm">
-                                            <ClipboardList className='mr-2 h-4 w-4' />
-                                            Create Tasks
+                                        <Button size="sm" onClick={() => handleCreateTasks(campaign)} disabled={isCreating || isCreated}>
+                                            {isCreating && <Loader2 className='mr-2 h-4 w-4 animate-spin' />}
+                                            {isCreated && <CheckCircle className='mr-2 h-4 w-4' />}
+                                            {isCreated ? 'Tasks Created' : 'Create Tasks'}
                                         </Button>
                                     </TableCell>
                                 </TableRow>
-                            ))}
+                            )})}
                         </TableBody>
                     </Table>
                 </div>
