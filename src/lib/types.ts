@@ -32,12 +32,28 @@ export type SocialTask = {
 
 export type AdminTask = {
     id: string;
-    question: string;
+    type: 'Click and Earn' | 'Watch and Earn' | 'Link Shortener' | 'Quiz' | 'Social Media';
     reward: number;
-    adUnitId: string;
-    type: 'Click and Earn' | 'Watch and Earn';
     createdAt: string;
+    
+    // Simple & Quiz
+    question?: string;
+    
+    // Simple Tasks
+    adUnitId?: string;
+
+    // Quiz
+    options?: string[];
+
+    // Social Media & Link Shortener
+    link?: string;
+
+    // Social Media
+    platform?: 'YouTube' | 'Facebook' | 'Instagram';
+    socialTaskType?: string; // e.g., 'Subscribe', 'Like & Comment'
+    title?: string;
 };
+
 
 export type AdminEmployee = {
   id: string;

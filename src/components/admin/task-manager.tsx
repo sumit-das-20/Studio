@@ -21,25 +21,44 @@ import { AdminTask } from '@/lib/types';
 import { TaskDialog } from './new-task-dialog';
 import { useState } from 'react';
 import { DeleteTaskDialog } from './delete-task-dialog';
+import { Facebook, Instagram, Youtube } from 'lucide-react';
 
 // This is a representation of tasks fetched from the database.
 const initialTasks: AdminTask[] = [
   {
     id: 'TASK-001',
+    type: 'Click and Earn',
     question: 'What is your primary hobby?',
     reward: 0.25,
     adUnitId: 'ca-app-pub-3940256099942544/6300978111',
-    type: 'Click and Earn',
     createdAt: '2024-07-30',
   },
   {
     id: 'TASK-002',
+    type: 'Watch and Earn',
     question: 'What brand of phone do you use?',
     reward: 0.75,
     adUnitId: 'ca-app-pub-3940256099942544/2247696110',
-    type: 'Watch and Earn',
     createdAt: '2024-07-29',
   },
+  {
+    id: 'TASK-003',
+    type: 'Quiz',
+    question: 'What is the largest planet in our solar system?',
+    options: ['Earth', 'Jupiter', 'Mars', 'Saturn'],
+    reward: 1.50,
+    createdAt: '2024-07-28',
+  },
+  {
+    id: 'TASK-004',
+    type: 'Social Media',
+    platform: 'YouTube',
+    socialTaskType: 'Subscribe',
+    title: 'Subscribe to our YouTube Channel',
+    link: 'https://youtube.com/example',
+    reward: 2.00,
+    createdAt: '2024-07-27',
+  }
 ];
 
 export function TaskManager() {
@@ -60,6 +79,12 @@ export function TaskManager() {
   const handleTaskDeleted = (taskId: string) => {
     setTasks(prevTasks => prevTasks.filter(task => task.id !== taskId));
   }
+  
+  const platformIcons = {
+    YouTube: <Youtube className="h-5 w-5 text-red-600" />,
+    Facebook: <Facebook className="h-5 w-5 text-blue-600" />,
+    Instagram: <Instagram className="h-5 w-5 text-pink-600" />,
+  }
 
   return (
     <Card>
@@ -78,10 +103,9 @@ export function TaskManager() {
             <TableHeader>
               <TableRow>
                 <TableHead>Task ID</TableHead>
-                <TableHead>Question</TableHead>
                 <TableHead>Type</TableHead>
+                <TableHead>Details</TableHead>
                 <TableHead className="text-right">Reward (INR)</TableHead>
-                <TableHead>Ad Unit ID</TableHead>
                 <TableHead>Actions</TableHead>
               </TableRow>
             </TableHeader>
@@ -89,12 +113,33 @@ export function TaskManager() {
               {tasks.map((task) => (
                 <TableRow key={task.id}>
                   <TableCell className="font-medium">{task.id}</TableCell>
-                  <TableCell>{task.question}</TableCell>
                   <TableCell>
-                    <Badge variant={task.type === 'Click and Earn' ? 'secondary' : 'default'}>{task.type}</Badge>
+                    <Badge variant={
+                        task.type === 'Social Media' ? 'default' :
+                        task.type === 'Quiz' ? 'accent' as any :
+                        'secondary'
+                    }>{task.type}</Badge>
                   </TableCell>
-                  <TableCell className="text-right">{task.reward.toFixed(2)}</TableCell>
-                  <TableCell className="font-mono text-xs">{task.adUnitId}</TableCell>
+                  <TableCell>
+                    <div className="flex flex-col gap-1">
+                        {task.type === 'Social Media' && task.platform && (
+                            <div className="flex items-center gap-2">
+                                {platformIcons[task.platform as keyof typeof platformIcons]}
+                                <span className="font-semibold">{task.title}</span>
+                            </div>
+                        )}
+                        {(task.type === 'Click and Earn' || task.type === 'Watch and Earn' || task.type === 'Quiz') && (
+                            <p className="font-semibold">{task.question}</p>
+                        )}
+                         {task.link && (
+                             <a href={task.link} target="_blank" rel="noopener noreferrer" className="text-xs text-blue-500 hover:underline truncate max-w-xs">{task.link}</a>
+                         )}
+                         {task.adUnitId && (
+                            <p className="font-mono text-xs text-muted-foreground">{task.adUnitId}</p>
+                         )}
+                    </div>
+                  </TableCell>
+                  <TableCell className="text-right font-semibold">{task.reward.toFixed(2)}</TableCell>
                   <TableCell>
                      <div className="flex items-center gap-2">
                         <TaskDialog onTaskCreated={handleTaskCreated} onTaskUpdated={handleTaskUpdated} task={task} />

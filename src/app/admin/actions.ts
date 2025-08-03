@@ -52,14 +52,52 @@ export async function signInAdmin(prevState: any, formData: FormData) {
 
 
 const taskSchema = z.object({
-    id: z.string().optional(),
-    question: z.string().min(10, "Question must be at least 10 characters long."),
-    reward: z.coerce.number().min(0, "Reward cannot be negative."),
-    adUnitId: z.string().min(1, "Ad Unit ID cannot be empty."),
-});
+  id: z.string().optional(),
+  type: z.enum(['Click and Earn', 'Watch and Earn', 'Link Shortener', 'Quiz', 'Social Media']),
+  reward: z.coerce.number().min(0, "Reward cannot be negative."),
+  // Simple Task
+  question: z.string().optional(),
+  adUnitId: z.string().optional(),
+  // Link Shortener
+  link: z.string().optional(),
+  // Quiz
+  options: z.array(z.string()).optional(),
+  // Social Media
+  platform: z.enum(['YouTube', 'Facebook', 'Instagram', '']).optional(),
+  socialTaskType: z.string().optional(),
+  title: z.string().optional(),
+}).refine(data => {
+    if (data.type === 'Click and Earn' || data.type === 'Watch and Earn') {
+        return !!data.question && data.question.length >= 10;
+    }
+    return true;
+}, { message: 'Question must be at least 10 characters long.', path: ['question']})
+.refine(data => {
+    if (data.type === 'Link Shortener') {
+        return !!data.link && z.string().url().safeParse(data.link).success;
+    }
+    return true;
+}, { message: 'A valid URL is required for this task type.', path: ['link']})
+.refine(data => {
+    if (data.type === 'Quiz') {
+        return !!data.question && data.question.length >= 10 && !!data.options && data.options.length >= 2 && data.options.every(opt => opt.length > 0);
+    }
+    return true;
+}, { message: 'Quiz must have a question and at least 2 non-empty options.', path: ['question']})
+.refine(data => {
+    if (data.type === 'Social Media') {
+        return !!data.platform && !!data.socialTaskType && !!data.title && !!data.link && z.string().url().safeParse(data.link).success;
+    }
+    return true;
+}, { message: 'Platform, Task Type, Title, and a valid Link are required for Social Media tasks.', path: ['platform']})
+
 
 export async function createTask(prevState: any, formData: FormData) {
-    const validatedFields = taskSchema.safeParse(Object.fromEntries(formData.entries()));
+    const rawData = Object.fromEntries(formData.entries());
+    const options = formData.getAll('options[]').map(String).filter(opt => opt.length > 0);
+    const dataToValidate = { ...rawData, options: options.length > 0 ? options : undefined };
+    
+    const validatedFields = taskSchema.safeParse(dataToValidate);
 
     if (!validatedFields.success) {
         return { success: false, error: validatedFields.error.flatten().fieldErrors };
@@ -77,7 +115,11 @@ export async function createTask(prevState: any, formData: FormData) {
 }
 
 export async function updateTask(prevState: any, formData: FormData) {
-    const validatedFields = taskSchema.safeParse(Object.fromEntries(formData.entries()));
+    const rawData = Object.fromEntries(formData.entries());
+    const options = formData.getAll('options[]').map(String).filter(opt => opt.length > 0);
+    const dataToValidate = { ...rawData, options: options.length > 0 ? options : undefined };
+    
+    const validatedFields = taskSchema.safeParse(dataToValidate);
 
     if (!validatedFields.success) {
         return { success: false, error: validatedFields.error.flatten().fieldErrors };
