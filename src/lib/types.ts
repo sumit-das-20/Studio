@@ -36,3 +36,11 @@ export type AdminTask = {
     type: 'Click and Earn' | 'Watch and Earn';
     createdAt: string;
 };
+
+export type AdminEmployee = {
+  id: string;
+  email: string;
+  totalEarnings: number;
+  withdrawalRequest: number | null;
+  createdAt: string;
+};

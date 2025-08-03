@@ -6,6 +6,7 @@ import { BarChart, Users, CircleDollarSign, Shield, Power } from "lucide-react";
 import Link from "next/link";
 import { signOut } from "@/app/employee/actions";
 import { TaskManager } from "@/components/admin/task-manager";
+import { EmployeeManager } from "@/components/admin/employee-manager";
 
 export default function AdminDashboard() {
   return (
@@ -65,6 +66,7 @@ export default function AdminDashboard() {
           </Card>
         </div>
         <TaskManager />
+        <EmployeeManager />
       </main>
     </div>
   );
