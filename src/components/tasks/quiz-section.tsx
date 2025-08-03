@@ -9,12 +9,13 @@ import { CheckCircle, HelpCircle, Loader2 } from 'lucide-react';
 import { type QuizTask } from '@/lib/types';
 import Image from 'next/image';
 
+// Rewards are controlled by the admin panel and fetched from the backend.
+// This mock data does not include reward amounts.
 const quizTasks: QuizTask[] = [
   {
     id: 1,
     question: 'What is the capital of France?',
     options: ['Berlin', 'Madrid', 'Paris', 'Rome'],
-    reward: 2.0, // This would come from campaign data
   },
 ];
 
@@ -29,7 +30,9 @@ export function QuizSection() {
     setIsSubmitting(true);
     setTimeout(() => {
       setCompletedQuizzes(new Set(completedQuizzes).add(task.id));
-      window.dispatchEvent(new CustomEvent('earn', { detail: { amount: task.reward || 0 } }));
+      if (task.reward) {
+        window.dispatchEvent(new CustomEvent('earn', { detail: { amount: task.reward } }));
+      }
       setIsSubmitting(false);
     }, 1000);
   };

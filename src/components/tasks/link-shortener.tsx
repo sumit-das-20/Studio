@@ -5,10 +5,11 @@ import { Button } from '@/components/ui/button';
 import { Link, Check, ExternalLink } from 'lucide-react';
 import type { LinkTask } from '@/lib/types';
 
+// Rewards are controlled by the admin panel and fetched from the backend.
+// This mock data does not include reward amounts.
 const initialTasks: LinkTask[] = Array.from({ length: 12 }, (_, i) => ({
   id: i + 1,
   url: `https://short.link/example${i + 1}`,
-  reward: 0.25, // This would come from the campaign data
 }));
 
 export function LinkShortener() {
@@ -18,9 +19,11 @@ export function LinkShortener() {
     if (clickedLinks.has(task.id)) return;
 
     setClickedLinks(new Set(clickedLinks).add(task.id));
-    window.dispatchEvent(
-      new CustomEvent('earn', { detail: { amount: task.reward || 0 } })
-    );
+    if (task.reward) {
+      window.dispatchEvent(
+        new CustomEvent('earn', { detail: { amount: task.reward } })
+      );
+    }
     // In a real app, you would open the link: window.open(task.url, '_blank');
   };
 

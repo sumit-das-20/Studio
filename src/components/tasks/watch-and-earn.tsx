@@ -2,11 +2,12 @@ import { type SimpleTaskType } from '@/lib/types';
 import { Clapperboard } from 'lucide-react';
 import { SimpleTask } from './simple-task';
 
-// Rewards would be fetched from the backend based on the campaign.
+// Rewards are controlled by the admin panel and fetched from the backend.
+// The `reward` property is now optional in the type definition.
 const tasks: SimpleTaskType[] = [
-  { id: 4, question: 'What is your age?', reward: 1.5 },
-  { id: 5, question: 'What is your favorite movie genre?', reward: 1.5 },
-  { id: 6, question: 'What brand of phone do you use?', reward: 1.8 },
+  { id: 4, question: 'What is your age?' },
+  { id: 5, question: 'What is your favorite movie genre?' },
+  { id: 6, question: 'What brand of phone do you use?' },
 ];
 
 export function WatchAndEarn() {

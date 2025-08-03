@@ -59,9 +59,11 @@ export function SimpleTask({ task, adType }: SimpleTaskProps) {
       if (result.success && result.data) {
         setAiResult(result.data);
         setIsCompleted(true);
-        window.dispatchEvent(
-          new CustomEvent('earn', { detail: { amount: task.reward || 0 } })
-        );
+        if (task.reward) {
+          window.dispatchEvent(
+            new CustomEvent('earn', { detail: { amount: task.reward } })
+          );
+        }
       } else {
         setError(result.error || 'An unexpected error occurred.');
       }
