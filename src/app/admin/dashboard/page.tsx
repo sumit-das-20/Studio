@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { BarChart, Users, CircleDollarSign, Shield, Power, BarChart4, Wallet, Activity, CreditCard, ClipboardList } from "lucide-react";
+import { BarChart, Users, CircleDollarSign, Wallet, BarChart4, CreditCard, ClipboardList, ShoppingBag } from "lucide-react";
 import Link from "next/link";
 
 
@@ -29,7 +29,7 @@ export default function AdminDashboard() {
             <CardTitle className="text-sm font-medium">
               Total Buyers
             </CardTitle>
-            <Users className="h-4 w-4 text-muted-foreground" />
+            <ShoppingBag className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">0</div>
@@ -75,7 +75,7 @@ export default function AdminDashboard() {
           </CardContent>
         </Card>
       </div>
-       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
           <Card className="hover:shadow-lg transition-shadow">
               <CardHeader>
                   <CardTitle className="flex items-center gap-2">
@@ -87,6 +87,20 @@ export default function AdminDashboard() {
               <CardContent>
                   <Button asChild>
                       <Link href="/admin/employees">Manage Employees</Link>
+                  </Button>
+              </CardContent>
+          </Card>
+           <Card className="hover:shadow-lg transition-shadow">
+              <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                      <ShoppingBag className="h-6 w-6 text-primary" />
+                      <span>Buyer Management</span>
+                  </CardTitle>
+                  <CardDescription>View all buyers, their campaigns, and manage their tasks.</CardDescription>
+              </CardHeader>
+              <CardContent>
+                  <Button asChild>
+                      <Link href="/admin/buyers">Manage Buyers</Link>
                   </Button>
               </CardContent>
           </Card>

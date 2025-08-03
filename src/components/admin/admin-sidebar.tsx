@@ -1,4 +1,5 @@
 
+
 'use client';
 
 import {
@@ -9,7 +10,7 @@ import {
   SidebarMenuItem,
   SidebarMenuButton,
 } from '@/components/ui/sidebar';
-import { LayoutDashboard, Users, CreditCard, ClipboardList, Shield } from 'lucide-react';
+import { LayoutDashboard, Users, CreditCard, ClipboardList, Shield, ShoppingBag } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 
 const menuItems = [
@@ -22,6 +23,11 @@ const menuItems = [
       href: '/admin/employees',
       label: 'Employees',
       icon: Users,
+    },
+    {
+      href: '/admin/buyers',
+      label: 'Buyers',
+      icon: ShoppingBag,
     },
     {
       href: '/admin/withdrawals',

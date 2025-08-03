@@ -63,3 +63,20 @@ export type AdminWithdrawalRequest = {
     ifscCode: string;
   };
 };
+
+export type AdminCampaign = {
+    id: string;
+    serviceType: 'YouTube Subscribers' | 'Facebook Likes' | 'Instagram Followers';
+    targetLink: string;
+    tasksCreated: number;
+    totalTasks: number;
+    createdAt: string;
+}
+
+export type AdminBuyer = {
+    id: string;
+    companyName: string;
+    email: string;
+    campaigns: AdminCampaign[];
+    createdAt: string;
+}
