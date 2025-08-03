@@ -17,11 +17,15 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 
-const youtubeTasks = [
-    { id: 1, type: "Subscribe", channel: "Awesome Vlogger" },
-    { id: 2, type: "Like Video", channel: "Gamerz Unite" },
-    { id: 3, type: "Subscribe", channel: "Tech Explained" },
-]
+// This is now a representation of tasks generated from buyer campaigns.
+// In a real application, this data would be fetched from a database.
+const youtubeTasks = Array.from({ length: 12 }, (_, i) => ({
+    id: i + 1,
+    type: "Subscribe",
+    // Example: This channel name would come from a buyer's campaign.
+    channel: `Campaign Channel #${i + 1}`,
+}));
+
 
 export default function YoutubeTasksPage() {
     const [completedTasks, setCompletedTasks] = useState<Set<number>>(new Set());
@@ -31,10 +35,10 @@ export default function YoutubeTasksPage() {
 
         setCompletedTasks(prev => new Set(prev).add(taskId));
          window.dispatchEvent(
-          new CustomEvent('earn', { detail: { amount: 1.0 } }) // Placeholder amount
+          new CustomEvent('earn', { detail: { amount: 1.0 } }) // Placeholder amount, will be dynamic.
         );
-         // In a real app, you would open the link:
-         // window.open('https://youtube.com', '_blank');
+         // In a real app, you would open the link to the buyer's YouTube channel:
+         // window.open('https://youtube.com/channel/SOME_ID', '_blank');
     }
 
     return (
@@ -61,7 +65,7 @@ export default function YoutubeTasksPage() {
                 <div>
                 <h2 className="text-2xl font-bold font-headline">YouTube Tasks</h2>
                 <p className="text-muted-foreground">
-                    Complete tasks to earn rewards.
+                    Complete tasks from buyer campaigns to earn rewards.
                 </p>
                 </div>
             </div>
@@ -73,8 +77,8 @@ export default function YoutubeTasksPage() {
                         <Card key={task.id}>
                             <CardHeader>
                                 <CardTitle className="flex items-center justify-between">
-                                    <span>{task.type}</span>
-                                    <Badge variant="outline" className="bg-primary/10 text-primary">+ Reward</Badge>
+                                    <span>{task.type} Task</span>
+                                    <Badge variant="secondary">Reward</Badge>
                                 </CardTitle>
                                 <CardDescription>Channel: {task.channel}</CardDescription>
                             </CardHeader>
