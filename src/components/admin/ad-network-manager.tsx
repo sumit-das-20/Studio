@@ -31,7 +31,7 @@ import Image from 'next/image';
 const initialAdNetworks: AdNetwork[] = [
     {
         name: "AdMob",
-        icon: (props) => <Image src="https://www.gstatic.com/images/branding/product/2x/admob_32dp.png" alt="AdMob" width={24} height={24} {...props} />,
+        icon: () => <Image src="https://www.gstatic.com/images/branding/product/2x/admob_32dp.png" alt="AdMob" width={24} height={24} />,
         adUnits: [
             { id: 'admob-b1', name: 'Global Banner', unitId: 'ca-app-pub-3940256099942544/6300978111', type: 'Banner', network: 'AdMob' },
             { id: 'admob-r1', name: 'Global Rewarded', unitId: 'ca-app-pub-3940256099942544/5224354917', type: 'Rewarded Video', network: 'AdMob' },
@@ -115,7 +115,7 @@ export function AdNetworkManager() {
                             <Card>
                                 <CardHeader className="flex-row items-center justify-between">
                                     <div className="flex items-center gap-3">
-                                        {network.icon && <network.icon className="h-6 w-6" />}
+                                        {network.icon && <network.icon />}
                                         <CardTitle>{network.name} Ad Units</CardTitle>
                                     </div>
                                     <AdUnitDialog networkName={network.name} onSave={handleSaveAdUnit} />
