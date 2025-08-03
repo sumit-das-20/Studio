@@ -52,6 +52,7 @@ export async function signInAdmin(prevState: any, formData: FormData) {
 
 
 const taskSchema = z.object({
+    id: z.string().optional(),
     question: z.string().min(10, "Question must be at least 10 characters long."),
     reward: z.coerce.number().min(0, "Reward cannot be negative."),
     adUnitId: z.string().min(1, "Ad Unit ID cannot be empty."),
@@ -73,4 +74,27 @@ export async function createTask(prevState: any, formData: FormData) {
     // e.g., revalidatePath('/employee/tasks/click-and-earn');
 
     return { success: true, error: null, data: validatedFields.data };
+}
+
+export async function updateTask(prevState: any, formData: FormData) {
+    const validatedFields = taskSchema.safeParse(Object.fromEntries(formData.entries()));
+
+    if (!validatedFields.success) {
+        return { success: false, error: validatedFields.error.flatten().fieldErrors };
+    }
+
+    // In a real app, you would update this data in a database like Firestore.
+    console.log("Task Updated by Admin:", validatedFields.data);
+    
+    return { success: true, error: null, data: validatedFields.data };
+}
+
+export async function deleteTask(taskId: string) {
+    if (!taskId) {
+        return { success: false, error: "Task ID is required." };
+    }
+    // In a real app, you would delete this data from a database like Firestore.
+    console.log("Task Deleted by Admin:", taskId);
+    
+    return { success: true, error: null, data: { id: taskId } };
 }

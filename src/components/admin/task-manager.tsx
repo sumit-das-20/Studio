@@ -17,11 +17,10 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { Badge } from '../ui/badge';
-import { Button } from '../ui/button';
-import { Edit, PlusCircle, Trash } from 'lucide-react';
 import { AdminTask } from '@/lib/types';
-import { NewTaskDialog } from './new-task-dialog';
+import { TaskDialog } from './new-task-dialog';
 import { useState } from 'react';
+import { DeleteTaskDialog } from './delete-task-dialog';
 
 // This is a representation of tasks fetched from the database.
 const initialTasks: AdminTask[] = [
@@ -50,6 +49,18 @@ export function TaskManager() {
     setTasks(prevTasks => [newTask, ...prevTasks]);
   };
 
+  const handleTaskUpdated = (updatedTask: AdminTask) => {
+    setTasks(prevTasks => 
+        prevTasks.map(task => 
+            task.id === updatedTask.id ? updatedTask : task
+        )
+    );
+  };
+
+  const handleTaskDeleted = (taskId: string) => {
+    setTasks(prevTasks => prevTasks.filter(task => task.id !== taskId));
+  }
+
   return (
     <Card>
       <CardHeader className="flex flex-row items-center justify-between">
@@ -59,7 +70,7 @@ export function TaskManager() {
             Create, edit, and manage all tasks available to users.
           </CardDescription>
         </div>
-         <NewTaskDialog onTaskCreated={handleTaskCreated} />
+         <TaskDialog onTaskCreated={handleTaskCreated} onTaskUpdated={handleTaskUpdated}/>
       </CardHeader>
       <CardContent>
         {tasks.length > 0 ? (
@@ -86,14 +97,8 @@ export function TaskManager() {
                   <TableCell className="font-mono text-xs">{task.adUnitId}</TableCell>
                   <TableCell>
                      <div className="flex items-center gap-2">
-                        <Button variant="outline" size="icon" className="h-8 w-8">
-                            <Edit className="h-4 w-4" />
-                            <span className="sr-only">Edit Task</span>
-                        </Button>
-                        <Button variant="destructive" size="icon" className="h-8 w-8">
-                            <Trash className="h-4 w-4" />
-                            <span className="sr-only">Delete Task</span>
-                        </Button>
+                        <TaskDialog onTaskCreated={handleTaskCreated} onTaskUpdated={handleTaskUpdated} task={task} />
+                        <DeleteTaskDialog taskId={task.id} onTaskDeleted={handleTaskDeleted} />
                     </div>
                   </TableCell>
                 </TableRow>
@@ -103,7 +108,7 @@ export function TaskManager() {
         ) : (
           <div className="py-12 text-center text-muted-foreground">
             <p>No tasks created yet.</p>
-            <NewTaskDialog onTaskCreated={handleTaskCreated} isFirstTask={true} />
+            <TaskDialog onTaskCreated={handleTaskCreated} onTaskUpdated={handleTaskUpdated} isFirstTask={true} />
           </div>
         )}
       </CardContent>
