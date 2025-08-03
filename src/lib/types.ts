@@ -3,6 +3,7 @@ export type SimpleTaskType = {
   id: number;
   question: string;
   reward?: number;
+  adUnitId?: string;
 };
 
 export type LinkTask = {

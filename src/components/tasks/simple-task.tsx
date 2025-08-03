@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState, useTransition } from 'react';
@@ -145,9 +146,12 @@ export function SimpleTask({ task, adType }: SimpleTaskProps) {
               data-ai-hint={adType === 'banner' ? 'advertisement banner' : 'video player'}
               className="w-full h-auto"
             />
-            <p className="text-center text-xs text-muted-foreground mt-1">
-              {adType === 'banner' ? 'Banner Ad' : 'Video Ad'}
-            </p>
+            <div className="text-center text-xs text-muted-foreground mt-2">
+                <p>{adType === 'banner' ? 'Banner Ad' : 'Video Ad'}</p>
+                {task.adUnitId && (
+                    <p className="font-mono text-foreground/50">{task.adUnitId}</p>
+                )}
+            </div>
           </div>
         </CardFooter>
       )}

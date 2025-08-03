@@ -3,11 +3,11 @@ import { MousePointerClick } from 'lucide-react';
 import { SimpleTask } from './simple-task';
 
 // In a real application, this data would be fetched from a backend
-// where tasks are created and managed by an administrator.
+// where tasks and their corresponding ad unit IDs are managed by an administrator.
 const tasks: SimpleTaskType[] = [
-  { id: 1, question: 'Enter Your Full Name.', reward: 0.50 },
-  { id: 2, question: 'What is your primary hobby?', reward: 0.50 },
-  { id: 3, question: 'What city do you live in?', reward: 0.50 },
+  { id: 1, question: 'Enter Your Full Name.', adUnitId: 'ca-app-pub-3940256099942544/6300978111' },
+  { id: 2, question: 'What is your primary hobby?', adUnitId: 'ca-app-pub-3940256099942544/6300978111' },
+  { id: 3, question: 'What city do you live in?', adUnitId: 'ca-app-pub-3940256099942544/6300978111' },
 ];
 
 export function ClickAndEarn() {
