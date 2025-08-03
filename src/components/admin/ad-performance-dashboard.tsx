@@ -92,6 +92,7 @@ export function AdPerformanceDashboard() {
                                 border: '1px solid hsl(var(--border))',
                                 borderRadius: 'var(--radius)',
                             }}
+                            formatter={(value: number) => [`${value.toFixed(2)} INR`, "Earnings"]}
                         />
                         <Bar dataKey="earnings" fill="hsl(var(--primary))" radius={[4, 4, 0, 0]} />
                     </BarChart>
