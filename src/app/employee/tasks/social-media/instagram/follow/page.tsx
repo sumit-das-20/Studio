@@ -19,8 +19,8 @@ const singleCampaign = {
     id: 1,
     accountName: "@TravelVibes",
     taskType: "Follow Account",
-    rewardPerTask: 1.10,
-    link: "https://instagram.com/example", // Example link provided by buyer
+    rewardPerTask: 0.00, // This will be provided by the buyer's campaign settings
+    link: "https://instagram.com/example",
 };
 
 const instagramTasks = Array.from({ length: 12 }, (_, i) => ({

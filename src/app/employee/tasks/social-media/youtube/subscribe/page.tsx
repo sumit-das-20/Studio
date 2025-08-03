@@ -19,8 +19,8 @@ const singleCampaign = {
     id: 1,
     channel: "Fashionista Style", 
     taskType: "Subscribe",
-    rewardPerTask: 1.50,
-    link: "https://youtube.com/channel/example", // Example link provided by buyer
+    rewardPerTask: 0.00, // This will be provided by the buyer's campaign settings
+    link: "https://youtube.com/channel/example",
 };
 
 // Generate a list of tasks based on the campaign.

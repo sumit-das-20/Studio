@@ -18,8 +18,8 @@ const singleCampaign = {
     id: 1,
     postDescription: "A photo of a cute puppy.",
     taskType: "Like & Comment",
-    rewardPerTask: 0.90, 
-    link: "https://instagram.com/p/example", // Example link provided by buyer
+    rewardPerTask: 0.00, // This will be provided by the buyer's campaign settings
+    link: "https://instagram.com/p/example",
 };
 
 const instagramTasks = Array.from({ length: 12 }, (_, i) => ({

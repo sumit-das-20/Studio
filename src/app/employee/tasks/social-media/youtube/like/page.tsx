@@ -18,8 +18,8 @@ const singleCampaign = {
     id: 1,
     videoTitle: "My New Setup Tour 2024",
     taskType: "Like & Comment",
-    rewardPerTask: 0.75, 
-    link: "https://youtube.com/watch?v=example", // Example link provided by buyer
+    rewardPerTask: 0.00, // This will be provided by the buyer's campaign settings
+    link: "https://youtube.com/watch?v=example",
 };
 
 const youtubeTasks = Array.from({ length: 12 }, (_, i) => ({

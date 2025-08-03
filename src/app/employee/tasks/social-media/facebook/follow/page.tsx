@@ -18,8 +18,8 @@ const singleCampaign = {
     id: 1,
     pageName: "Gadget Gurus",
     taskType: "Follow Page",
-    rewardPerTask: 1.25, 
-    link: "https://facebook.com/example", // Example link provided by buyer
+    rewardPerTask: 0.00, // This will be provided by the buyer's campaign settings
+    link: "https://facebook.com/example",
 };
 
 // Generate a list of tasks based on the campaign.

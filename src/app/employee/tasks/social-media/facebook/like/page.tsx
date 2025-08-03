@@ -18,8 +18,8 @@ const singleCampaign = {
     id: 1,
     postTitle: "Check out this amazing sunset!",
     taskType: "Like & Comment",
-    rewardPerTask: 0.80, 
-    link: "https://facebook.com/posts/example", // Example link provided by buyer
+    rewardPerTask: 0.00, // This will be provided by the buyer's campaign settings
+    link: "https://facebook.com/posts/example",
 };
 
 const facebookTasks = Array.from({ length: 12 }, (_, i) => ({

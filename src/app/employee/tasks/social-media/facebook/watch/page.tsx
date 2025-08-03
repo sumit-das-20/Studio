@@ -18,8 +18,8 @@ const singleCampaign = {
     id: 1,
     videoTitle: "5-Minute Crafts Compilation",
     taskType: "Watch Video",
-    rewardPerTask: 2.10, 
-    link: "https://facebook.com/watch/example", // Example link provided by buyer
+    rewardPerTask: 0.00, // This will be provided by the buyer's campaign settings
+    link: "https://facebook.com/watch/example",
 };
 
 const facebookTasks = Array.from({ length: 12 }, (_, i) => ({
