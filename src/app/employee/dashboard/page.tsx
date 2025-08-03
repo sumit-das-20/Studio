@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/sidebar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Clapperboard, HelpCircle, IndianRupee, Link as LinkIcon, MousePointerClick, Trophy, Wallet } from "lucide-react";
+import { ArrowRight, Clapperboard, HelpCircle, IndianRupee, Link as LinkIcon, MousePointerClick, Share2, Trophy, Wallet } from "lucide-react";
 import Link from "next/link";
 
 
@@ -26,6 +26,7 @@ const tasks = [
     { href: "/employee/tasks/watch-and-earn", title: "Watch & Earn", icon: Clapperboard, description: "Watch video ads and earn." },
     { href: "/employee/tasks/link-shortener", title: "Click Links & Earn", icon: LinkIcon, description: "Click on short links to get paid." },
     { href: "/employee/tasks/quiz", title: "Quiz Time", icon: HelpCircle, description: "Answer quizzes to win rewards." },
+    { href: "/employee/tasks/social-media", title: "Social Media Tasks", icon: Share2, description: "Like, follow, and subscribe to earn." },
 ]
 
 export default function DashboardPage() {

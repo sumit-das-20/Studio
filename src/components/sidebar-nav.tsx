@@ -20,6 +20,7 @@ import {
   Link as LinkIcon,
   HelpCircle,
   ChevronDown,
+  Share2,
 } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
@@ -47,6 +48,7 @@ export function SidebarNav() {
     { href: '/employee/tasks/watch-and-earn', label: 'Watch & Earn', icon: Clapperboard },
     { href: '/employee/tasks/link-shortener', label: 'Link Shortener', icon: LinkIcon },
     { href: '/employee/tasks/quiz', label: 'Quiz', icon: HelpCircle },
+    { href: '/employee/tasks/social-media', label: 'Social Media', icon: Share2 },
   ];
 
   return (
@@ -83,7 +85,7 @@ export function SidebarNav() {
               <SidebarMenuSubItem key={item.href}>
                 <SidebarMenuSubButton
                   asChild
-                  isActive={pathname === item.href}
+                  isActive={pathname.startsWith(item.href)}
                 >
                   <a href={item.href}>
                     <item.icon />
