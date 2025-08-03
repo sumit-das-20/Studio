@@ -23,6 +23,6 @@ export type SocialTask = {
   id: number;
   type: string;
   title: string;
-  reward: number;
+  reward?: number;
   link: string;
 }

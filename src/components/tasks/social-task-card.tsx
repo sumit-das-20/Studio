@@ -47,9 +47,11 @@ export function SocialTaskCard({ task }: SocialTaskCardProps) {
 
       if (isVerified) {
         setStatus('completed');
-        window.dispatchEvent(
-          new CustomEvent('earn', { detail: { amount: task.reward } })
-        );
+        if (task.reward) {
+          window.dispatchEvent(
+            new CustomEvent('earn', { detail: { amount: task.reward } })
+          );
+        }
       } else {
         // Handle failed verification
         alert('Verification failed. Please try again.');
@@ -63,7 +65,7 @@ export function SocialTaskCard({ task }: SocialTaskCardProps) {
         <CardHeader>
             <CardTitle className="flex items-center justify-between">
                 <span className="text-base">{task.type}</span>
-                <Badge variant="secondary">+{task.reward.toFixed(2)}</Badge>
+                {task.reward && <Badge variant="secondary">+{task.reward.toFixed(2)}</Badge>}
             </CardTitle>
             <CardDescription>{task.title}</CardDescription>
         </CardHeader>

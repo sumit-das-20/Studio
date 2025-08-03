@@ -21,7 +21,6 @@ const youtubeTasks: SocialTask[] = Array.from({ length: 12 }, (_, i) => ({
     id: i + 1,
     type: "Watch Video",
     title: `Watch Video: "Summer Fashion Lookbook"`,
-    reward: 0.15,
     link: "https://youtube.com/watch?v=example",
 }));
 

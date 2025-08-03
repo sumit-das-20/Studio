@@ -21,7 +21,6 @@ const instagramTasks: SocialTask[] = Array.from({ length: 12 }, (_, i) => ({
     id: i + 1,
     type: "Follow Account",
     title: `Follow Account: @TravelVibes`,
-    reward: 0.30,
     link: "https://instagram.com/example",
 }));
 

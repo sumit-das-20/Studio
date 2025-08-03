@@ -21,7 +21,6 @@ const instagramTasks: SocialTask[] = Array.from({ length: 12 }, (_, i) => ({
     id: i + 1,
     type: "Like & Comment",
     title: `Like Post: "A photo of a cute puppy."`,
-    reward: 0.18,
     link: "https://instagram.com/p/example",
 }));
 

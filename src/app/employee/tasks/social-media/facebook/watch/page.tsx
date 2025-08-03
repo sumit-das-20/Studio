@@ -21,7 +21,6 @@ const facebookTasks: SocialTask[] = Array.from({ length: 12 }, (_, i) => ({
     id: i + 1,
     type: "Watch Video",
     title: `Watch Video: "5-Minute Crafts Compilation"`,
-    reward: 0.12,
     link: "https://facebook.com/watch/example",
 }));
 

@@ -21,7 +21,6 @@ const youtubeTasks: SocialTask[] = Array.from({ length: 12 }, (_, i) => ({
     id: i + 1,
     type: "Like & Comment",
     title: `Like Video: "My New Setup Tour 2024"`,
-    reward: 0.10,
     link: "https://youtube.com/watch?v=example",
 }));
 
