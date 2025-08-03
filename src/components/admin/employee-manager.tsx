@@ -21,10 +21,11 @@ import { Badge } from '../ui/badge';
 import { Button } from '../ui/button';
 import { MoreHorizontal, User } from 'lucide-react';
 import { type AdminEmployee } from '@/lib/types';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { Skeleton } from '../ui/skeleton';
 
-// This is a representation of employee data fetched from the database.
-const initialEmployees: AdminEmployee[] = [
+// This is a representation of employee data that would be fetched from your database.
+const mockEmployees: AdminEmployee[] = [
   {
     id: 'EMP-001',
     email: 'john.doe@example.com',
@@ -56,7 +57,26 @@ const initialEmployees: AdminEmployee[] = [
 ];
 
 export function EmployeeManager() {
-  const [employees, setEmployees] = useState<AdminEmployee[]>(initialEmployees);
+  const [employees, setEmployees] = useState<AdminEmployee[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    // In a real application, you would fetch data from your backend API here.
+    // For demonstration, we're simulating a network request with a timeout.
+    const fetchEmployees = async () => {
+        setIsLoading(true);
+        // Example: const response = await fetch('/api/admin/employees');
+        // const data = await response.json();
+        // setEmployees(data);
+        setTimeout(() => {
+            setEmployees(mockEmployees);
+            setIsLoading(false);
+        }, 1500); // Simulate a 1.5-second network delay
+    };
+
+    fetchEmployees();
+  }, []);
+
 
   return (
     <Card>
@@ -82,29 +102,46 @@ export function EmployeeManager() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {employees.map((employee) => (
-                <TableRow key={employee.id}>
-                  <TableCell className="font-medium">{employee.id}</TableCell>
-                  <TableCell>{employee.email}</TableCell>
-                  <TableCell className="text-right">{employee.totalEarnings.toFixed(2)}</TableCell>
-                  <TableCell className="text-right">
-                    {employee.withdrawalRequest ? (
-                         <Badge variant="destructive">{employee.withdrawalRequest.amount.toFixed(2)}</Badge>
-                    ) : (
-                        <span className="text-muted-foreground">-</span>
-                    )}
-                  </TableCell>
-                   <TableCell>{employee.createdAt}</TableCell>
-                  <TableCell>
-                     <div className="flex items-center justify-center">
-                        <Button variant="ghost" size="icon" className="h-8 w-8">
-                            <MoreHorizontal className="h-4 w-4" />
-                            <span className="sr-only">Actions</span>
-                        </Button>
-                    </div>
-                  </TableCell>
-                </TableRow>
-              ))}
+              {isLoading ? (
+                Array.from({ length: 4 }).map((_, index) => (
+                    <TableRow key={index}>
+                        <TableCell><Skeleton className="h-4 w-16" /></TableCell>
+                        <TableCell><Skeleton className="h-4 w-48" /></TableCell>
+                        <TableCell className="text-right"><Skeleton className="h-4 w-12 ml-auto" /></TableCell>
+                        <TableCell className="text-right"><Skeleton className="h-4 w-12 ml-auto" /></TableCell>
+                        <TableCell><Skeleton className="h-4 w-24" /></TableCell>
+                        <TableCell>
+                            <div className="flex items-center justify-center">
+                                <Skeleton className="h-8 w-8 rounded-full" />
+                            </div>
+                        </TableCell>
+                    </TableRow>
+                ))
+              ) : (
+                employees.map((employee) => (
+                    <TableRow key={employee.id}>
+                    <TableCell className="font-medium">{employee.id}</TableCell>
+                    <TableCell>{employee.email}</TableCell>
+                    <TableCell className="text-right">{employee.totalEarnings.toFixed(2)}</TableCell>
+                    <TableCell className="text-right">
+                        {employee.withdrawalRequest ? (
+                            <Badge variant="destructive">{employee.withdrawalRequest.amount.toFixed(2)}</Badge>
+                        ) : (
+                            <span className="text-muted-foreground">-</span>
+                        )}
+                    </TableCell>
+                    <TableCell>{employee.createdAt}</TableCell>
+                    <TableCell>
+                        <div className="flex items-center justify-center">
+                            <Button variant="ghost" size="icon" className="h-8 w-8">
+                                <MoreHorizontal className="h-4 w-4" />
+                                <span className="sr-only">Actions</span>
+                            </Button>
+                        </div>
+                    </TableCell>
+                    </TableRow>
+                ))
+              )}
             </TableBody>
           </Table>
       </CardContent>
