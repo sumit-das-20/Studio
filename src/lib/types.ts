@@ -1,5 +1,7 @@
 
 
+import type { LucideIcon } from "lucide-react";
+
 export type SimpleTaskType = {
   id: number;
   question: string;
@@ -87,3 +89,17 @@ export type AdPerformance = {
     impressions: number;
     earnings: number;
 }
+
+export type AdUnit = {
+    id: string;
+    name: string;
+    unitId: string;
+    type: 'Banner' | 'Rewarded Video' | 'Interstitial' | 'Other';
+    network: 'AdMob' | 'AppLovin' | 'Unity Ads' | 'StartApp' | 'IronSource' | 'Chartboost' | 'InMobi' | 'Facebook';
+};
+
+export type AdNetwork = {
+    name: AdUnit['network'];
+    icon?: React.ComponentType<{ className?: string }>;
+    adUnits: AdUnit[];
+};

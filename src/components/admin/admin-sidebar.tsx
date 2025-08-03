@@ -1,5 +1,4 @@
 
-
 'use client';
 
 import {
@@ -10,7 +9,7 @@ import {
   SidebarMenuItem,
   SidebarMenuButton,
 } from '@/components/ui/sidebar';
-import { LayoutDashboard, Users, CreditCard, ClipboardList, Shield, ShoppingBag } from 'lucide-react';
+import { LayoutDashboard, Users, CreditCard, ClipboardList, Shield, ShoppingBag, RadioTower } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 
 const menuItems = [
@@ -39,6 +38,11 @@ const menuItems = [
       label: 'Tasks',
       icon: ClipboardList,
     },
+    {
+      href: '/admin/ad-networks',
+      label: 'Ad Networks',
+      icon: RadioTower
+    }
   ];
 
 export function AdminSidebar() {
@@ -58,7 +62,7 @@ export function AdminSidebar() {
                         <SidebarMenuItem key={item.href}>
                         <SidebarMenuButton
                             asChild
-                            isActive={pathname === item.href}
+                            isActive={pathname.startsWith(item.href)}
                             tooltip={item.label}
                         >
                             <a href={item.href}>
