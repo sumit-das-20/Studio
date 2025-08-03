@@ -3,7 +3,6 @@
 
 import { Header } from "@/components/header";
 import { SidebarNav } from "@/components/sidebar-nav";
-import { BackButton } from "@/components/back-button";
 import {
   Sidebar,
   SidebarContent,
@@ -11,7 +10,32 @@ import {
   SidebarInset,
   SidebarProvider,
 } from "@/components/ui/sidebar";
-import { Trophy, Facebook } from "lucide-react";
+import { Trophy, Facebook, ThumbsUp, Video, MessageSquare, ArrowRight } from "lucide-react";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
+import { BackButton } from "@/components/back-button";
+
+const facebookTaskTypes = [
+  { 
+    name: "Follow Pages", 
+    icon: ThumbsUp, // Using ThumbsUp for "Like/Follow Page"
+    href: "/employee/tasks/social-media/facebook/follow", 
+    description: "Follow or like pages to earn rewards." 
+  },
+  { 
+    name: "Watch Videos", 
+    icon: Video, 
+    href: "/employee/tasks/social-media/facebook/watch", 
+    description: "Watch videos for a set duration to earn." 
+  },
+  { 
+    name: "Like & Comment", 
+    icon: MessageSquare, 
+    href: "/employee/tasks/social-media/facebook/like", 
+    description: "Like and comment on posts for rewards." 
+  },
+];
 
 export default function FacebookTasksPage() {
     return (
@@ -38,12 +62,30 @@ export default function FacebookTasksPage() {
                 <div>
                 <h2 className="text-2xl font-bold font-headline">Facebook Tasks</h2>
                 <p className="text-muted-foreground">
-                    Tasks for this platform are coming soon.
+                    Choose a task type to start earning.
                 </p>
                 </div>
             </div>
-             <div className="flex items-center justify-center h-48 border-2 border-dashed rounded-lg">
-                <p className="text-muted-foreground">No tasks available yet.</p>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {facebookTaskTypes.map(task => (
+                    <Card key={task.name} className="hover:shadow-lg transition-shadow flex flex-col">
+                        <CardHeader>
+                            <div className="flex items-center gap-3">
+                                <task.icon className="h-8 w-8 text-primary" />
+                                <CardTitle className="text-xl">{task.name}</CardTitle>
+                            </div>
+                            <CardDescription>{task.description}</CardDescription>
+                        </CardHeader>
+                         <CardContent className="flex-grow flex items-end">
+                            <Button asChild className="w-full mt-auto">
+                                <Link href={task.href}>
+                                    View Tasks <ArrowRight className="ml-2 h-4 w-4" />
+                                </Link>
+                            </Button>
+                        </CardContent>
+                    </Card>
+                ))}
             </div>
         </main>
       </SidebarInset>
