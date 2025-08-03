@@ -13,18 +13,19 @@ import {
 } from "@/components/ui/sidebar";
 import { Trophy, Heart } from "lucide-react";
 import { SocialTaskCard } from '@/components/tasks/social-task-card';
+import { SocialTask } from "@/lib/types";
 
 // The rewardPerTask would be set by the admin in the campaign settings.
 const singleCampaign = {
     id: 1,
     postDescription: "A photo of a cute puppy.",
     taskType: "Like & Comment",
-    rewardPerTask: 0.18,
+    rewardPerTask: 0.18, // This value would be fetched from the backend.
     link: "https://instagram.com/p/example",
 };
 
 // Generate a list of tasks based on the campaign.
-const instagramTasks = Array.from({ length: 12 }, (_, i) => ({
+const instagramTasks: SocialTask[] = Array.from({ length: 12 }, (_, i) => ({
     id: i + 1,
     type: singleCampaign.taskType,
     title: `Like Post: "${singleCampaign.postDescription}"`,
