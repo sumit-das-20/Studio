@@ -17,12 +17,6 @@ const portalLinks = [
         icon: TrendingUp,
         variant: 'accent' as 'accent',
     },
-     {
-        href: '/admin/login',
-        title: 'Admin Login',
-        icon: Shield,
-        variant: 'destructive' as 'destructive',
-    },
 ]
 
 export function Portals() {
