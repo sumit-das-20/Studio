@@ -1,10 +1,8 @@
 
 'use client';
 
-import { useState } from 'react';
 import { Header } from "@/components/header";
 import { SidebarNav } from "@/components/sidebar-nav";
-import { BackButton } from "@/components/back-button";
 import {
   Sidebar,
   SidebarContent,
@@ -12,35 +10,34 @@ import {
   SidebarInset,
   SidebarProvider,
 } from "@/components/ui/sidebar";
-import { Trophy, Youtube, CheckCircle, ExternalLink } from "lucide-react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
+import { Trophy, Youtube, ThumbsUp, Video, UserPlus, ArrowRight } from "lucide-react";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
+import { BackButton } from "@/components/back-button";
 
-// This is now a representation of tasks generated from buyer campaigns.
-// In a real application, this data would be fetched from a database.
-const youtubeTasks = Array.from({ length: 12 }, (_, i) => ({
-    id: i + 1,
-    type: "Subscribe",
-    // Example: This channel name would come from a buyer's campaign.
-    channel: `Campaign Channel #${i + 1}`,
-}));
-
+const youtubeTaskTypes = [
+  { 
+    name: "Subscribe Tasks", 
+    icon: UserPlus, 
+    href: "/employee/tasks/social-media/youtube/subscribe", 
+    description: "Subscribe to channels to earn rewards." 
+  },
+  { 
+    name: "Watch Videos", 
+    icon: Video, 
+    href: "/employee/tasks/social-media/youtube/watch", 
+    description: "Watch videos for a set duration to earn." 
+  },
+  { 
+    name: "Like & Comment", 
+    icon: ThumbsUp, 
+    href: "/employee/tasks/social-media/youtube/like", 
+    description: "Like and comment on videos for rewards." 
+  },
+];
 
 export default function YoutubeTasksPage() {
-    const [completedTasks, setCompletedTasks] = useState<Set<number>>(new Set());
-
-    const handleCompleteTask = (taskId: number) => {
-        if (completedTasks.has(taskId)) return;
-
-        setCompletedTasks(prev => new Set(prev).add(taskId));
-         window.dispatchEvent(
-          new CustomEvent('earn', { detail: { amount: 1.0 } }) // Placeholder amount, will be dynamic.
-        );
-         // In a real app, you would open the link to the buyer's YouTube channel:
-         // window.open('https://youtube.com/channel/SOME_ID', '_blank');
-    }
-
     return (
     <SidebarProvider>
       <Sidebar>
@@ -65,32 +62,30 @@ export default function YoutubeTasksPage() {
                 <div>
                 <h2 className="text-2xl font-bold font-headline">YouTube Tasks</h2>
                 <p className="text-muted-foreground">
-                    Complete tasks from buyer campaigns to earn rewards.
+                    Choose a task type to start earning.
                 </p>
                 </div>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {youtubeTasks.map(task => {
-                    const isCompleted = completedTasks.has(task.id);
-                    return (
-                        <Card key={task.id}>
-                            <CardHeader>
-                                <CardTitle className="flex items-center justify-between">
-                                    <span>{task.type} Task</span>
-                                    <Badge variant="secondary">Reward</Badge>
-                                </CardTitle>
-                                <CardDescription>Channel: {task.channel}</CardDescription>
-                            </CardHeader>
-                            <CardContent>
-                                <Button className="w-full" onClick={() => handleCompleteTask(task.id)} disabled={isCompleted}>
-                                    {isCompleted ? <CheckCircle className="mr-2 h-4 w-4" /> : <ExternalLink className="mr-2 h-4 w-4" />}
-                                    {isCompleted ? 'Completed' : 'Start Task'}
-                                </Button>
-                            </CardContent>
-                        </Card>
-                    )
-                })}
+                {youtubeTaskTypes.map(task => (
+                    <Card key={task.name} className="hover:shadow-lg transition-shadow flex flex-col">
+                        <CardHeader>
+                            <div className="flex items-center gap-3">
+                                <task.icon className="h-8 w-8 text-primary" />
+                                <CardTitle className="text-xl">{task.name}</CardTitle>
+                            </div>
+                            <CardDescription>{task.description}</CardDescription>
+                        </CardHeader>
+                         <CardContent className="flex-grow flex items-end">
+                            <Button asChild className="w-full mt-auto">
+                                <Link href={task.href}>
+                                    View Tasks <ArrowRight className="ml-2 h-4 w-4" />
+                                </Link>
+                            </Button>
+                        </CardContent>
+                    </Card>
+                ))}
             </div>
         </main>
       </SidebarInset>
