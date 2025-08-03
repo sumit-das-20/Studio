@@ -69,25 +69,18 @@ const initialTasks: AdminTask[] = [
   }
 ];
 
-const TaskTable = ({ tasks, onTaskUpdated, onTaskDeleted }: { tasks: AdminTask[], onTaskUpdated: (task: AdminTask) => void, onTaskDeleted: (taskId: string) => void }) => {
+const TaskTable = ({ tasks, onTaskUpdated, onTaskDeleted, onTaskCreated }: { tasks: AdminTask[], onTaskUpdated: (task: AdminTask) => void, onTaskDeleted: (taskId: string) => void, onTaskCreated: (task: AdminTask) => void }) => {
   const platformIcons = {
     YouTube: <Youtube className="h-5 w-5 text-red-600" />,
     Facebook: <Facebook className="h-5 w-5 text-blue-600" />,
     Instagram: <Instagram className="h-5 w-5 text-pink-600" />,
   };
   
-  const handleTaskCreated = (newTask: AdminTask) => {
-    // This function is passed to the dialog, but the state is lifted
-    // so we call the parent's handler. A bit of a workaround for now.
-    // A better solution might involve a global state manager.
-    window.location.reload(); 
-  };
-
-
   if (tasks.length === 0) {
     return (
       <div className="py-12 text-center text-muted-foreground">
         <p>No tasks found for this category.</p>
+        <TaskDialog onTaskCreated={onTaskCreated} onTaskUpdated={onTaskUpdated} isFirstTask={true} />
       </div>
     );
   }
@@ -136,7 +129,7 @@ const TaskTable = ({ tasks, onTaskUpdated, onTaskDeleted }: { tasks: AdminTask[]
               <TableCell className="text-right font-semibold">{task.reward.toFixed(2)}</TableCell>
               <TableCell>
                  <div className="flex items-center gap-2">
-                    <TaskDialog onTaskCreated={handleTaskCreated} onTaskUpdated={onTaskUpdated} task={task} />
+                    <TaskDialog onTaskCreated={onTaskCreated} onTaskUpdated={onTaskUpdated} task={task} />
                     <DeleteTaskDialog taskId={task.id} onTaskDeleted={onTaskDeleted} />
                 </div>
               </TableCell>
@@ -192,19 +185,19 @@ export function TaskManager() {
                 <TabsTrigger value="social">Social Media</TabsTrigger>
             </TabsList>
             <TabsContent value="all">
-                 <TaskTable tasks={tasks} onTaskUpdated={handleTaskUpdated} onTaskDeleted={handleTaskDeleted} />
+                 <TaskTable tasks={tasks} onTaskUpdated={handleTaskUpdated} onTaskDeleted={handleTaskDeleted} onTaskCreated={handleTaskCreated} />
             </TabsContent>
             <TabsContent value="simple">
-                 <TaskTable tasks={filteredTasks(['Click and Earn', 'Watch and Earn'])} onTaskUpdated={handleTaskUpdated} onTaskDeleted={handleTaskDeleted} />
+                 <TaskTable tasks={filteredTasks(['Click and Earn', 'Watch and Earn'])} onTaskUpdated={handleTaskUpdated} onTaskDeleted={handleTaskDeleted} onTaskCreated={handleTaskCreated} />
             </TabsContent>
              <TabsContent value="links">
-                 <TaskTable tasks={filteredTasks('Link Shortener')} onTaskUpdated={handleTaskUpdated} onTaskDeleted={handleTaskDeleted} />
+                 <TaskTable tasks={filteredTasks('Link Shortener')} onTaskUpdated={handleTaskUpdated} onTaskDeleted={handleTaskDeleted} onTaskCreated={handleTaskCreated} />
             </TabsContent>
              <TabsContent value="quiz">
-                 <TaskTable tasks={filteredTasks('Quiz')} onTaskUpdated={handleTaskUpdated} onTaskDeleted={handleTaskDeleted} />
+                 <TaskTable tasks={filteredTasks('Quiz')} onTaskUpdated={handleTaskUpdated} onTaskDeleted={handleTaskDeleted} onTaskCreated={handleTaskCreated} />
             </TabsContent>
              <TabsContent value="social">
-                 <TaskTable tasks={filteredTasks('Social Media')} onTaskUpdated={handleTaskUpdated} onTaskDeleted={handleTaskDeleted} />
+                 <TaskTable tasks={filteredTasks('Social Media')} onTaskUpdated={handleTaskUpdated} onTaskDeleted={handleTaskDeleted} onTaskCreated={handleTaskCreated} />
             </TabsContent>
          </Tabs>
       </CardContent>
