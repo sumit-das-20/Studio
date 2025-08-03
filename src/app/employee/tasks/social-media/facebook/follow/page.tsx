@@ -1,3 +1,4 @@
+
 'use client';
 
 import { Header } from "@/components/header";
@@ -12,20 +13,12 @@ import {
 } from "@/components/ui/sidebar";
 import { Trophy, ThumbsUp } from "lucide-react";
 import { SocialTaskCard } from '@/components/tasks/social-task-card';
-import { SocialTask } from "@/lib/types";
-
-// This is a representation of tasks generated from a buyer's campaign.
-// In a real app, this data would be fetched from a database.
-const facebookTasks: SocialTask[] = Array.from({ length: 12 }, (_, i) => ({
-    id: i + 1,
-    type: "Follow Page",
-    title: `Follow Page: Gadget Gurus`,
-    link: "https://facebook.com/example",
-    reward: 1.00,
-}));
-
+import { useMockData } from "@/hooks/use-mock-data";
 
 export default function FacebookFollowPage() {
+    const { socialTasks } = useMockData();
+    const facebookTasks = socialTasks.filter(task => task.platform === 'Facebook' && task.type === 'Follow Page');
+
     return (
     <SidebarProvider>
       <Sidebar>
@@ -60,6 +53,11 @@ export default function FacebookFollowPage() {
                     <SocialTaskCard key={task.id} task={task} />
                 ))}
             </div>
+             {facebookTasks.length === 0 && (
+                <div className="text-center text-muted-foreground py-12">
+                    <p>No follow tasks available for Facebook at the moment.</p>
+                </div>
+            )}
         </main>
       </SidebarInset>
     </SidebarProvider>

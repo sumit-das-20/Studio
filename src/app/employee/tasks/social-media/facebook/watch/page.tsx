@@ -1,3 +1,4 @@
+
 'use client';
 
 import { Header } from "@/components/header";
@@ -12,20 +13,13 @@ import {
 } from "@/components/ui/sidebar";
 import { Trophy, Video } from "lucide-react";
 import { SocialTaskCard } from '@/components/tasks/social-task-card';
-import { SocialTask } from "@/lib/types";
-
-// This is a representation of tasks generated from a buyer's campaign.
-// In a real app, this data would be fetched from a database.
-const facebookTasks: SocialTask[] = Array.from({ length: 12 }, (_, i) => ({
-    id: i + 1,
-    type: "Watch Video",
-    title: `Watch Video: "5-Minute Crafts Compilation"`,
-    link: "https://facebook.com/watch/example",
-    reward: 0.75,
-}));
+import { useMockData } from "@/hooks/use-mock-data";
 
 
 export default function FacebookWatchPage() {
+    const { socialTasks } = useMockData();
+    const facebookTasks = socialTasks.filter(task => task.platform === 'Facebook' && task.type === 'Watch Video');
+
     return (
     <SidebarProvider>
       <Sidebar>
@@ -60,6 +54,11 @@ export default function FacebookWatchPage() {
                     <SocialTaskCard key={task.id} task={task} />
                 ))}
             </div>
+             {facebookTasks.length === 0 && (
+                <div className="text-center text-muted-foreground py-12">
+                    <p>No watch tasks available for Facebook at the moment.</p>
+                </div>
+            )}
         </main>
       </SidebarInset>
     </SidebarProvider>

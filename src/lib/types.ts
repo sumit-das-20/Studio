@@ -1,5 +1,4 @@
 
-
 import type { LucideIcon } from "lucide-react";
 
 export type SimpleTaskType = {
@@ -28,6 +27,7 @@ export type SocialTask = {
   title: string;
   reward?: number;
   link: string;
+  platform: 'YouTube' | 'Facebook' | 'Instagram';
 }
 
 export type AdminTask = {

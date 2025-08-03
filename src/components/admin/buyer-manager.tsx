@@ -25,68 +25,53 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { useToast } from '@/hooks/use-toast';
-import type { AdminBuyer, AdminCampaign } from '@/lib/types';
+import type { AdminBuyer, AdminCampaign, SocialTask } from '@/lib/types';
 import { CheckCircle, ClipboardList, ExternalLink, Loader2 } from 'lucide-react';
 import Link from 'next/link';
 import { useState } from 'react';
-
-// This is a representation of buyer data fetched from the database.
-const buyers: AdminBuyer[] = [
-  {
-    id: 'BUYER-001',
-    companyName: 'Tech Gadgets Inc.',
-    email: 'contact@techgadgets.com',
-    createdAt: '2024-07-28',
-    totalSpent: 150.00,
-    campaigns: [
-      {
-        id: 'CAMP-001',
-        serviceType: 'YouTube Subscribers',
-        targetLink: 'https://youtube.com/channel/example1',
-        tasksCreated: 500,
-        totalTasks: 1000,
-        createdAt: '2024-07-29',
-      },
-       {
-        id: 'CAMP-002',
-        serviceType: 'Instagram Followers',
-        targetLink: 'https://instagram.com/techgadgets',
-        tasksCreated: 100,
-        totalTasks: 200,
-        createdAt: '2024-07-30',
-      },
-    ],
-  },
-  {
-    id: 'BUYER-002',
-    companyName: 'Fashion Forward',
-    email: 'style@fashionforward.co',
-    createdAt: '2024-07-25',
-    totalSpent: 250.00,
-    campaigns: [
-      {
-        id: 'CAMP-003',
-        serviceType: 'Facebook Page Likes',
-        targetLink: 'https://facebook.com/fashionforward',
-        tasksCreated: 250,
-        totalTasks: 500,
-        createdAt: '2024-07-26',
-      },
-    ],
-  },
-];
-
+import { initialBuyers } from '@/lib/mock-data';
+import { useMockData } from '@/hooks/use-mock-data';
 
 export function BuyerManager() {
   const { toast } = useToast();
+  const [buyers, setBuyers] = useState<AdminBuyer[]>(initialBuyers);
   const [creatingTasks, setCreatingTasks] = useState<Set<string>>(new Set());
   const [createdTasks, setCreatedTasks] = useState<Set<string>>(new Set());
+  const { addSocialTasks } = useMockData();
 
-  const handleCreateTasks = (campaign: AdminCampaign) => {
+
+  const handleCreateTasks = (campaign: AdminCampaign, buyer: AdminBuyer) => {
     setCreatingTasks(prev => new Set(prev).add(campaign.id));
 
     // Simulate API call to backend to generate tasks
     setTimeout(() => {
+        // Generate new tasks based on campaign
+        const newTasks: SocialTask[] = Array.from({ length: campaign.totalTasks }, (_, i) => {
+            const platformMap: Record<string, 'YouTube' | 'Facebook' | 'Instagram'> = {
+                'YouTube Subscribers': 'YouTube',
+                'Instagram Followers': 'Instagram',
+                'Facebook Page Likes': 'Facebook',
+            };
+            const platform = platformMap[campaign.serviceType] || 'YouTube';
+            const typeMap: Record<string, string> = {
+                'YouTube Subscribers': 'Subscribe',
+                'Instagram Followers': 'Follow Account',
+                'Facebook Page Likes': 'Follow Page',
+            }
+            const type = typeMap[campaign.serviceType] || 'Like & Comment';
+
+            return {
+                id: Date.now() + i, // More unique ID
+                type: type,
+                title: `From campaign: ${campaign.serviceType} for ${buyer.companyName}`,
+                link: campaign.targetLink,
+                reward: 2.00, // This could be calculated based on buyer spend
+                platform: platform,
+            }
+        });
+
+        addSocialTasks(newTasks);
+
         setCreatingTasks(prev => {
             const newSet = new Set(prev);
             newSet.delete(campaign.id);
@@ -95,8 +80,26 @@ export function BuyerManager() {
         setCreatedTasks(prev => new Set(prev).add(campaign.id));
         toast({
             title: "Tasks Created!",
-            description: `Tasks for campaign "${campaign.serviceType}" have been created and are now available to employees.`
+            description: `${campaign.totalTasks} tasks for campaign "${campaign.serviceType}" have been created and are now available to employees.`
         })
+
+        // Update local state to reflect tasks created
+        setBuyers(prevBuyers => prevBuyers.map(b => {
+            if (b.id === buyer.id) {
+                return {
+                    ...b,
+                    campaigns: b.campaigns.map(c => {
+                        if (c.id === campaign.id) {
+                            return { ...c, tasksCreated: c.totalTasks };
+                        }
+                        return c;
+                    })
+                };
+            }
+            return b;
+        }));
+
+
     }, 2000);
   }
 
@@ -142,7 +145,7 @@ export function BuyerManager() {
                         <TableBody>
                             {buyer.campaigns.map(campaign => {
                                 const isCreating = creatingTasks.has(campaign.id);
-                                const isCreated = createdTasks.has(campaign.id);
+                                const isCreated = createdTasks.has(campaign.id) || campaign.tasksCreated === campaign.totalTasks;
                                 return (
                                 <TableRow key={campaign.id}>
                                     <TableCell><Badge>{campaign.serviceType}</Badge></TableCell>
@@ -154,7 +157,7 @@ export function BuyerManager() {
                                     </TableCell>
                                     <TableCell>{campaign.tasksCreated} / {campaign.totalTasks}</TableCell>
                                     <TableCell>
-                                        <Button size="sm" onClick={() => handleCreateTasks(campaign)} disabled={isCreating || isCreated}>
+                                        <Button size="sm" onClick={() => handleCreateTasks(campaign, buyer)} disabled={isCreating || isCreated}>
                                             {isCreating && <Loader2 className='mr-2 h-4 w-4 animate-spin' />}
                                             {isCreated && <CheckCircle className='mr-2 h-4 w-4' />}
                                             {isCreated ? 'Tasks Created' : 'Create Tasks'}

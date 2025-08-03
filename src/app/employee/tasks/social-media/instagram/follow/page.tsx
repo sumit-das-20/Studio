@@ -1,3 +1,4 @@
+
 'use client';
 
 import { Header } from "@/components/header";
@@ -12,20 +13,13 @@ import {
 } from "@/components/ui/sidebar";
 import { Trophy, UserPlus } from "lucide-react";
 import { SocialTaskCard } from '@/components/tasks/social-task-card';
-import { SocialTask } from "@/lib/types";
-
-// This is a representation of tasks generated from a buyer's campaign.
-// In a real app, this data would be fetched from a database.
-const instagramTasks: SocialTask[] = Array.from({ length: 12 }, (_, i) => ({
-    id: i + 1,
-    type: "Follow Account",
-    title: `Follow Account: @TravelVibes`,
-    link: "https://instagram.com/example",
-    reward: 1.50,
-}));
+import { useMockData } from "@/hooks/use-mock-data";
 
 
 export default function InstagramFollowPage() {
+    const { socialTasks } = useMockData();
+    const instagramTasks = socialTasks.filter(task => task.platform === 'Instagram' && task.type === 'Follow Account');
+
     return (
     <SidebarProvider>
       <Sidebar>
@@ -60,6 +54,11 @@ export default function InstagramFollowPage() {
                     <SocialTaskCard key={task.id} task={task} />
                 ))}
             </div>
+             {instagramTasks.length === 0 && (
+                <div className="text-center text-muted-foreground py-12">
+                    <p>No follow tasks available for Instagram at the moment.</p>
+                </div>
+            )}
         </main>
       </SidebarInset>
     </SidebarProvider>

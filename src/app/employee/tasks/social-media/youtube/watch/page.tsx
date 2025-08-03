@@ -1,3 +1,4 @@
+
 'use client';
 
 import { Header } from "@/components/header";
@@ -12,20 +13,13 @@ import {
 } from "@/components/ui/sidebar";
 import { Trophy, Video } from "lucide-react";
 import { SocialTaskCard } from '@/components/tasks/social-task-card';
-import { SocialTask } from "@/lib/types";
-
-// This is a representation of tasks generated from a buyer's campaign.
-// In a real app, this data would be fetched from a database.
-const youtubeTasks: SocialTask[] = Array.from({ length: 12 }, (_, i) => ({
-    id: i + 1,
-    type: "Watch Video",
-    title: `Watch Video: "Summer Fashion Lookbook"`,
-    link: "https://youtube.com/watch?v=example",
-    reward: 1.00,
-}));
+import { useMockData } from "@/hooks/use-mock-data";
 
 
 export default function YoutubeWatchPage() {
+    const { socialTasks } = useMockData();
+    const youtubeTasks = socialTasks.filter(task => task.platform === 'YouTube' && task.type === 'Watch Video');
+    
     return (
     <SidebarProvider>
       <Sidebar>
@@ -60,6 +54,11 @@ export default function YoutubeWatchPage() {
                     <SocialTaskCard key={task.id} task={task} />
                 ))}
             </div>
+            {youtubeTasks.length === 0 && (
+                <div className="text-center text-muted-foreground py-12">
+                    <p>No watch tasks available for YouTube at the moment.</p>
+                </div>
+            )}
         </main>
       </SidebarInset>
     </SidebarProvider>
