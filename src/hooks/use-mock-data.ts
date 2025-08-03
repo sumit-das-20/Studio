@@ -1,18 +1,40 @@
 
 'use client';
 
-import { useState, useCallback } from 'react';
-import { socialTasks as initialSocialTasks, addSocialTasks as apiAddSocialTasks, completeSocialTask as apiCompleteSocialTask, allTasks as initialAllTasks, addAdminTask as apiAddAdminTask, updateAdminTask as apiUpdateAdminTask, deleteAdminTask as apiDeleteAdminTask } from '@/lib/mock-data';
-import type { SocialTask, AdminTask } from '@/lib/types';
-
-// In a real-world application, this would use React Context or a state management library
-// like Zustand or Redux to provide data across the component tree.
-// For this simulation, we use a simple custom hook that manages its own state.
+import { useState, useCallback, useEffect } from 'react';
+import { 
+    socialTasks as initialSocialTasks, 
+    addSocialTasks as apiAddSocialTasks, 
+    completeSocialTask as apiCompleteSocialTask, 
+    allTasks as initialAllTasks, 
+    addAdminTask as apiAddAdminTask, 
+    updateAdminTask as apiUpdateAdminTask, 
+    deleteAdminTask as apiDeleteAdminTask,
+    employees as initialEmployees,
+    updateEmployee as apiUpdateEmployee,
+    withdrawalRequests as initialWithdrawalRequests,
+    updateWithdrawalRequest as apiUpdateWithdrawalRequest
+} from '@/lib/mock-data';
+import type { SocialTask, AdminTask, AdminEmployee, AdminWithdrawalRequest } from '@/lib/types';
 
 export const useMockData = () => {
     const [socialTasks, setSocialTasks] = useState<SocialTask[]>(initialSocialTasks);
     const [allTasks, setAllTasks] = useState<AdminTask[]>(initialAllTasks);
+    const [employees, setEmployees] = useState<AdminEmployee[]>(initialEmployees);
+    const [withdrawalRequests, setWithdrawalRequests] = useState<AdminWithdrawalRequest[]>(initialWithdrawalRequests);
+    const [isLoading, setIsLoading] = useState(true);
 
+    useEffect(() => {
+        // Simulate initial data fetch
+        const timer = setTimeout(() => {
+            setSocialTasks(initialSocialTasks);
+            setAllTasks(initialAllTasks);
+            setEmployees(initialEmployees);
+            setWithdrawalRequests(initialWithdrawalRequests);
+            setIsLoading(false);
+        }, 1000);
+        return () => clearTimeout(timer);
+    }, []);
 
     const addSocialTasks = useCallback((newTasks: SocialTask[]) => {
         apiAddSocialTasks(newTasks);
@@ -39,6 +61,16 @@ export const useMockData = () => {
         setAllTasks([...initialAllTasks]);
     }, []);
 
+    const updateEmployee = useCallback((employeeId: string, updates: Partial<AdminEmployee>) => {
+        apiUpdateEmployee(employeeId, updates);
+        setEmployees([...initialEmployees]);
+    }, []);
+
+    const updateWithdrawalRequest = useCallback((requestId: string, updates: Partial<AdminWithdrawalRequest>) => {
+        apiUpdateWithdrawalRequest(requestId, updates);
+        setWithdrawalRequests([...initialWithdrawalRequests]);
+    }, []);
+
     return { 
         socialTasks, 
         addSocialTasks, 
@@ -46,6 +78,11 @@ export const useMockData = () => {
         allTasks,
         addAdminTask,
         updateAdminTask,
-        deleteAdminTask
+        deleteAdminTask,
+        employees,
+        updateEmployee,
+        withdrawalRequests,
+        updateWithdrawalRequest,
+        isLoading
     };
 };

@@ -1,4 +1,5 @@
 
+
 'use client';
 
 import {
@@ -27,55 +28,7 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover';
 import { useToast } from '@/hooks/use-toast';
-
-// This is a representation of withdrawal requests fetched from the database.
-const initialRequests: AdminWithdrawalRequest[] = [
-  {
-    id: 'WR-001',
-    employeeId: 'EMP-001',
-    employeeEmail: 'john.doe@example.com',
-    amount: 500.0,
-    method: 'UPI',
-    status: 'Pending',
-    createdAt: '2024-07-30',
-    upiId: 'john.doe@okhdfcbank',
-  },
-  {
-    id: 'WR-002',
-    employeeId: 'EMP-003',
-    employeeEmail: 'sam.wilson@email.com',
-    amount: 1500.0,
-    method: 'Bank Transfer',
-    status: 'Pending',
-    createdAt: '2024-07-29',
-    bankDetails: {
-        accountHolderName: 'Sam Wilson',
-        bankName: 'State Bank of India',
-        accountNumber: '12345678901',
-        ifscCode: 'SBIN0001234'
-    }
-  },
-  {
-    id: 'WR-003',
-    employeeId: 'EMP-005',
-    employeeEmail: 'emily.white@example.com',
-    amount: 250.5,
-    method: 'PayPal',
-    status: 'Pending',
-    createdAt: '2024-07-28',
-    paypalEmail: 'emily.white@paypal.com'
-  },
-    {
-    id: 'WR-004',
-    employeeId: 'EMP-002',
-    employeeEmail: 'jane.smith@example.com',
-    amount: 750.00,
-    method: 'UPI',
-    status: 'Approved',
-    createdAt: '2024-07-27',
-    upiId: 'jane.s@okicici',
-  },
-];
+import { useMockData } from '@/hooks/use-mock-data';
 
 const statusConfig = {
     Pending: { variant: "default", icon: Hourglass, label: 'Pending' },
@@ -88,18 +41,18 @@ const statusConfig = {
 
 
 export function WithdrawalRequestManager() {
-  const [requests, setRequests] = useState<AdminWithdrawalRequest[]>(initialRequests);
+  const { withdrawalRequests, updateWithdrawalRequest } = useMockData();
   const [processingPayout, setProcessingPayout] = useState<Set<string>>(new Set());
   const { toast } = useToast();
 
  const handleApproveAndPay = (id: string) => {
     setProcessingPayout(prev => new Set(prev).add(id));
-    setRequests(requests.map(req => req.id === id ? { ...req, status: 'Processing' } : req));
+    updateWithdrawalRequest(id, { status: 'Processing' });
     
     // Simulate API call to payment gateway
     setTimeout(() => {
         const transactionId = `T${Date.now()}`;
-        setRequests(prevRequests => prevRequests.map(req => req.id === id ? { ...req, status: 'Paid', transactionId } : req));
+        updateWithdrawalRequest(id, { status: 'Paid', transactionId });
         
         setProcessingPayout(prev => {
             const newSet = new Set(prev);
@@ -118,9 +71,7 @@ export function WithdrawalRequestManager() {
     id: string,
     status: 'On Hold' | 'Cancelled'
   ) => {
-    setRequests(
-      requests.map((req) => (req.id === id ? { ...req, status } : req))
-    );
+    updateWithdrawalRequest(id, { status });
   };
 
 
@@ -133,7 +84,7 @@ export function WithdrawalRequestManager() {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        {requests.length > 0 ? (
+        {withdrawalRequests.length > 0 ? (
           <Table>
             <TableHeader>
               <TableRow>
@@ -146,7 +97,7 @@ export function WithdrawalRequestManager() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {requests.map((request) => {
+              {withdrawalRequests.map((request) => {
                 const { variant, icon: Icon, label, className } = statusConfig[request.status as keyof typeof statusConfig] || statusConfig['Pending'];
                 const isProcessing = processingPayout.has(request.id);
 

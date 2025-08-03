@@ -1,28 +1,29 @@
 
+
 import type { LucideIcon } from "lucide-react";
 
 export type SimpleTaskType = {
-  id: number;
+  id: string; // Changed to string to match AdminTask
   question: string;
   reward?: number;
   adUnitId?: string;
 };
 
 export type LinkTask = {
-  id: number;
+  id: string; // Changed to string
   url: string;
   reward?: number;
 };
 
 export type QuizTask = {
-  id: number;
+  id: string; // Changed to string
   question: string;
   options: string[];
   reward?: number;
 };
 
 export type SocialTask = {
-  id: number;
+  id: number; // Stays number for now as it's handled differently
   type: string;
   title: string;
   reward?: number;

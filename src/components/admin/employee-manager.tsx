@@ -23,60 +23,10 @@ import { MoreHorizontal, User } from 'lucide-react';
 import { type AdminEmployee } from '@/lib/types';
 import { useEffect, useState } from 'react';
 import { Skeleton } from '../ui/skeleton';
-
-// This is a representation of employee data that would be fetched from your database.
-const mockEmployees: AdminEmployee[] = [
-  {
-    id: 'EMP-001',
-    email: 'john.doe@example.com',
-    totalEarnings: 1250.75,
-    withdrawalRequest: null,
-    createdAt: '2024-07-20',
-  },
-  {
-    id: 'EMP-002',
-    email: 'jane.smith@example.com',
-    totalEarnings: 750.00,
-    withdrawalRequest: null,
-    createdAt: '2024-07-22',
-  },
-  {
-    id: 'EMP-003',
-    email: 'sam.wilson@email.com',
-    totalEarnings: 2800.00,
-    withdrawalRequest: null,
-    createdAt: '2024-06-15',
-  },
-    {
-    id: 'EMP-004',
-    email: 'linda.ray@email.com',
-    totalEarnings: 50.25,
-    withdrawalRequest: null,
-    createdAt: '2024-05-01',
-  },
-];
+import { useMockData } from '@/hooks/use-mock-data';
 
 export function EmployeeManager() {
-  const [employees, setEmployees] = useState<AdminEmployee[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    // In a real application, you would fetch data from your backend API here.
-    // For demonstration, we're simulating a network request with a timeout.
-    const fetchEmployees = async () => {
-        setIsLoading(true);
-        // Example: const response = await fetch('/api/admin/employees');
-        // const data = await response.json();
-        // setEmployees(data);
-        setTimeout(() => {
-            setEmployees(mockEmployees);
-            setIsLoading(false);
-        }, 1500); // Simulate a 1.5-second network delay
-    };
-
-    fetchEmployees();
-  }, []);
-
+  const { employees, isLoading } = useMockData();
 
   return (
     <Card>
