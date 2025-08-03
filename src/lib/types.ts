@@ -1,4 +1,5 @@
 
+
 export type SimpleTaskType = {
   id: number;
   question: string;
@@ -26,3 +27,12 @@ export type SocialTask = {
   reward?: number;
   link: string;
 }
+
+export type AdminTask = {
+    id: string;
+    question: string;
+    reward: number;
+    adUnitId: string;
+    type: 'Click and Earn' | 'Watch and Earn';
+    createdAt: string;
+};

@@ -1,9 +1,11 @@
 
+
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { BarChart, Users, CircleDollarSign, Shield, Power } from "lucide-react";
 import Link from "next/link";
 import { signOut } from "@/app/employee/actions";
+import { TaskManager } from "@/components/admin/task-manager";
 
 export default function AdminDashboard() {
   return (
@@ -62,17 +64,7 @@ export default function AdminDashboard() {
             </CardContent>
           </Card>
         </div>
-        <Card>
-            <CardHeader>
-                <CardTitle>Platform Management</CardTitle>
-                <CardDescription>Manage tasks, users, and campaigns from here.</CardDescription>
-            </CardHeader>
-            <CardContent>
-                <div className="text-center text-muted-foreground py-12">
-                    <p>Admin panel functionality coming soon.</p>
-                </div>
-            </CardContent>
-        </Card>
+        <TaskManager />
       </main>
     </div>
   );

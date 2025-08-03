@@ -7,6 +7,7 @@ import { z } from 'zod';
 import { redirect } from 'next/navigation';
 import { cookies } from 'next/headers';
 import { FirebaseError } from 'firebase/app';
+import { revalidatePath } from 'next/cache';
 
 const signInSchema = z.object({
     email: z.string().email({ message: 'Invalid email address.' }),
@@ -47,4 +48,29 @@ export async function signInAdmin(prevState: any, formData: FormData) {
   }
 
   redirect('/admin/dashboard');
+}
+
+
+const taskSchema = z.object({
+    question: z.string().min(10, "Question must be at least 10 characters long."),
+    reward: z.coerce.number().min(0, "Reward cannot be negative."),
+    adUnitId: z.string().min(1, "Ad Unit ID cannot be empty."),
+});
+
+export async function createTask(prevState: any, formData: FormData) {
+    const validatedFields = taskSchema.safeParse(Object.fromEntries(formData.entries()));
+
+    if (!validatedFields.success) {
+        return { success: false, error: validatedFields.error.flatten().fieldErrors };
+    }
+
+    // In a real app, you would save this data to a database like Firestore.
+    // For this simulation, we'll just log it to the console.
+    console.log("New Task Created by Admin:", validatedFields.data);
+    
+    // In a real app, after saving to the DB, you would revalidate the path
+    // where the tasks are displayed to users.
+    // e.g., revalidatePath('/employee/tasks/click-and-earn');
+
+    return { success: true, error: null, data: validatedFields.data };
 }
