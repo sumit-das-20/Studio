@@ -7,16 +7,9 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { CheckCircle, ExternalLink, Loader2, UploadCloud } from 'lucide-react';
+import { type SocialTask } from '@/lib/types';
 
 type TaskStatus = 'idle' | 'started' | 'submitted' | 'completed';
-
-type SocialTask = {
-  id: number;
-  type: string;
-  title: string;
-  reward: number;
-  link: string;
-};
 
 type SocialTaskCardProps = {
   task: SocialTask;

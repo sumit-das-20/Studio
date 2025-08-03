@@ -15,11 +15,12 @@ import { Trophy, UserPlus } from "lucide-react";
 import { SocialTaskCard } from "@/components/tasks/social-task-card";
 
 // This is a representation of tasks generated from a single buyer's campaign.
+// The rewardPerTask would be set by the admin in the campaign settings.
 const singleCampaign = {
     id: 1,
     channel: "Fashionista Style", 
     taskType: "Subscribe",
-    rewardPerTask: 0.00, // This will be provided by the buyer's campaign settings
+    rewardPerTask: 0.25, 
     link: "https://youtube.com/channel/example",
 };
 

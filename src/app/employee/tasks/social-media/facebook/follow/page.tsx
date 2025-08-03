@@ -14,11 +14,12 @@ import {
 import { Trophy, ThumbsUp } from "lucide-react";
 import { SocialTaskCard } from '@/components/tasks/social-task-card';
 
+// The rewardPerTask would be set by the admin in the campaign settings.
 const singleCampaign = {
     id: 1,
     pageName: "Gadget Gurus",
     taskType: "Follow Page",
-    rewardPerTask: 0.00, // This will be provided by the buyer's campaign settings
+    rewardPerTask: 0.20,
     link: "https://facebook.com/example",
 };
 

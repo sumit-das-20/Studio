@@ -14,14 +14,16 @@ import {
 import { Trophy, Video } from "lucide-react";
 import { SocialTaskCard } from '@/components/tasks/social-task-card';
 
+// The rewardPerTask would be set by the admin in the campaign settings.
 const singleCampaign = {
     id: 1,
     videoTitle: "Summer Fashion Lookbook",
     taskType: "Watch Video",
-    rewardPerTask: 0.00, // This will be provided by the buyer's campaign settings
+    rewardPerTask: 0.15,
     link: "https://youtube.com/watch?v=example", 
 };
 
+// Generate a list of tasks based on the campaign.
 const youtubeTasks = Array.from({ length: 12 }, (_, i) => ({
     id: i + 1,
     type: singleCampaign.taskType,
