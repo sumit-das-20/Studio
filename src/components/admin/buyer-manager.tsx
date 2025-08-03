@@ -37,6 +37,7 @@ const buyers: AdminBuyer[] = [
     companyName: 'Tech Gadgets Inc.',
     email: 'contact@techgadgets.com',
     createdAt: '2024-07-28',
+    totalSpent: 150.00,
     campaigns: [
       {
         id: 'CAMP-001',
@@ -61,6 +62,7 @@ const buyers: AdminBuyer[] = [
     companyName: 'Fashion Forward',
     email: 'style@fashionforward.co',
     createdAt: '2024-07-25',
+    totalSpent: 250.00,
     campaigns: [
       {
         id: 'CAMP-003',

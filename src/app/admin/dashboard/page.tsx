@@ -1,6 +1,7 @@
 
 
 import { AdPerformanceDashboard } from "@/components/admin/ad-performance-dashboard";
+import { FinancialSummary } from "@/components/admin/financial-summary";
 import { LinkShortenerPerformance } from "@/components/admin/link-shortener-performance";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -11,6 +12,7 @@ import Link from "next/link";
 export default function AdminDashboard() {
   return (
     <main className="flex flex-1 flex-col gap-4 p-4 sm:px-6 sm:py-0 md:gap-8">
+      <FinancialSummary />
       <div className="grid gap-4 md:grid-cols-2 md:gap-8 lg:grid-cols-3">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -20,7 +22,7 @@ export default function AdminDashboard() {
             <Users className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">0</div>
+            <div className="text-2xl font-bold">4</div>
             <p className="text-xs text-muted-foreground">
               registered in the system
             </p>
@@ -34,7 +36,7 @@ export default function AdminDashboard() {
             <ShoppingBag className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">0</div>
+            <div className="text-2xl font-bold">2</div>
              <p className="text-xs text-muted-foreground">
               with active campaigns
             </p>
@@ -46,7 +48,7 @@ export default function AdminDashboard() {
             <CircleDollarSign className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">$0.00</div>
+            <div className="text-2xl font-bold">$2250.50</div>
             <p className="text-xs text-muted-foreground">
               processed this month
             </p>

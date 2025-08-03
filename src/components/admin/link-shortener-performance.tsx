@@ -25,20 +25,20 @@ const linkPerformanceData: LinkPerformance[] = [
   {
     linkId: 'LNK-001',
     url: 'https://short.link/example1',
-    clicks: 0,
-    earnings: 0,
+    clicks: 1243,
+    earnings: 124.30,
   },
   {
     linkId: 'LNK-002',
     url: 'https://short.link/example2',
-    clicks: 0,
-    earnings: 0,
+    clicks: 987,
+    earnings: 98.70,
   },
    {
     linkId: 'LNK-003',
     url: 'https://short.link/example3',
-    clicks: 0,
-    earnings: 0,
+    clicks: 1228,
+    earnings: 122.80,
   },
 ];
 
@@ -66,7 +66,7 @@ export function LinkShortenerPerformance() {
                         Total Clicks
                     </p>
                     <p className="text-2xl font-bold">
-                        {totalClicks}
+                        {totalClicks.toLocaleString()}
                     </p>
                 </div>
                 <div>

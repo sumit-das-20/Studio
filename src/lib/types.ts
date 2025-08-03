@@ -97,6 +97,7 @@ export type AdminBuyer = {
     email: string;
     campaigns: AdminCampaign[];
     createdAt: string;
+    totalSpent: number;
 }
 
 export type AdPerformance = {
