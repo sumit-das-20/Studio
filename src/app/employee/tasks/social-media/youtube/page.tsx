@@ -18,20 +18,20 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 
 const youtubeTasks = [
-    { id: 1, type: "Subscribe", channel: "Awesome Vlogger", reward: 1.50 },
-    { id: 2, type: "Like Video", channel: "Gamerz Unite", reward: 0.50 },
-    { id: 3, type: "Subscribe", channel: "Tech Explained", reward: 1.50 },
+    { id: 1, type: "Subscribe", channel: "Awesome Vlogger" },
+    { id: 2, type: "Like Video", channel: "Gamerz Unite" },
+    { id: 3, type: "Subscribe", channel: "Tech Explained" },
 ]
 
 export default function YoutubeTasksPage() {
     const [completedTasks, setCompletedTasks] = useState<Set<number>>(new Set());
 
-    const handleCompleteTask = (taskId: number, reward: number) => {
+    const handleCompleteTask = (taskId: number) => {
         if (completedTasks.has(taskId)) return;
 
         setCompletedTasks(prev => new Set(prev).add(taskId));
          window.dispatchEvent(
-          new CustomEvent('earn', { detail: { amount: reward } })
+          new CustomEvent('earn', { detail: { amount: 1.0 } }) // Placeholder amount
         );
          // In a real app, you would open the link:
          // window.open('https://youtube.com', '_blank');
@@ -74,12 +74,12 @@ export default function YoutubeTasksPage() {
                             <CardHeader>
                                 <CardTitle className="flex items-center justify-between">
                                     <span>{task.type}</span>
-                                    <Badge variant="outline" className="bg-primary/10 text-primary">+{task.reward.toFixed(2)}</Badge>
+                                    <Badge variant="outline" className="bg-primary/10 text-primary">+ Reward</Badge>
                                 </CardTitle>
                                 <CardDescription>Channel: {task.channel}</CardDescription>
                             </CardHeader>
                             <CardContent>
-                                <Button className="w-full" onClick={() => handleCompleteTask(task.id, task.reward)} disabled={isCompleted}>
+                                <Button className="w-full" onClick={() => handleCompleteTask(task.id)} disabled={isCompleted}>
                                     {isCompleted ? <CheckCircle className="mr-2 h-4 w-4" /> : <ExternalLink className="mr-2 h-4 w-4" />}
                                     {isCompleted ? 'Completed' : 'Start Task'}
                                 </Button>
