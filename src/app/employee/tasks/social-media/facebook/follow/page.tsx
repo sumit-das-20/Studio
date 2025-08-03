@@ -21,6 +21,7 @@ const facebookTasks: SocialTask[] = Array.from({ length: 12 }, (_, i) => ({
     type: "Follow Page",
     title: `Follow Page: Gadget Gurus`,
     link: "https://facebook.com/example",
+    reward: 1.00,
 }));
 
 

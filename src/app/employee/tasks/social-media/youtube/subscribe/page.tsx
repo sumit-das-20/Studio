@@ -21,6 +21,7 @@ const youtubeTasks: SocialTask[] = Array.from({ length: 12 }, (_, i) => ({
     type: "Subscribe",
     title: `Subscribe to: Tech Reviews`,
     link: "https://youtube.com/channel/example",
+    reward: 2.00,
 }));
 
 

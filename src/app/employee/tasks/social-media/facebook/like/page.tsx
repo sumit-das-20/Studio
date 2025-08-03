@@ -21,6 +21,7 @@ const facebookTasks: SocialTask[] = Array.from({ length: 12 }, (_, i) => ({
     type: "Like & Comment",
     title: `Like Post: "Check out this amazing sunset!"`,
     link: "https://facebook.com/posts/example",
+    reward: 0.25,
 }));
 
 

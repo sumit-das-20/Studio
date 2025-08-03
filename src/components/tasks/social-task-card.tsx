@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useState } from 'react';
@@ -8,6 +7,7 @@ import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { CheckCircle, ExternalLink, Loader2, UploadCloud } from 'lucide-react';
 import { type SocialTask } from '@/lib/types';
+import { Label } from '../ui/label';
 
 type TaskStatus = 'idle' | 'started' | 'submitted' | 'completed';
 
@@ -65,7 +65,7 @@ export function SocialTaskCard({ task }: SocialTaskCardProps) {
         <CardHeader>
             <CardTitle className="flex items-center justify-between">
                 <span className="text-base">{task.type}</span>
-                {task.reward && <Badge variant="secondary">+{task.reward.toFixed(2)}</Badge>}
+                {task.reward != null && <Badge variant="secondary">+{task.reward.toFixed(2)}</Badge>}
             </CardTitle>
             <CardDescription>{task.title}</CardDescription>
         </CardHeader>
@@ -115,12 +115,3 @@ export function SocialTaskCard({ task }: SocialTaskCardProps) {
     </Card>
   );
 }
-
-// Add this to a Label component if it's not globally available in your project
-const Label: React.FC<React.LabelHTMLAttributes<HTMLLabelElement>> = ({ children, ...props }) => {
-    return (
-        <label {...props} className="block text-sm font-medium text-gray-700">
-            {children}
-        </label>
-    );
-};
