@@ -26,26 +26,26 @@ const adPerformanceData: AdPerformance[] = [
   {
     adUnitId: 'ca-app-pub-3940256099942544/6300978111',
     type: 'Banner',
-    impressions: 15234,
-    earnings: 450.75,
+    impressions: 0,
+    earnings: 0,
   },
   {
     adUnitId: 'ca-app-pub-3940256099942544/5224354917',
     type: 'Rewarded Video',
-    impressions: 8765,
-    earnings: 1250.2,
+    impressions: 0,
+    earnings: 0,
   },
    {
     adUnitId: 'ca-app-pub-3940256099942544/1033173712',
     type: 'Banner',
-    impressions: 18901,
-    earnings: 620.1,
+    impressions: 0,
+    earnings: 0,
   },
   {
     adUnitId: 'ca-app-pub-3940256099942544/8691691433',
     type: 'Other',
-    impressions: 5432,
-    earnings: 210.5,
+    impressions: 0,
+    earnings: 0,
   },
 ];
 
