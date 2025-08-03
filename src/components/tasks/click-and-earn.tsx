@@ -1,20 +1,13 @@
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
-import { type SimpleTaskType } from '@/lib/types';
+import { SimpleTaskType } from '@/lib/types';
 import { MousePointerClick } from 'lucide-react';
 import { SimpleTask } from './simple-task';
 
 // In a real application, this data would be fetched from a backend
 // where tasks are created and managed by an administrator.
 const tasks: SimpleTaskType[] = [
-  { id: 1, question: 'Enter Your Full Name.' },
-  { id: 2, question: 'What is your primary hobby?' },
-  { id: 3, question: 'What city do you live in?' },
+  { id: 1, question: 'Enter Your Full Name.', reward: 0.50 },
+  { id: 2, question: 'What is your primary hobby?', reward: 0.50 },
+  { id: 3, question: 'What city do you live in?', reward: 0.50 },
 ];
 
 export function ClickAndEarn() {
@@ -29,11 +22,17 @@ export function ClickAndEarn() {
           </p>
         </div>
       </div>
-      <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-        {tasks.map((task) => (
-          <SimpleTask key={task.id} task={task} adType="banner" />
-        ))}
-      </div>
+       {tasks && tasks.length > 0 ? (
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {tasks.map((task) => (
+            <SimpleTask key={task.id} task={task} adType="banner" />
+            ))}
+        </div>
+        ) : (
+        <div className="text-center text-muted-foreground py-12">
+            <p>No tasks available at the moment. Please check back later.</p>
+        </div>
+        )}
     </section>
   );
 }

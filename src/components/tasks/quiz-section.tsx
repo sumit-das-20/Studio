@@ -16,6 +16,7 @@ const quizTasks: QuizTask[] = [
     id: 1,
     question: 'What is the capital of France?',
     options: ['Berlin', 'Madrid', 'Paris', 'Rome'],
+    reward: 1.00,
   },
 ];
 
@@ -46,6 +47,7 @@ export function QuizSection() {
           <p className="text-muted-foreground">Answer quizzes to earn. An ad is shown after each submission.</p>
         </div>
       </div>
+      {quizTasks && quizTasks.length > 0 ? (
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
         {quizTasks.map((task) => {
           const isCompleted = completedQuizzes.has(task.id);
@@ -101,6 +103,11 @@ export function QuizSection() {
           );
         })}
       </div>
+      ) : (
+        <div className="text-center text-muted-foreground py-12">
+            <p>No quizzes available at the moment. Please check back later.</p>
+        </div>
+      )}
     </section>
   );
 }

@@ -10,6 +10,7 @@ import type { LinkTask } from '@/lib/types';
 const initialTasks: LinkTask[] = Array.from({ length: 12 }, (_, i) => ({
   id: i + 1,
   url: `https://short.link/example${i + 1}`,
+  reward: 0.10,
 }));
 
 export function LinkShortener() {
@@ -38,34 +39,40 @@ export function LinkShortener() {
           </p>
         </div>
       </div>
-      <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
-        {initialTasks.map((task) => {
-          const isClicked = clickedLinks.has(task.id);
-          return (
-            <Button
-              key={task.id}
-              variant={isClicked ? 'secondary' : 'outline'}
-              className="flex h-20 flex-col items-center justify-center gap-1 transition-all"
-              onClick={() => handleClick(task)}
-              disabled={isClicked}
-            >
-              {isClicked ? (
-                <>
-                  <Check className="h-6 w-6 text-primary" />
-                  <span className="text-xs">Clicked</span>
-                </>
-              ) : (
-                <>
-                  <ExternalLink className="h-6 w-6" />
-                  {task.reward && (
-                    <span className="text-xs">+{task.reward.toFixed(2)}</span>
-                  )}
-                </>
-              )}
-            </Button>
-          );
-        })}
-      </div>
+      {initialTasks && initialTasks.length > 0 ? (
+        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
+            {initialTasks.map((task) => {
+            const isClicked = clickedLinks.has(task.id);
+            return (
+                <Button
+                key={task.id}
+                variant={isClicked ? 'secondary' : 'outline'}
+                className="flex h-20 flex-col items-center justify-center gap-1 transition-all"
+                onClick={() => handleClick(task)}
+                disabled={isClicked}
+                >
+                {isClicked ? (
+                    <>
+                    <Check className="h-6 w-6 text-primary" />
+                    <span className="text-xs">Clicked</span>
+                    </>
+                ) : (
+                    <>
+                    <ExternalLink className="h-6 w-6" />
+                    {task.reward && (
+                        <span className="text-xs">+{task.reward.toFixed(2)}</span>
+                    )}
+                    </>
+                )}
+                </Button>
+            );
+            })}
+        </div>
+       ) : (
+        <div className="text-center text-muted-foreground py-12">
+            <p>No links available at the moment. Please check back later.</p>
+        </div>
+        )}
     </section>
   );
 }

@@ -5,9 +5,9 @@ import { SimpleTask } from './simple-task';
 // In a real application, this data would be fetched from a backend
 // where tasks are created and managed by an administrator.
 const tasks: SimpleTaskType[] = [
-  { id: 4, question: 'What is your age?' },
-  { id: 5, question: 'What is your favorite movie genre?' },
-  { id: 6, question: 'What brand of phone do you use?' },
+  { id: 4, question: 'What is your age?', reward: 0.75 },
+  { id: 5, question: 'What is your favorite movie genre?', reward: 0.75 },
+  { id: 6, question: 'What brand of phone do you use?', reward: 0.75 },
 ];
 
 export function WatchAndEarn() {
@@ -22,11 +22,17 @@ export function WatchAndEarn() {
           </p>
         </div>
       </div>
-      <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-        {tasks.map((task) => (
-          <SimpleTask key={task.id} task={task} adType="video" />
-        ))}
-      </div>
+      {tasks && tasks.length > 0 ? (
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {tasks.map((task) => (
+            <SimpleTask key={task.id} task={task} adType="video" />
+            ))}
+        </div>
+        ) : (
+        <div className="text-center text-muted-foreground py-12">
+            <p>No tasks available at the moment. Please check back later.</p>
+        </div>
+        )}
     </section>
   );
 }
