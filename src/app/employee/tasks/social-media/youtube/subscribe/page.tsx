@@ -23,9 +23,10 @@ const singleCampaign = {
     id: 1,
     channel: "Fashionista Style", // All tasks point to the same channel
     taskType: "Subscribe",
-    rewardPerTask: 1.50, // This would come from the campaign data
+    rewardPerTask: 1.50, // This value would come from the campaign data set by the buyer.
 };
 
+// Generate a list of tasks based on the campaign. The number of tasks (e.g., 1000) would also come from the campaign.
 const youtubeTasks = Array.from({ length: 12 }, (_, i) => ({
     id: i + 1, // Unique ID for each task instance
     type: singleCampaign.taskType,
@@ -40,6 +41,7 @@ export default function YoutubeSubscribePage() {
         if (completedTasks.has(taskId)) return;
 
         setCompletedTasks(prev => new Set(prev).add(taskId));
+         // The reward amount is now sourced from the campaign data, not hardcoded.
          window.dispatchEvent(
           new CustomEvent('earn', { detail: { amount: singleCampaign.rewardPerTask } }) 
         );
@@ -84,6 +86,7 @@ export default function YoutubeSubscribePage() {
                             <CardHeader>
                                 <CardTitle className="flex items-center justify-between">
                                     <span>{task.type} Task</span>
+                                    {/* The reward is displayed from the campaign data */}
                                     <Badge variant="secondary">+{singleCampaign.rewardPerTask.toFixed(2)}</Badge>
                                 </CardTitle>
                                 <CardDescription>Channel: <strong>{task.channel}</strong></CardDescription>

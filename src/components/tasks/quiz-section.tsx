@@ -14,6 +14,7 @@ const quizTasks: QuizTask[] = [
     id: 1,
     question: 'What is the capital of France?',
     options: ['Berlin', 'Madrid', 'Paris', 'Rome'],
+    reward: 2.0, // This would come from campaign data
   },
 ];
 
@@ -28,7 +29,7 @@ export function QuizSection() {
     setIsSubmitting(true);
     setTimeout(() => {
       setCompletedQuizzes(new Set(completedQuizzes).add(task.id));
-      window.dispatchEvent(new CustomEvent('earn', { detail: { amount: task.reward || 2.0 } }));
+      window.dispatchEvent(new CustomEvent('earn', { detail: { amount: task.reward || 0 } }));
       setIsSubmitting(false);
     }, 1000);
   };

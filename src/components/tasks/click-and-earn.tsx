@@ -9,10 +9,11 @@ import { type SimpleTaskType } from '@/lib/types';
 import { MousePointerClick } from 'lucide-react';
 import { SimpleTask } from './simple-task';
 
+// Rewards would be fetched from the backend based on the campaign.
 const tasks: SimpleTaskType[] = [
-  { id: 1, question: 'Enter Your Full Name.' },
-  { id: 2, question: 'What is your primary hobby?' },
-  { id: 3, question: 'What city do you live in?' },
+  { id: 1, question: 'Enter Your Full Name.', reward: 1.0 },
+  { id: 2, question: 'What is your primary hobby?', reward: 1.0 },
+  { id: 3, question: 'What city do you live in?', reward: 1.2 },
 ];
 
 export function ClickAndEarn() {

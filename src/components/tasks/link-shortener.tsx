@@ -8,6 +8,7 @@ import type { LinkTask } from '@/lib/types';
 const initialTasks: LinkTask[] = Array.from({ length: 12 }, (_, i) => ({
   id: i + 1,
   url: `https://short.link/example${i + 1}`,
+  reward: 0.25, // This would come from the campaign data
 }));
 
 export function LinkShortener() {
@@ -18,7 +19,7 @@ export function LinkShortener() {
 
     setClickedLinks(new Set(clickedLinks).add(task.id));
     window.dispatchEvent(
-      new CustomEvent('earn', { detail: { amount: task.reward || 0.25 } })
+      new CustomEvent('earn', { detail: { amount: task.reward || 0 } })
     );
     // In a real app, you would open the link: window.open(task.url, '_blank');
   };
