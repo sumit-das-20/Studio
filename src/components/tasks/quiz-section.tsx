@@ -9,8 +9,8 @@ import { CheckCircle, HelpCircle, Loader2 } from 'lucide-react';
 import { type QuizTask } from '@/lib/types';
 import Image from 'next/image';
 
-// Rewards are controlled by the admin panel and fetched from the backend.
-// This mock data does not include reward amounts.
+// In a real application, this data would be fetched from a backend
+// where tasks are created and managed by an administrator.
 const quizTasks: QuizTask[] = [
   {
     id: 1,

@@ -5,8 +5,8 @@ import { Button } from '@/components/ui/button';
 import { Link, Check, ExternalLink } from 'lucide-react';
 import type { LinkTask } from '@/lib/types';
 
-// Rewards are controlled by the admin panel and fetched from the backend.
-// This mock data does not include reward amounts.
+// In a real application, this data would be fetched from a backend
+// where tasks are created and managed by an administrator.
 const initialTasks: LinkTask[] = Array.from({ length: 12 }, (_, i) => ({
   id: i + 1,
   url: `https://short.link/example${i + 1}`,

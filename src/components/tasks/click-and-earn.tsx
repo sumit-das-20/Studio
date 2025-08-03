@@ -9,8 +9,8 @@ import { type SimpleTaskType } from '@/lib/types';
 import { MousePointerClick } from 'lucide-react';
 import { SimpleTask } from './simple-task';
 
-// Rewards are controlled by the admin panel and fetched from the backend.
-// The `reward` property is now optional in the type definition.
+// In a real application, this data would be fetched from a backend
+// where tasks are created and managed by an administrator.
 const tasks: SimpleTaskType[] = [
   { id: 1, question: 'Enter Your Full Name.' },
   { id: 2, question: 'What is your primary hobby?' },

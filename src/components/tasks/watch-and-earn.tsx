@@ -2,8 +2,8 @@ import { type SimpleTaskType } from '@/lib/types';
 import { Clapperboard } from 'lucide-react';
 import { SimpleTask } from './simple-task';
 
-// Rewards are controlled by the admin panel and fetched from the backend.
-// The `reward` property is now optional in the type definition.
+// In a real application, this data would be fetched from a backend
+// where tasks are created and managed by an administrator.
 const tasks: SimpleTaskType[] = [
   { id: 4, question: 'What is your age?' },
   { id: 5, question: 'What is your favorite movie genre?' },
