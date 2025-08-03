@@ -17,7 +17,6 @@ import {
     addWithdrawalRequest as apiAddWithdrawalRequest,
     updateWithdrawalRequest as apiUpdateWithdrawalRequest,
     initialBuyers,
-    updateBuyer as apiUpdateBuyer,
     updateCampaign as apiUpdateCampaign
 } from '@/lib/mock-data';
 import type { SocialTask, AdminTask, AdminEmployee, AdminWithdrawalRequest, AdminBuyer, AdminCampaign } from '@/lib/types';
@@ -46,7 +45,7 @@ export const useMockData = () => {
     const addSocialTasks = useCallback((newTasks: SocialTask[]) => {
         apiAddSocialTasks(newTasks);
         setSocialTasks(prev => [...newTasks, ...prev]); 
-        setAllTasks(initialAllTasks); // Refresh allTasks from source
+        setAllTasks([...initialAllTasks]); // Refresh allTasks from source
     }, []);
 
     const completeSocialTask = useCallback((taskId: number, campaignId: string) => {
@@ -77,11 +76,20 @@ export const useMockData = () => {
     const addWithdrawalRequest = useCallback((request: AdminWithdrawalRequest) => {
         apiAddWithdrawalRequest(request);
         setWithdrawalRequests(prev => [request, ...prev]);
+        // Also update the employee's request status
+        setEmployees(prev => prev.map(emp => emp.id === request.employeeId ? { ...emp, withdrawalRequest: request } : emp));
     }, []);
 
     const updateWithdrawalRequest = useCallback((requestId: string, updates: Partial<AdminWithdrawalRequest>) => {
         apiUpdateWithdrawalRequest(requestId, updates);
-        setWithdrawalRequests(prev => prev.map(req => req.id === requestId ? { ...req, ...updates } : req));
+        const updatedRequest = initialWithdrawalRequests.find(r => r.id === requestId);
+        if (updatedRequest) {
+             setWithdrawalRequests([...initialWithdrawalRequests]);
+             // If status is not pending, clear it from employee
+            if (updatedRequest.status !== 'Pending') {
+                 setEmployees(prev => prev.map(emp => emp.id === updatedRequest.employeeId ? { ...emp, withdrawalRequest: null } : emp));
+            }
+        }
     }, []);
 
     const updateCampaign = useCallback((buyerId: string, campaignId: string, updates: Partial<AdminCampaign>) => {

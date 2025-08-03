@@ -1,8 +1,8 @@
 
 
-import { AdminBuyer, SocialTask, AdminTask, AdminEmployee, AdminWithdrawalRequest } from "./types";
+import { AdminBuyer, SocialTask, AdminTask, AdminEmployee, AdminWithdrawalRequest, AdminCampaign } from "./types";
 
-// This is a representation of buyer data fetched from the database.
+// --- Buyers Data ---
 export let initialBuyers: AdminBuyer[] = [
   {
     id: 'BUYER-001',
@@ -17,7 +17,7 @@ export let initialBuyers: AdminBuyer[] = [
         targetLink: 'https://youtube.com/channel/example1',
         tasksCreated: false,
         tasksCompleted: 0,
-        totalTasks: 2, // Reduced for easier testing
+        totalTasks: 2,
         createdAt: '2024-07-29',
       },
        {
@@ -44,7 +44,7 @@ export let initialBuyers: AdminBuyer[] = [
         targetLink: 'https://facebook.com/fashionforward',
         tasksCreated: false,
         tasksCompleted: 0,
-        totalTasks: 3, // Reduced for easier testing
+        totalTasks: 3,
         createdAt: '2024-07-26',
       },
     ],
@@ -98,18 +98,7 @@ export let initialAllTasks: AdminTask[] = [
 ];
 
 // This is a representation of tasks generated from a buyer's campaign.
-// In a real app, this data would be fetched from a database.
-export let initialSocialTasks: SocialTask[] = [
-    // YouTube
-    ...Array.from({ length: 4 }, (_, i) => ({
-        id: 100 + i,
-        type: "Subscribe",
-        title: `Subscribe to: Tech Reviews ${i+1}`,
-        link: "https://youtube.com/channel/example",
-        reward: 2.00,
-        platform: 'YouTube' as const,
-    })),
-];
+export let initialSocialTasks: SocialTask[] = [];
 
 
 // --- Employee Data ---
@@ -177,25 +166,21 @@ export let initialWithdrawalRequests: AdminWithdrawalRequest[] = [
 
 // --- Functions to Mutate Mock Data ---
 
-// Function to add new tasks to the list.
 export function addAdminTask(newTask: AdminTask) {
     initialAllTasks.unshift(newTask);
 }
 
-// Function to update an existing task.
 export function updateAdminTask(updatedTask: AdminTask) {
     initialAllTasks = initialAllTasks.map(task => (task.id === updatedTask.id ? updatedTask : task));
 }
 
-// Function to delete a task.
 export function deleteAdminTask(taskId: string) {
     initialAllTasks = initialAllTasks.filter(task => task.id !== taskId);
 }
 
 export function addSocialTasks(newTasks: SocialTask[]) {
-    initialSocialTasks = [...newTasks, ...initialSocialTasks];
+    initialSocialTasks.unshift(...newTasks);
 
-    // Also add to the main task list for admin view
     const newAdminTasks: AdminTask[] = newTasks.map(task => ({
         id: `SOCIAL-${task.id}`,
         type: 'Social Media',
@@ -206,7 +191,7 @@ export function addSocialTasks(newTasks: SocialTask[]) {
         title: task.title,
         link: task.link,
     }));
-    addAdminTask(...newAdminTasks);
+    initialAllTasks.unshift(...newAdminTasks);
 }
 
 export function completeSocialTask(taskId: number, campaignId: string) {
@@ -236,14 +221,22 @@ export function updateEmployee(employeeId: string, updates: Partial<AdminEmploye
 
 export function addWithdrawalRequest(request: AdminWithdrawalRequest) {
     initialWithdrawalRequests.unshift(request);
+    updateEmployee(request.employeeId, { withdrawalRequest: request });
 }
 
 export function updateWithdrawalRequest(requestId: string, updates: Partial<AdminWithdrawalRequest>) {
-    initialWithdrawalRequests = initialWithdrawalRequests.map(req => req.id === requestId ? { ...req, ...updates } : req);
-}
+    let employeeIdToUpdate: string | null = null;
+    initialWithdrawalRequests = initialWithdrawalRequests.map(req => {
+        if (req.id === requestId) {
+            employeeIdToUpdate = req.employeeId;
+            return { ...req, ...updates };
+        }
+        return req;
+    });
 
-export function updateBuyer(buyerId: string, updates: Partial<AdminBuyer>) {
-    initialBuyers = initialBuyers.map(b => b.id === buyerId ? { ...b, ...updates } : b);
+    if (employeeIdToUpdate && updates.status !== 'Pending') {
+         updateEmployee(employeeIdToUpdate, { withdrawalRequest: null });
+    }
 }
 
 export function updateCampaign(buyerId: string, campaignId: string, updates: Partial<AdminCampaign>) {
