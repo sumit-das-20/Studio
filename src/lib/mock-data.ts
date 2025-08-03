@@ -14,7 +14,8 @@ export let initialBuyers: AdminBuyer[] = [
         id: 'CAMP-001',
         serviceType: 'YouTube Subscribers',
         targetLink: 'https://youtube.com/channel/example1',
-        tasksCreated: 0,
+        tasksCreated: false,
+        tasksCompleted: 0,
         totalTasks: 2, // Reduced for easier testing
         createdAt: '2024-07-29',
       },
@@ -22,7 +23,8 @@ export let initialBuyers: AdminBuyer[] = [
         id: 'CAMP-002',
         serviceType: 'Instagram Followers',
         targetLink: 'https://instagram.com/techgadgets',
-        tasksCreated: 0,
+        tasksCreated: false,
+        tasksCompleted: 0,
         totalTasks: 5,
         createdAt: '2024-07-30',
       },
@@ -39,7 +41,8 @@ export let initialBuyers: AdminBuyer[] = [
         id: 'CAMP-003',
         serviceType: 'Facebook Page Likes',
         targetLink: 'https://facebook.com/fashionforward',
-        tasksCreated: 0,
+        tasksCreated: false,
+        tasksCompleted: 0,
         totalTasks: 3, // Reduced for easier testing
         createdAt: '2024-07-26',
       },
@@ -50,7 +53,7 @@ export let initialBuyers: AdminBuyer[] = [
 
 // This is a representation of tasks generated from a buyer's campaign.
 // In a real app, this data would be fetched from a database.
-export let initialSocialTasks: SocialTask[] = [
+export let socialTasks: SocialTask[] = [
     // YouTube
     ...Array.from({ length: 4 }, (_, i) => ({
         id: 100 + i,
@@ -99,7 +102,7 @@ export let initialSocialTasks: SocialTask[] = [
 // Function to add new tasks to the list.
 // In a real app, this would be an API call.
 export function addSocialTasks(newTasks: SocialTask[]) {
-    initialSocialTasks = [...newTasks, ...initialSocialTasks];
+    socialTasks = [...newTasks, ...socialTasks];
 }
 
 // Function to handle task completion and campaign progress
@@ -109,11 +112,9 @@ export function completeSocialTask(taskId: number, campaignId: string) {
     initialBuyers = initialBuyers.map(buyer => {
         const campaign = buyer.campaigns.find(c => c.id === campaignId);
         if (campaign) {
-            // Here, we increment tasksCreated as a proxy for completed tasks.
-            // In a real app, you'd likely have a separate `tasksCompleted` field.
-            campaign.tasksCreated += 1; 
+            campaign.tasksCompleted += 1; 
 
-            if (campaign.tasksCreated >= campaign.totalTasks) {
+            if (campaign.tasksCompleted >= campaign.totalTasks) {
                 campaignCompleted = true;
             }
         }
@@ -122,7 +123,7 @@ export function completeSocialTask(taskId: number, campaignId: string) {
 
     if (campaignCompleted) {
         // If campaign is complete, filter out all tasks associated with it
-        initialSocialTasks = initialSocialTasks.filter(task => task.campaignId !== campaignId);
+        socialTasks = socialTasks.filter(task => task.campaignId !== campaignId);
         console.log(`Campaign ${campaignId} completed. Associated tasks removed.`);
     } else {
         // Optionally, remove just the one completed task

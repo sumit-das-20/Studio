@@ -88,7 +88,8 @@ export type AdminCampaign = {
     id: string;
     serviceType: string;
     targetLink: string;
-    tasksCreated: number;
+    tasksCreated: boolean;
+    tasksCompleted: number;
     totalTasks: number;
     createdAt: string;
 }

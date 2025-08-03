@@ -26,11 +26,12 @@ import {
 } from '@/components/ui/table';
 import { useToast } from '@/hooks/use-toast';
 import type { AdminBuyer, AdminCampaign, SocialTask } from '@/lib/types';
-import { CheckCircle, ClipboardList, ExternalLink, Loader2 } from 'lucide-react';
+import { CheckCircle, ExternalLink, Loader2 } from 'lucide-react';
 import Link from 'next/link';
 import { useState } from 'react';
 import { initialBuyers } from '@/lib/mock-data';
 import { useMockData } from '@/hooks/use-mock-data';
+import { Gauge } from '../ui/gauge';
 
 export function BuyerManager() {
   const { toast } = useToast();
@@ -90,7 +91,7 @@ export function BuyerManager() {
                     ...b,
                     campaigns: b.campaigns.map(c => {
                         if (c.id === campaign.id) {
-                            return { ...c, tasksCreated: c.totalTasks };
+                            return { ...c, tasksCreated: true };
                         }
                         return c;
                     })
@@ -145,7 +146,9 @@ export function BuyerManager() {
                         <TableBody>
                             {buyer.campaigns.map(campaign => {
                                 const isCreating = creatingTasks.has(campaign.id);
-                                const isCreated = campaign.tasksCreated === campaign.totalTasks;
+                                const isCreated = campaign.tasksCreated;
+                                const progress = (campaign.tasksCompleted / campaign.totalTasks) * 100;
+                                
                                 return (
                                 <TableRow key={campaign.id}>
                                     <TableCell><Badge>{campaign.serviceType}</Badge></TableCell>
@@ -155,7 +158,14 @@ export function BuyerManager() {
                                             <ExternalLink className='h-4 w-4' />
                                         </Link>
                                     </TableCell>
-                                    <TableCell>{campaign.tasksCreated} / {campaign.totalTasks}</TableCell>
+                                    <TableCell>
+                                        <div className='flex items-center gap-2'>
+                                             <Gauge value={progress} size="small" showValue={false} />
+                                            <span className='font-mono text-sm'>
+                                                {campaign.tasksCompleted} / {campaign.totalTasks}
+                                            </span>
+                                        </div>
+                                    </TableCell>
                                     <TableCell>
                                         <Button size="sm" onClick={() => handleCreateTasks(campaign, buyer)} disabled={isCreating || isCreated}>
                                             {isCreating && <Loader2 className='mr-2 h-4 w-4 animate-spin' />}

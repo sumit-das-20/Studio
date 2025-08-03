@@ -2,7 +2,7 @@
 'use client';
 
 import { useState, useCallback } from 'react';
-import { initialSocialTasks, addSocialTasks as apiAddSocialTasks, completeSocialTask as apiCompleteSocialTask } from '@/lib/mock-data';
+import { socialTasks as initialSocialTasks, addSocialTasks as apiAddSocialTasks, completeSocialTask as apiCompleteSocialTask } from '@/lib/mock-data';
 import type { SocialTask } from '@/lib/types';
 
 // In a real-world application, this would use React Context or a state management library
