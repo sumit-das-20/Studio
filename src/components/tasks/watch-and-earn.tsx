@@ -4,22 +4,28 @@ import { type SimpleTaskType } from '@/lib/types';
 import { Clapperboard } from 'lucide-react';
 import { SimpleTask } from './simple-task';
 import { useMockData } from '@/hooks/use-mock-data';
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 
 export function WatchAndEarn() {
   const { allTasks } = useMockData();
+  const [currentIndex, setCurrentIndex] = useState(0);
 
   const tasks = useMemo(() => {
     return allTasks
       .filter(task => task.type === 'Watch and Earn')
       .map(task => ({
-        id: parseInt(task.id.split('-')[1]),
+        id: task.id,
         question: task.question || 'No question provided',
         reward: task.reward,
         adUnitId: task.adUnitId,
       })) as SimpleTaskType[];
   }, [allTasks]);
 
+  const handleNextTask = () => {
+    setCurrentIndex(prevIndex => prevIndex + 1);
+  };
+  
+  const currentTask = tasks[currentIndex];
 
   return (
     <section id="watch-earn">
@@ -32,17 +38,13 @@ export function WatchAndEarn() {
           </p>
         </div>
       </div>
-      {tasks && tasks.length > 0 ? (
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {tasks.map((task) => (
-            <SimpleTask key={task.id} task={task} adType="video" />
-            ))}
-        </div>
-        ) : (
+      {currentTask ? (
+        <SimpleTask key={currentTask.id} task={currentTask} adType="video" onComplete={handleNextTask}/>
+      ) : (
         <div className="text-center text-muted-foreground py-12">
-            <p>No tasks available at the moment. Please check back later.</p>
+          <p>No more tasks available at the moment. Please check back later.</p>
         </div>
-        )}
+      )}
     </section>
   );
 }

@@ -27,7 +27,7 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { CheckCircle, Loader2, Sparkles } from 'lucide-react';
+import { CheckCircle, Loader2, Sparkles, ArrowRight } from 'lucide-react';
 import { Badge } from '../ui/badge';
 import Image from 'next/image';
 
@@ -38,9 +38,10 @@ const formSchema = z.object({
 type SimpleTaskProps = {
   task: SimpleTaskType;
   adType: 'banner' | 'video';
+  onComplete: () => void;
 };
 
-export function SimpleTask({ task, adType }: SimpleTaskProps) {
+export function SimpleTask({ task, adType, onComplete }: SimpleTaskProps) {
   const [isCompleted, setIsCompleted] = useState(false);
   const [isPending, startTransition] = useTransition();
   const [aiResult, setAiResult] = useState<CategorizeTaskOutput | null>(null);
@@ -136,7 +137,7 @@ export function SimpleTask({ task, adType }: SimpleTaskProps) {
         )}
       </CardContent>
       {isCompleted && (
-        <CardFooter className="mt-auto">
+        <CardFooter className="mt-auto flex-col gap-4">
           <div className="relative w-full overflow-hidden rounded-md border bg-muted p-2">
             <Image
               src={ adType === 'banner' ? "https://placehold.co/300x100.png" : "https://placehold.co/300x200.png"}
@@ -153,6 +154,9 @@ export function SimpleTask({ task, adType }: SimpleTaskProps) {
                 )}
             </div>
           </div>
+          <Button onClick={onComplete} className="w-full">
+              Next Task <ArrowRight className="ml-2 h-4 w-4" />
+          </Button>
         </CardFooter>
       )}
     </Card>
