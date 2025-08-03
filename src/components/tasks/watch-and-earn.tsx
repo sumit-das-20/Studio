@@ -1,16 +1,26 @@
+'use client';
+
 import { type SimpleTaskType } from '@/lib/types';
 import { Clapperboard } from 'lucide-react';
 import { SimpleTask } from './simple-task';
-
-// In a real application, this data would be fetched from a backend
-// where tasks are created and managed by an administrator.
-const tasks: SimpleTaskType[] = [
-  { id: 4, question: 'What is your age?', reward: 0.75 },
-  { id: 5, question: 'What is your favorite movie genre?', reward: 0.75 },
-  { id: 6, question: 'What brand of phone do you use?', reward: 0.75 },
-];
+import { useMockData } from '@/hooks/use-mock-data';
+import { useMemo } from 'react';
 
 export function WatchAndEarn() {
+  const { allTasks } = useMockData();
+
+  const tasks = useMemo(() => {
+    return allTasks
+      .filter(task => task.type === 'Watch and Earn')
+      .map(task => ({
+        id: parseInt(task.id.split('-')[1]),
+        question: task.question || 'No question provided',
+        reward: task.reward,
+        adUnitId: task.adUnitId,
+      })) as SimpleTaskType[];
+  }, [allTasks]);
+
+
   return (
     <section id="watch-earn">
        <div className="mb-4 flex items-center gap-4">

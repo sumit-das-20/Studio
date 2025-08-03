@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
@@ -8,21 +8,23 @@ import { Label } from '@/components/ui/label';
 import { CheckCircle, HelpCircle, Loader2 } from 'lucide-react';
 import { type QuizTask } from '@/lib/types';
 import Image from 'next/image';
-
-// In a real application, this data would be fetched from a backend
-// where tasks are created and managed by an administrator.
-const quizTasks: QuizTask[] = [
-  {
-    id: 1,
-    question: 'What is the capital of France?',
-    options: ['Berlin', 'Madrid', 'Paris', 'Rome'],
-    reward: 1.00,
-  },
-];
+import { useMockData } from '@/hooks/use-mock-data';
 
 export function QuizSection() {
   const [completedQuizzes, setCompletedQuizzes] = useState<Set<number>>(new Set());
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const { allTasks } = useMockData();
+
+  const quizTasks = useMemo(() => {
+      return allTasks
+        .filter(task => task.type === 'Quiz')
+        .map(task => ({
+            id: parseInt(task.id.split('-')[1]),
+            question: task.question || 'No question',
+            options: task.options || [],
+            reward: task.reward,
+        })) as QuizTask[];
+  }, [allTasks]);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>, task: QuizTask) => {
     e.preventDefault();

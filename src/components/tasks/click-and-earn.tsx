@@ -1,16 +1,26 @@
+'use client';
+
 import { SimpleTaskType } from '@/lib/types';
 import { MousePointerClick } from 'lucide-react';
 import { SimpleTask } from './simple-task';
-
-// In a real application, this data would be fetched from a backend
-// where tasks and their corresponding ad unit IDs are managed by an administrator.
-const tasks: SimpleTaskType[] = [
-  { id: 1, question: 'Enter Your Full Name.', adUnitId: 'ca-app-pub-3940256099942544/6300978111' },
-  { id: 2, question: 'What is your primary hobby?', adUnitId: 'ca-app-pub-3940256099942544/6300978111' },
-  { id: 3, question: 'What city do you live in?', adUnitId: 'ca-app-pub-3940256099942544/6300978111' },
-];
+import { useMockData } from '@/hooks/use-mock-data';
+import { useMemo } from 'react';
 
 export function ClickAndEarn() {
+  const { allTasks } = useMockData();
+
+  const tasks = useMemo(() => {
+    return allTasks
+      .filter(task => task.type === 'Click and Earn')
+      .map(task => ({
+        id: parseInt(task.id.split('-')[1]), // Maintain numeric ID for compatibility
+        question: task.question || 'No question provided',
+        reward: task.reward,
+        adUnitId: task.adUnitId,
+      })) as SimpleTaskType[];
+  }, [allTasks]);
+
+
   return (
     <section id="click-earn">
       <div className="mb-4 flex items-center gap-4">

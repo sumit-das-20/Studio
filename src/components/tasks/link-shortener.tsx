@@ -1,20 +1,26 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { Button } from '@/components/ui/button';
 import { Link, Check, ExternalLink } from 'lucide-react';
 import type { LinkTask } from '@/lib/types';
+import { useMockData } from '@/hooks/use-mock-data';
 
-// In a real application, this data would be fetched from a backend
-// where tasks are created and managed by an administrator.
-const initialTasks: LinkTask[] = Array.from({ length: 12 }, (_, i) => ({
-  id: i + 1,
-  url: `https://short.link/example${i + 1}`,
-  reward: 0.10,
-}));
 
 export function LinkShortener() {
   const [clickedLinks, setClickedLinks] = useState<Set<number>>(new Set());
+  const { allTasks } = useMockData();
+
+  const tasks = useMemo(() => {
+    return allTasks
+      .filter(task => task.type === 'Link Shortener')
+      .map(task => ({
+        id: parseInt(task.id.split('-')[1]),
+        url: task.link || '',
+        reward: task.reward,
+      })) as LinkTask[];
+  }, [allTasks]);
+
 
   const handleClick = (task: LinkTask) => {
     if (clickedLinks.has(task.id)) return;
@@ -39,9 +45,9 @@ export function LinkShortener() {
           </p>
         </div>
       </div>
-      {initialTasks && initialTasks.length > 0 ? (
+      {tasks && tasks.length > 0 ? (
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
-            {initialTasks.map((task) => {
+            {tasks.map((task) => {
             const isClicked = clickedLinks.has(task.id);
             return (
                 <Button

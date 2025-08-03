@@ -1,5 +1,5 @@
 
-import { AdminBuyer, SocialTask } from "./types";
+import { AdminBuyer, SocialTask, SimpleTaskType, QuizTask, LinkTask, AdminTask } from "./types";
 
 // This is a representation of buyer data fetched from the database.
 export let initialBuyers: AdminBuyer[] = [
@@ -98,6 +98,68 @@ export let socialTasks: SocialTask[] = [
         platform: 'Instagram' as const,
     })),
 ];
+
+// --- All Tasks for Admin Panel ---
+export let allTasks: AdminTask[] = [
+  {
+    id: 'TASK-001',
+    type: 'Click and Earn',
+    question: 'What is your primary hobby?',
+    reward: 0.25,
+    adUnitId: 'ca-app-pub-3940256099942544/6300978111',
+    createdAt: '2024-07-30',
+  },
+  {
+    id: 'TASK-002',
+    type: 'Watch and Earn',
+    question: 'What brand of phone do you use?',
+    reward: 0.75,
+    adUnitId: 'ca-app-pub-3940256099942544/2247696110',
+    createdAt: '2024-07-29',
+  },
+   {
+    id: 'TASK-005',
+    type: 'Link Shortener',
+    link: 'https://short.url/promo-xyz',
+    reward: 0.15,
+    createdAt: '2024-07-26',
+  },
+  {
+    id: 'TASK-003',
+    type: 'Quiz',
+    question: 'What is the largest planet in our solar system?',
+    options: ['Earth', 'Jupiter', 'Mars', 'Saturn'],
+    reward: 1.50,
+    createdAt: '2024-07-28',
+  },
+  {
+    id: 'TASK-004',
+    type: 'Social Media',
+    platform: 'YouTube',
+    socialTaskType: 'Subscribe',
+    title: 'Subscribe to our YouTube Channel',
+    link: 'https://youtube.com/example',
+    reward: 2.00,
+    createdAt: '2024-07-27',
+  }
+];
+
+
+// Function to add new tasks to the list.
+export function addAdminTask(newTask: AdminTask) {
+    allTasks.unshift(newTask);
+}
+
+// Function to update an existing task.
+export function updateAdminTask(updatedTask: AdminTask) {
+    allTasks = allTasks.map(task => (task.id === updatedTask.id ? updatedTask : task));
+}
+
+// Function to delete a task.
+export function deleteAdminTask(taskId: string) {
+    allTasks = allTasks.filter(task => task.id !== taskId);
+}
+
 
 // Function to add new tasks to the list.
 // In a real app, this would be an API call.

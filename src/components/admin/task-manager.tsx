@@ -23,51 +23,7 @@ import { useState, useMemo } from 'react';
 import { DeleteTaskDialog } from './delete-task-dialog';
 import { Facebook, Instagram, Youtube, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Button } from '../ui/button';
-
-// This is a representation of tasks fetched from the database.
-const initialTasks: AdminTask[] = [
-  {
-    id: 'TASK-001',
-    type: 'Click and Earn',
-    question: 'What is your primary hobby?',
-    reward: 0.25,
-    adUnitId: 'ca-app-pub-3940256099942544/6300978111',
-    createdAt: '2024-07-30',
-  },
-  {
-    id: 'TASK-002',
-    type: 'Watch and Earn',
-    question: 'What brand of phone do you use?',
-    reward: 0.75,
-    adUnitId: 'ca-app-pub-3940256099942544/2247696110',
-    createdAt: '2024-07-29',
-  },
-   {
-    id: 'TASK-005',
-    type: 'Link Shortener',
-    link: 'https://short.url/promo-xyz',
-    reward: 0.15,
-    createdAt: '2024-07-26',
-  },
-  {
-    id: 'TASK-003',
-    type: 'Quiz',
-    question: 'What is the largest planet in our solar system?',
-    options: ['Earth', 'Jupiter', 'Mars', 'Saturn'],
-    reward: 1.50,
-    createdAt: '2024-07-28',
-  },
-  {
-    id: 'TASK-004',
-    type: 'Social Media',
-    platform: 'YouTube',
-    socialTaskType: 'Subscribe',
-    title: 'Subscribe to our YouTube Channel',
-    link: 'https://youtube.com/example',
-    reward: 2.00,
-    createdAt: '2024-07-27',
-  }
-];
+import { useMockData } from '@/hooks/use-mock-data';
 
 const TASKS_PER_PAGE = 10;
 
@@ -179,27 +135,23 @@ const TaskTable = ({ tasks, onTaskUpdated, onTaskDeleted, onTaskCreated }: { tas
 };
 
 export function TaskManager() {
-  const [tasks, setTasks] = useState<AdminTask[]>(initialTasks);
+  const { allTasks, addAdminTask, updateAdminTask, deleteAdminTask } = useMockData();
 
   const handleTaskCreated = (newTask: AdminTask) => {
-    setTasks(prevTasks => [newTask, ...prevTasks]);
+    addAdminTask(newTask);
   };
 
   const handleTaskUpdated = (updatedTask: AdminTask) => {
-    setTasks(prevTasks => 
-        prevTasks.map(task => 
-            task.id === updatedTask.id ? updatedTask : task
-        )
-    );
+    updateAdminTask(updatedTask);
   };
 
   const handleTaskDeleted = (taskId: string) => {
-    setTasks(prevTasks => prevTasks.filter(task => task.id !== taskId));
+    deleteAdminTask(taskId);
   }
 
   const filteredTasks = (type: AdminTask['type'] | AdminTask['type'][]) => {
       const types = Array.isArray(type) ? type : [type];
-      return tasks.filter(task => types.includes(task.type));
+      return allTasks.filter(task => types.includes(task.type));
   }
 
   return (
@@ -223,7 +175,7 @@ export function TaskManager() {
                 <TabsTrigger value="social">Social Media</TabsTrigger>
             </TabsList>
             <TabsContent value="all">
-                 <TaskTable tasks={tasks} onTaskUpdated={handleTaskUpdated} onTaskDeleted={handleTaskDeleted} onTaskCreated={handleTaskCreated} />
+                 <TaskTable tasks={allTasks} onTaskUpdated={handleTaskUpdated} onTaskDeleted={handleTaskDeleted} onTaskCreated={handleTaskCreated} />
             </TabsContent>
             <TabsContent value="simple">
                  <TaskTable tasks={filteredTasks(['Click and Earn', 'Watch and Earn'])} onTaskUpdated={handleTaskUpdated} onTaskDeleted={handleTaskDeleted} onTaskCreated={handleTaskCreated} />
