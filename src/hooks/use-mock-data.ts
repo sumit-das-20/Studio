@@ -28,74 +28,72 @@ export const useMockData = () => {
     const [withdrawalRequests, setWithdrawalRequests] = useState<AdminWithdrawalRequest[]>([]);
     const [buyers, setBuyers] = useState<AdminBuyer[]>([]);
     const [isLoading, setIsLoading] = useState(true);
+    // A simple dependency trigger for re-fetching data
+    const [dependency, setDependency] = useState(0);
+
+    const refetch = useCallback(() => {
+        setDependency(prev => prev + 1);
+    }, []);
 
     useEffect(() => {
-        // Simulate initial data fetch
+        // This effect re-fetches all data from the source whenever 'dependency' changes.
+        // This simulates a full refresh from a database.
+        setIsLoading(true);
         const timer = setTimeout(() => {
-            setSocialTasks(initialSocialTasks);
-            setAllTasks(initialAllTasks);
-            setEmployees(initialEmployees);
-            setWithdrawalRequests(initialWithdrawalRequests);
-            setBuyers(initialBuyers);
+            setSocialTasks([...initialSocialTasks]);
+            setAllTasks([...initialAllTasks]);
+            setEmployees([...initialEmployees]);
+            setWithdrawalRequests([...initialWithdrawalRequests]);
+            setBuyers([...initialBuyers]);
             setIsLoading(false);
-        }, 500); // Reduced delay
+        }, 100); 
         return () => clearTimeout(timer);
-    }, []);
+    }, [dependency]);
 
     const addSocialTasks = useCallback((newTasks: SocialTask[]) => {
         apiAddSocialTasks(newTasks);
-        setSocialTasks(prev => [...newTasks, ...prev]); 
-        setAllTasks([...initialAllTasks]); // Refresh allTasks from source
-    }, []);
+        refetch();
+    }, [refetch]);
 
     const completeSocialTask = useCallback((taskId: number, campaignId: string) => {
         apiCompleteSocialTask(taskId, campaignId);
-        setBuyers([...initialBuyers]); // Refresh buyers from source
-    }, []);
+        refetch();
+    }, [refetch]);
 
     const addAdminTask = useCallback((newTask: AdminTask) => {
         apiAddAdminTask(newTask);
-        setAllTasks(prev => [newTask, ...prev]);
-    }, []);
+        refetch();
+    }, [refetch]);
 
     const updateAdminTask = useCallback((updatedTask: AdminTask) => {
         apiUpdateAdminTask(updatedTask);
-        setAllTasks(prevTasks => prevTasks.map(task => (task.id === updatedTask.id ? updatedTask : task)));
-    }, []);
+        refetch();
+    }, [refetch]);
 
     const deleteAdminTask = useCallback((taskId: string) => {
         apiDeleteAdminTask(taskId);
-        setAllTasks(prev => prev.filter(task => task.id !== taskId));
-    }, []);
+        refetch();
+    }, [refetch]);
 
     const updateEmployee = useCallback((employeeId: string, updates: Partial<AdminEmployee>) => {
         apiUpdateEmployee(employeeId, updates);
-        setEmployees(prev => prev.map(emp => emp.id === employeeId ? { ...emp, ...updates } : emp));
-    }, []);
+        refetch();
+    }, [refetch]);
 
     const addWithdrawalRequest = useCallback((request: AdminWithdrawalRequest) => {
         apiAddWithdrawalRequest(request);
-        setWithdrawalRequests(prev => [request, ...prev]);
-        // Also update the employee's request status
-        setEmployees(prev => prev.map(emp => emp.id === request.employeeId ? { ...emp, withdrawalRequest: request } : emp));
-    }, []);
+        refetch();
+    }, [refetch]);
 
     const updateWithdrawalRequest = useCallback((requestId: string, updates: Partial<AdminWithdrawalRequest>) => {
         apiUpdateWithdrawalRequest(requestId, updates);
-        const updatedRequest = initialWithdrawalRequests.find(r => r.id === requestId);
-        if (updatedRequest) {
-             setWithdrawalRequests([...initialWithdrawalRequests]);
-             // If status is not pending, clear it from employee
-            if (updatedRequest.status !== 'Pending') {
-                 setEmployees(prev => prev.map(emp => emp.id === updatedRequest.employeeId ? { ...emp, withdrawalRequest: null } : emp));
-            }
-        }
-    }, []);
+        refetch();
+    }, [refetch]);
 
     const updateCampaign = useCallback((buyerId: string, campaignId: string, updates: Partial<AdminCampaign>) => {
         apiUpdateCampaign(buyerId, campaignId, updates);
-        setBuyers([...initialBuyers]);
-    }, []);
+        refetch();
+    }, [refetch]);
 
     return { 
         socialTasks, 

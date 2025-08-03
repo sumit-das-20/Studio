@@ -1,4 +1,5 @@
 
+
 'use client';
 
 import {
@@ -62,7 +63,7 @@ const socialTaskTypes = {
 export function TaskDialog({ onTaskCreated, onTaskUpdated, task, isFirstTask = false }: TaskDialogProps) {
   const isEditing = !!task;
   const action = isEditing ? updateTask : createTask;
-  const [state, formAction] = useActionState(action, initialState);
+  const [state, formAction, isFormPending] = useActionState(action, initialState);
   const [open, setOpen] = useState(false);
   const formRef = useRef<HTMLFormElement>(null);
 
@@ -74,30 +75,23 @@ export function TaskDialog({ onTaskCreated, onTaskUpdated, task, isFirstTask = f
   // Reset form and local state when the dialog is opened/closed
   const handleOpenChange = (isOpen: boolean) => {
     setOpen(isOpen);
-    if (isOpen) {
-      if (task) {
-        setTaskType(task.type);
-        setQuizOptions(task.options || ['', '']);
-        setPlatform(task.platform || '');
-      } else {
-        // Reset for a new task
+    if (!isOpen) {
         formRef.current?.reset();
-        setTaskType('Click and Earn');
-        setQuizOptions(['', '']);
-        setPlatform('');
-      }
-    } else {
-        // Clear state on close
-        formRef.current?.reset();
+        // Reset local state for dynamic fields
         setTaskType(undefined);
         setQuizOptions(['', '']);
         setPlatform('');
+    } else if(task) {
+        // If editing, sync local state
+        setTaskType(task.type);
+        setQuizOptions(task.options || ['', '']);
+        setPlatform(task.platform || '');
     }
   };
 
 
   useEffect(() => {
-    if (state.success && state.data) {
+    if (state.success && state.data && !isFormPending) {
       if (isEditing) {
         onTaskUpdated({
           ...task,
@@ -112,7 +106,7 @@ export function TaskDialog({ onTaskCreated, onTaskUpdated, task, isFirstTask = f
       }
       handleOpenChange(false); // Use the handler to close and reset
     }
-  }, [state.success, state.data]);
+  }, [state.success, state.data, isFormPending]);
 
 
   const handleAddOption = () => setQuizOptions([...quizOptions, '']);
@@ -214,8 +208,7 @@ export function TaskDialog({ onTaskCreated, onTaskUpdated, task, isFirstTask = f
                         <Input 
                             name="options[]" 
                             placeholder={`Option ${index + 1}`} 
-                            value={option}
-                            onChange={(e) => handleOptionChange(index, e.target.value)}
+                            defaultValue={option}
                         />
                         <Button type="button" variant="ghost" size="icon" onClick={() => handleRemoveOption(index)} disabled={quizOptions.length <= 2}>
                             <Trash2 className="h-4 w-4" />

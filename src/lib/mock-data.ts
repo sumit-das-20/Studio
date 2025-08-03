@@ -191,6 +191,7 @@ export function addSocialTasks(newTasks: SocialTask[]) {
         title: task.title,
         link: task.link,
     }));
+    // Add to the main task list as well
     initialAllTasks.unshift(...newAdminTasks);
 }
 
@@ -234,8 +235,10 @@ export function updateWithdrawalRequest(requestId: string, updates: Partial<Admi
         return req;
     });
 
-    if (employeeIdToUpdate && updates.status !== 'Pending') {
-         updateEmployee(employeeIdToUpdate, { withdrawalRequest: null });
+    if (employeeIdToUpdate) {
+        if (updates.status && updates.status !== 'Pending') {
+            updateEmployee(employeeIdToUpdate, { withdrawalRequest: null });
+        }
     }
 }
 

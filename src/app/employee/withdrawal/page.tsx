@@ -182,8 +182,8 @@ export default function WithdrawalPage() {
         
         const newRequest: AdminWithdrawalRequest = {
             id: `WR-${Date.now()}`,
-            employeeId: 'EMP-CURRENT', // In a real app, this would be the logged-in user's ID
-            employeeEmail: 'employee@example.com', // Logged-in user's email
+            employeeId: 'EMP-001', // In a real app, this would be the logged-in user's ID
+            employeeEmail: 'john.doe@example.com', // Logged-in user's email
             amount: values.amount,
             method: values.paymentMethod as any,
             status: 'Pending',
