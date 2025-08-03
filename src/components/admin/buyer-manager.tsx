@@ -64,7 +64,7 @@ const buyers: AdminBuyer[] = [
     campaigns: [
       {
         id: 'CAMP-003',
-        serviceType: 'Facebook Likes',
+        serviceType: 'Facebook Page Likes',
         targetLink: 'https://facebook.com/fashionforward',
         tasksCreated: 250,
         totalTasks: 500,
