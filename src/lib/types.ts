@@ -66,7 +66,7 @@ export type AdminWithdrawalRequest = {
 
 export type AdminCampaign = {
     id: string;
-    serviceType: 'YouTube Subscribers' | 'Facebook Likes' | 'Instagram Followers';
+    serviceType: string;
     targetLink: string;
     tasksCreated: number;
     totalTasks: number;

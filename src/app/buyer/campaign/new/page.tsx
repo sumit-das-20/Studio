@@ -22,7 +22,7 @@ import {
 } from '@/components/ui/select';
 import { BackButton } from '@/components/back-button';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { Loader2, Sparkles, CheckCircle, Users, CircleDollarSign } from 'lucide-react';
+import { Loader2, Sparkles, CheckCircle, Users, CircleDollarSign, Link as LinkIcon, Briefcase } from 'lucide-react';
 import { createCampaign } from '../../actions';
 import { useToast } from '@/hooks/use-toast';
 
@@ -79,7 +79,7 @@ export default function NewCampaignPage() {
                     </CardDescription>
                 </CardHeader>
                 <CardContent>
-                    {state.success ? (
+                    {state.success && state.data ? (
                          <div className="flex flex-col items-center justify-center gap-6 rounded-lg border-2 border-dashed border-primary bg-primary/5 p-8 text-center">
                             <CheckCircle className="h-12 w-12 text-primary" />
                             <div>
@@ -89,7 +89,15 @@ export default function NewCampaignPage() {
                             <div className="w-full space-y-4 text-left rounded-lg border bg-background p-4">
                                 <h4 className="font-bold text-lg">Campaign Summary:</h4>
                                 <p><strong>Name:</strong> {state.data?.campaignName}</p>
+                                 <p><strong>Service:</strong> {state.data?.serviceType}</p>
                                 <div className="grid grid-cols-2 gap-4">
+                                     <div className="flex items-center gap-2 col-span-2">
+                                        <LinkIcon className="h-5 w-5 text-muted-foreground" />
+                                        <div>
+                                            <p className="text-sm text-muted-foreground">Target Link</p>
+                                            <p className="font-bold break-all">{state.data?.targetLink}</p>
+                                        </div>
+                                    </div>
                                     <div className="flex items-center gap-2">
                                         <Users className="h-5 w-5 text-muted-foreground" />
                                         <div>
@@ -105,7 +113,7 @@ export default function NewCampaignPage() {
                                         </div>
                                     </div>
                                      <div className="flex items-center gap-2">
-                                        <Users className="h-5 w-5 text-muted-foreground" />
+                                        <Briefcase className="h-5 w-5 text-muted-foreground" />
                                         <div>
                                             <p className="text-sm text-muted-foreground">Total Budget</p>
                                             <p className="font-bold">${(state.data?.numberOfTasks * state.data?.rewardPerTask).toFixed(2)}</p>
@@ -131,43 +139,28 @@ export default function NewCampaignPage() {
                                 <Input id="campaignName" name="campaignName" placeholder="e.g., Summer Sale Promotion" />
                                 {state.error?.campaignName && <p className="text-sm text-destructive">{state.error.campaignName[0]}</p>}
                             </div>
-
-                            <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-                                <div className="space-y-2">
-                                    <Label htmlFor="campaignGoal">Campaign Goal</Label>
-                                    <Select name="campaignGoal">
-                                        <SelectTrigger id="campaignGoal">
-                                            <SelectValue placeholder="Select a goal" />
-                                        </SelectTrigger>
-                                        <SelectContent>
-                                            <SelectItem value="increase-followers">Increase Followers</SelectItem>
-                                            <SelectItem value="website-clicks">Website Clicks</SelectItem>
-                                            <SelectItem value="brand-awareness">Brand Awareness</SelectItem>
-                                            <SelectItem value="video-views">Video Views</SelectItem>
-                                        </SelectContent>
-                                    </Select>
-                                     {state.error?.campaignGoal && <p className="text-sm text-destructive">{state.error.campaignGoal[0]}</p>}
-                                </div>
-                                 <div className="space-y-2">
-                                    <Label htmlFor="targetAudience">Target Audience</Label>
-                                    <Select name="targetAudience">
-                                        <SelectTrigger id="targetAudience">
-                                            <SelectValue placeholder="Select an audience" />
-                                        </SelectTrigger>
-                                        <SelectContent>
-                                            <SelectItem value="all">All Users</SelectItem>
-                                            <SelectItem value="gamers">Gamers</SelectItem>
-                                            <SelectItem value="students">Students</SelectItem>
-                                            <SelectItem value="tech-enthusiasts">Tech Enthusiasts</SelectItem>
-                                            <SelectItem value="fashion-lovers">Fashion Lovers</SelectItem>
-                                        </SelectContent>
-                                    </Select>
-                                     {state.error?.targetAudience && <p className="text-sm text-destructive">{state.error.targetAudience[0]}</p>}
-                                </div>
+                             <div className="space-y-2">
+                                <Label htmlFor="serviceType">Select Service</Label>
+                                <Select name="serviceType">
+                                    <SelectTrigger id="serviceType">
+                                        <SelectValue placeholder="Select a service to purchase" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        <SelectItem value="YouTube Subscribers">YouTube Subscribers</SelectItem>
+                                        <SelectItem value="Instagram Followers">Instagram Followers</SelectItem>
+                                        <SelectItem value="Facebook Page Likes">Facebook Page Likes</SelectItem>
+                                    </SelectContent>
+                                </Select>
+                                {state.error?.serviceType && <p className="text-sm text-destructive">{state.error.serviceType[0]}</p>}
+                            </div>
+                            <div className="space-y-2">
+                                <Label htmlFor="targetLink">Target Link</Label>
+                                <Input id="targetLink" name="targetLink" placeholder="e.g., https://youtube.com/your-channel" />
+                                {state.error?.targetLink && <p className="text-sm text-destructive">{state.error.targetLink[0]}</p>}
                             </div>
                              <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                                 <div className="space-y-2">
-                                    <Label htmlFor="numberOfTasks">Number of Tasks</Label>
+                                    <Label htmlFor="numberOfTasks">Number of Tasks (e.g., Followers/Likes)</Label>
                                     <Input id="numberOfTasks" name="numberOfTasks" type="number" placeholder="e.g., 1000" />
                                     {state.error?.numberOfTasks && <p className="text-sm text-destructive">{state.error.numberOfTasks[0]}</p>}
                                 </div>

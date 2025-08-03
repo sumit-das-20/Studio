@@ -107,8 +107,8 @@ export async function resetPasswordBuyer(prevState: any, formData: FormData) {
 
 const campaignSchema = z.object({
     campaignName: z.string().min(3, 'Campaign name must be at least 3 characters.'),
-    campaignGoal: z.string().min(1, 'Please select a campaign goal.'),
-    targetAudience: z.string().min(1, 'Please select a target audience.'),
+    serviceType: z.string().min(1, 'Please select a service.'),
+    targetLink: z.string().url({ message: 'Please enter a valid URL.' }),
     numberOfTasks: z.coerce.number().min(1, 'Please enter at least 1 task.'),
     rewardPerTask: z.coerce.number().min(0.01, 'Reward must be at least $0.01.'),
 });
