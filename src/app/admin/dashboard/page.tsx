@@ -7,6 +7,7 @@ import Link from "next/link";
 import { signOut } from "@/app/employee/actions";
 import { TaskManager } from "@/components/admin/task-manager";
 import { EmployeeManager } from "@/components/admin/employee-manager";
+import { WithdrawalRequestManager } from "@/components/admin/withdrawal-request-manager";
 
 export default function AdminDashboard() {
   return (
@@ -65,6 +66,7 @@ export default function AdminDashboard() {
             </CardContent>
           </Card>
         </div>
+        <WithdrawalRequestManager />
         <TaskManager />
         <EmployeeManager />
       </main>

@@ -1,4 +1,5 @@
 
+
 'use client';
 
 import {
@@ -28,7 +29,15 @@ const initialEmployees: AdminEmployee[] = [
     id: 'EMP-001',
     email: 'john.doe@example.com',
     totalEarnings: 1250.75,
-    withdrawalRequest: 500.00,
+    withdrawalRequest: {
+        id: 'WR-001',
+        employeeId: 'EMP-001',
+        employeeEmail: 'john.doe@example.com',
+        amount: 500.00,
+        method: 'UPI',
+        status: 'Pending',
+        createdAt: '2024-07-30'
+    },
     createdAt: '2024-07-20',
   },
   {
@@ -42,7 +51,15 @@ const initialEmployees: AdminEmployee[] = [
     id: 'EMP-003',
     email: 'sam.wilson@email.com',
     totalEarnings: 5600.20,
-    withdrawalRequest: 1500.00,
+    withdrawalRequest: {
+        id: 'WR-002',
+        employeeId: 'EMP-003',
+        employeeEmail: 'sam.wilson@email.com',
+        amount: 1500.00,
+        method: 'Bank Transfer',
+        status: 'Pending',
+        createdAt: '2024-07-29'
+    },
     createdAt: '2024-06-15',
   },
     {
@@ -88,7 +105,7 @@ export function EmployeeManager() {
                   <TableCell className="text-right">{employee.totalEarnings.toFixed(2)}</TableCell>
                   <TableCell className="text-right">
                     {employee.withdrawalRequest ? (
-                         <Badge variant="destructive">{employee.withdrawalRequest.toFixed(2)}</Badge>
+                         <Badge variant="destructive">{employee.withdrawalRequest.amount.toFixed(2)}</Badge>
                     ) : (
                         <span className="text-muted-foreground">-</span>
                     )}

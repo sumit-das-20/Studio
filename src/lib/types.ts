@@ -1,5 +1,6 @@
 
 
+
 export type SimpleTaskType = {
   id: number;
   question: string;
@@ -41,6 +42,17 @@ export type AdminEmployee = {
   id: string;
   email: string;
   totalEarnings: number;
-  withdrawalRequest: number | null;
+  withdrawalRequest: AdminWithdrawalRequest | null;
+  createdAt: string;
+};
+
+
+export type AdminWithdrawalRequest = {
+  id: string;
+  employeeId: string;
+  employeeEmail: string;
+  amount: number;
+  method: 'UPI' | 'Bank Transfer' | 'PayPal';
+  status: 'Pending' | 'Approved' | 'On Hold' | 'Cancelled';
   createdAt: string;
 };
