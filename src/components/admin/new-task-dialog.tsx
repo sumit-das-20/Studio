@@ -55,8 +55,8 @@ type TaskDialogProps = {
 
 const socialTaskTypes = {
   YouTube: ['Subscribe', 'Watch Video', 'Like & Comment'],
-  Facebook: ['Follow Pages', 'Watch Videos', 'Like & Comment'],
-  Instagram: ['Follow Accounts', 'Like & Comment'],
+  Facebook: ['Follow Page', 'Watch Video', 'Like & Comment'],
+  Instagram: ['Follow Account', 'Like & Comment'],
 };
 
 export function TaskDialog({ onTaskCreated, onTaskUpdated, task, isFirstTask = false }: TaskDialogProps) {
@@ -66,9 +66,34 @@ export function TaskDialog({ onTaskCreated, onTaskUpdated, task, isFirstTask = f
   const [open, setOpen] = useState(false);
   const formRef = useRef<HTMLFormElement>(null);
 
-  const [taskType, setTaskType] = useState<AdminTask['type'] | undefined>(task?.type || 'Click and Earn');
+  // Local state for dynamically controlled fields
+  const [taskType, setTaskType] = useState<AdminTask['type'] | undefined>(task?.type);
   const [quizOptions, setQuizOptions] = useState<string[]>(task?.options || ['', '']);
   const [platform, setPlatform] = useState<AdminTask['platform'] | ''>(task?.platform || '');
+
+  // Reset form and local state when the dialog is opened/closed
+  const handleOpenChange = (isOpen: boolean) => {
+    setOpen(isOpen);
+    if (isOpen) {
+      if (task) {
+        setTaskType(task.type);
+        setQuizOptions(task.options || ['', '']);
+        setPlatform(task.platform || '');
+      } else {
+        // Reset for a new task
+        formRef.current?.reset();
+        setTaskType('Click and Earn');
+        setQuizOptions(['', '']);
+        setPlatform('');
+      }
+    } else {
+        // Clear state on close
+        formRef.current?.reset();
+        setTaskType(undefined);
+        setQuizOptions(['', '']);
+        setPlatform('');
+    }
+  };
 
 
   useEffect(() => {
@@ -85,25 +110,10 @@ export function TaskDialog({ onTaskCreated, onTaskUpdated, task, isFirstTask = f
           createdAt: new Date().toISOString().split('T')[0],
         } as AdminTask);
       }
-      setOpen(false);
+      handleOpenChange(false); // Use the handler to close and reset
     }
-  }, [state.success, state.data, onTaskCreated, onTaskUpdated, isEditing, task]);
+  }, [state.success, state.data]);
 
-  // Reset form state when dialog opens or task type changes
-  useEffect(() => {
-    if (open) {
-        if (task) {
-            setTaskType(task.type);
-            setQuizOptions(task.options || ['', '']);
-            setPlatform(task.platform || '');
-        } else {
-            formRef.current?.reset();
-            setTaskType('Click and Earn');
-            setQuizOptions(['', '']);
-            setPlatform('');
-        }
-    }
-  }, [open, task]);
 
   const handleAddOption = () => setQuizOptions([...quizOptions, '']);
   const handleRemoveOption = (index: number) => setQuizOptions(quizOptions.filter((_, i) => i !== index));
@@ -115,7 +125,7 @@ export function TaskDialog({ onTaskCreated, onTaskUpdated, task, isFirstTask = f
 
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogTrigger asChild>
         {isEditing ? (
           <Button variant="outline" size="icon" className="h-8 w-8">
@@ -152,7 +162,7 @@ export function TaskDialog({ onTaskCreated, onTaskUpdated, task, isFirstTask = f
           {/* Task Type Selector */}
           <div>
             <Label htmlFor="type">Task Type</Label>
-            <Select name="type" value={taskType} onValueChange={(value) => setTaskType(value as AdminTask['type'])}>
+            <Select name="type" defaultValue={task?.type} onValueChange={(value) => setTaskType(value as AdminTask['type'])}>
               <SelectTrigger id="type">
                 <SelectValue placeholder="Select a task type" />
               </SelectTrigger>
@@ -221,7 +231,7 @@ export function TaskDialog({ onTaskCreated, onTaskUpdated, task, isFirstTask = f
             <>
                  <div className="space-y-2">
                     <Label htmlFor="platform">Platform</Label>
-                    <Select name="platform" value={platform} onValueChange={(value) => setPlatform(value as AdminTask['platform'] | '')}>
+                    <Select name="platform" defaultValue={task?.platform} onValueChange={(value) => setPlatform(value as AdminTask['platform'] | '')}>
                         <SelectTrigger id="platform">
                             <SelectValue placeholder="Select a platform" />
                         </SelectTrigger>
