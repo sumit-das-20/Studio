@@ -79,7 +79,8 @@ const initialRequests: AdminWithdrawalRequest[] = [
 
 const statusConfig = {
     Pending: { variant: "default", icon: Hourglass, label: 'Pending' },
-    Approved: { variant: "secondary", icon: Check, label: 'Approved' },
+    Processing: { variant: "secondary", icon: Loader2, label: 'Processing', className: 'animate-spin' },
+    Approved: { variant: "secondary", icon: Check, label: 'Approved' }, // Kept for existing data, but new flow skips this state.
     'On Hold': { variant: "outline", icon: Hourglass, label: 'On Hold' },
     Cancelled: { variant: "destructive", icon: X, label: 'Cancelled' },
     Paid: { variant: "default", icon: Send, label: 'Paid', className: 'bg-green-600 text-white' },
@@ -88,24 +89,23 @@ const statusConfig = {
 
 export function WithdrawalRequestManager() {
   const [requests, setRequests] = useState<AdminWithdrawalRequest[]>(initialRequests);
-  const [processingPayout, setProcessingPayout] = useState<string | null>(null);
+  const [processingPayout, setProcessingPayout] = useState<Set<string>>(new Set());
   const { toast } = useToast();
 
-  const handleUpdateStatus = (
-    id: string,
-    status: 'Approved' | 'On Hold' | 'Cancelled'
-  ) => {
-    setRequests(
-      requests.map((req) => (req.id === id ? { ...req, status } : req))
-    );
-  };
-
-  const handleProcessPayout = (id: string) => {
-    setProcessingPayout(id);
+ const handleApproveAndPay = (id: string) => {
+    setProcessingPayout(prev => new Set(prev).add(id));
+    setRequests(requests.map(req => req.id === id ? { ...req, status: 'Processing' } : req));
+    
     // Simulate API call to payment gateway
     setTimeout(() => {
-        setRequests(requests.map(req => req.id === id ? { ...req, status: 'Paid' } : req));
-        setProcessingPayout(null);
+        setRequests(prevRequests => prevRequests.map(req => req.id === id ? { ...req, status: 'Paid' } : req));
+        
+        setProcessingPayout(prev => {
+            const newSet = new Set(prev);
+            newSet.delete(id);
+            return newSet;
+        });
+
         toast({
             title: 'Payout Processed!',
             description: `The payout for request ${id} has been successfully processed.`
@@ -113,12 +113,22 @@ export function WithdrawalRequestManager() {
     }, 2000);
   }
 
+  const handleUpdateStatus = (
+    id: string,
+    status: 'On Hold' | 'Cancelled'
+  ) => {
+    setRequests(
+      requests.map((req) => (req.id === id ? { ...req, status } : req))
+    );
+  };
+
+
   return (
     <Card>
       <CardHeader>
         <CardTitle>Withdrawal Requests</CardTitle>
         <CardDescription>
-          Approve, hold, or cancel employee withdrawal requests.
+          Approve, hold, or cancel employee withdrawal requests. Approved requests are paid out automatically.
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -136,7 +146,8 @@ export function WithdrawalRequestManager() {
             </TableHeader>
             <TableBody>
               {requests.map((request) => {
-                const { variant, icon: Icon, label, className } = statusConfig[request.status];
+                const { variant, icon: Icon, label, className } = statusConfig[request.status as keyof typeof statusConfig] || statusConfig['Pending'];
+                const isProcessing = processingPayout.has(request.id);
 
                 return (
                   <TableRow key={request.id}>
@@ -200,8 +211,8 @@ export function WithdrawalRequestManager() {
                       </Popover>
                     </TableCell>
                     <TableCell>
-                      <Badge variant={variant as any} className={className}>
-                        <Icon className="mr-1 h-3 w-3" />
+                      <Badge variant={variant as any} className={request.status === 'Processing' ? '' : className}>
+                        <Icon className={`mr-1 h-3 w-3 ${isProcessing ? 'animate-spin' : ''}`} />
                         {label}
                       </Badge>
                     </TableCell>
@@ -211,16 +222,18 @@ export function WithdrawalRequestManager() {
                           <Button
                             variant="outline"
                             size="sm"
-                            onClick={() => handleUpdateStatus(request.id, 'Approved')}
+                            onClick={() => handleApproveAndPay(request.id)}
+                            disabled={isProcessing}
                             className="text-green-600 border-green-600 hover:bg-green-100 hover:text-green-700"
                           >
                             <Check className="mr-1 h-4 w-4" />
-                            Approve
+                            Approve & Pay
                           </Button>
                           <Button
                             variant="outline"
                             size="sm"
                             onClick={() => handleUpdateStatus(request.id, 'On Hold')}
+                            disabled={isProcessing}
                             className="text-yellow-600 border-yellow-600 hover:bg-yellow-100 hover:text-yellow-700"
                           >
                             <Hourglass className="mr-1 h-4 w-4" />
@@ -230,29 +243,21 @@ export function WithdrawalRequestManager() {
                             variant="destructive"
                             size="sm"
                             onClick={() => handleUpdateStatus(request.id, 'Cancelled')}
+                            disabled={isProcessing}
                           >
                             <X className="mr-1 h-4 w-4" />
                             Cancel
                           </Button>
                         </div>
                       )}
-                      {request.status === 'Approved' && (
-                        <Button
-                            size="sm"
-                            onClick={() => handleProcessPayout(request.id)}
-                            disabled={processingPayout === request.id}
-                            className="bg-blue-600 hover:bg-blue-700 text-white"
-                        >
-                            {processingPayout === request.id ? (
-                                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                            ) : (
-                                <Send className="mr-2 h-4 w-4" />
-                            )}
-                            Process Payout
-                        </Button>
-                      )}
-                       {(request.status === 'Cancelled' || request.status === 'Paid' || request.status === 'On Hold') && (
+                      {(request.status === 'Cancelled' || request.status === 'Paid' || request.status === 'On Hold' || request.status === "Approved" || request.status === "Processing") && !isProcessing && (
                          <span className="text-xs text-muted-foreground">Action Taken</span>
+                       )}
+                       {isProcessing && (
+                           <div className="flex items-center justify-center text-xs text-muted-foreground">
+                               <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                               Processing...
+                           </div>
                        )}
                     </TableCell>
                   </TableRow>

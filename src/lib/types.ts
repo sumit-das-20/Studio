@@ -70,7 +70,7 @@ export type AdminWithdrawalRequest = {
   employeeEmail: string;
   amount: number;
   method: 'UPI' | 'Bank Transfer' | 'PayPal';
-  status: 'Pending' | 'Approved' | 'On Hold' | 'Cancelled' | 'Paid';
+  status: 'Pending' | 'Approved' | 'On Hold' | 'Cancelled' | 'Paid' | 'Processing';
   createdAt: string;
   upiId?: string;
   paypalEmail?: string;
