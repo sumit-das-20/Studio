@@ -12,18 +12,24 @@ import {
   SidebarInset,
   SidebarProvider,
 } from "@/components/ui/sidebar";
-import { Trophy, Youtube, CheckCircle, ExternalLink, UserPlus } from "lucide-react";
+import { Trophy, CheckCircle, ExternalLink, UserPlus } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 
-// This is now a representation of tasks generated from buyer campaigns.
+// This is now a representation of tasks generated from a single buyer's campaign.
 // In a real application, this data would be fetched from a database.
+const singleCampaign = {
+    id: 1,
+    channel: "Fashionista Style", // All tasks point to the same channel
+    taskType: "Subscribe",
+    rewardPerTask: 1.50, // This would come from the campaign data
+};
+
 const youtubeTasks = Array.from({ length: 12 }, (_, i) => ({
-    id: i + 1,
-    type: "Subscribe",
-    // Example: This channel name would come from a buyer's campaign.
-    channel: `Campaign Channel #${i + 1}`,
+    id: i + 1, // Unique ID for each task instance
+    type: singleCampaign.taskType,
+    channel: singleCampaign.channel,
 }));
 
 
@@ -35,10 +41,10 @@ export default function YoutubeSubscribePage() {
 
         setCompletedTasks(prev => new Set(prev).add(taskId));
          window.dispatchEvent(
-          new CustomEvent('earn', { detail: { amount: 1.0 } }) // Placeholder amount, will be dynamic.
+          new CustomEvent('earn', { detail: { amount: singleCampaign.rewardPerTask } }) 
         );
          // In a real app, you would open the link to the buyer's YouTube channel:
-         // window.open('https://youtube.com/channel/SOME_ID', '_blank');
+         // window.open('https://youtube.com/channel/SOME_ID_FROM_CAMPAIGN', '_blank');
     }
 
     return (
@@ -70,17 +76,17 @@ export default function YoutubeSubscribePage() {
                 </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                 {youtubeTasks.map(task => {
                     const isCompleted = completedTasks.has(task.id);
                     return (
-                        <Card key={task.id}>
+                        <Card key={task.id} className={isCompleted ? 'bg-muted/50' : ''}>
                             <CardHeader>
                                 <CardTitle className="flex items-center justify-between">
                                     <span>{task.type} Task</span>
-                                    <Badge variant="secondary">Reward</Badge>
+                                    <Badge variant="secondary">+{singleCampaign.rewardPerTask.toFixed(2)}</Badge>
                                 </CardTitle>
-                                <CardDescription>Channel: {task.channel}</CardDescription>
+                                <CardDescription>Channel: <strong>{task.channel}</strong></CardDescription>
                             </CardHeader>
                             <CardContent>
                                 <Button className="w-full" onClick={() => handleCompleteTask(task.id)} disabled={isCompleted}>
