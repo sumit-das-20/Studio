@@ -136,3 +136,12 @@ export type PaymentGateway = {
     apiKey?: string;
     apiSecret?: string;
 };
+
+export type SocialService = {
+  id: string;
+  platform: 'YouTube' | 'Facebook' | 'Instagram';
+  serviceName: string;
+  unit: string;
+  pricePerUnit: number;
+  status: 'Active' | 'Inactive';
+};

@@ -5,7 +5,7 @@ import { FinancialSummary } from "@/components/admin/financial-summary";
 import { LinkShortenerPerformance } from "@/components/admin/link-shortener-performance";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { BarChart, Users, CircleDollarSign, CreditCard, ClipboardList, ShoppingBag, LandPlot } from "lucide-react";
+import { BarChart, Users, CircleDollarSign, CreditCard, ClipboardList, ShoppingBag, LandPlot, Tags } from "lucide-react";
 import Link from "next/link";
 
 
@@ -113,6 +113,20 @@ export default function AdminDashboard() {
               <CardContent>
                    <Button asChild>
                       <Link href="/admin/tasks">Manage Tasks</Link>
+                  </Button>
+              </CardContent>
+          </Card>
+           <Card className="hover:shadow-lg transition-shadow">
+              <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                      <Tags className="h-6 w-6 text-primary" />
+                      <span>Service Management</span>
+                  </CardTitle>
+                  <CardDescription>Manage pricing for all social media services offered to buyers.</CardDescription>
+              </CardHeader>
+              <CardContent>
+                   <Button asChild>
+                      <Link href="/admin/services">Manage Services</Link>
                   </Button>
               </CardContent>
           </Card>
