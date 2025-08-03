@@ -50,9 +50,9 @@ const buyersData: AdminBuyer[] = [
 
 // Employee Payout Data
 const employeePayoutsData: AdminWithdrawalRequest[] = [
-    { id: 'WR-001', employeeId: 'EMP-001', employeeEmail: 'john.doe@example.com', amount: 500.0, method: 'UPI', status: 'Paid', createdAt: '2024-07-30', upiId: 'john.doe@okhdfcbank' },
-    { id: 'WR-002', employeeId: 'EMP-003', employeeEmail: 'sam.wilson@email.com', amount: 1500.0, method: 'Bank Transfer', status: 'Paid', createdAt: '2024-07-29', bankDetails: { accountHolderName: 'Sam Wilson', bankName: 'State Bank of India', accountNumber: '12345678901', ifscCode: 'SBIN0001234' } },
-    { id: 'WR-004', employeeId: 'EMP-002', employeeEmail: 'jane.smith@example.com', amount: 250.50, method: 'PayPal', status: 'Paid', createdAt: '2024-07-27', paypalEmail: 'jane.s@paypal.com' },
+    { id: 'WR-001', transactionId: 'T20240730A', employeeId: 'EMP-001', employeeEmail: 'john.doe@example.com', amount: 500.0, method: 'UPI', status: 'Paid', createdAt: '2024-07-30', upiId: 'john.doe@okhdfcbank' },
+    { id: 'WR-002', transactionId: 'T20240729B', employeeId: 'EMP-003', employeeEmail: 'sam.wilson@email.com', amount: 1500.0, method: 'Bank Transfer', status: 'Paid', createdAt: '2024-07-29', bankDetails: { accountHolderName: 'Sam Wilson', bankName: 'State Bank of India', accountNumber: '12345678901', ifscCode: 'SBIN0001234' } },
+    { id: 'WR-004', transactionId: 'T20240727C', employeeId: 'EMP-002', employeeEmail: 'jane.smith@example.com', amount: 250.50, method: 'PayPal', status: 'Paid', createdAt: '2024-07-27', paypalEmail: 'jane.s@paypal.com' },
 ];
 
 // --- Calculations ---
@@ -79,13 +79,13 @@ export function FinancialSummary() {
 
   const handleExport = () => {
     // Helper to escape commas in strings for CSV
-    const escapeCsv = (str: string | number) => `"${String(str).replace(/"/g, '""')}"`;
+    const escapeCsv = (str: string | number | undefined) => `"${String(str || '').replace(/"/g, '""')}"`;
     
     let csvContent = "";
     
     // Section 1: Employee Payouts
     csvContent += "Employee Payouts\n";
-    const payoutHeaders = ["Payment Date", "Employee Email", "Amount (INR)", "Payment Method", "Payment Details"];
+    const payoutHeaders = ["Payment Date", "Transaction ID", "Employee Email", "Amount (INR)", "Payment Method", "Payment Details"];
     csvContent += payoutHeaders.map(escapeCsv).join(',') + '\n';
     employeePayoutsData.forEach(p => {
         let details = '';
@@ -94,7 +94,7 @@ export function FinancialSummary() {
         if (p.method === 'Bank Transfer' && p.bankDetails) {
             details = `Name: ${p.bankDetails.accountHolderName}, Bank: ${p.bankDetails.bankName}, Acc: ${p.bankDetails.accountNumber}, IFSC: ${p.bankDetails.ifscCode}`;
         }
-        const row = [p.createdAt, p.employeeEmail, p.amount.toFixed(2), p.method, details];
+        const row = [p.createdAt, p.transactionId, p.employeeEmail, p.amount.toFixed(2), p.method, details];
         csvContent += row.map(escapeCsv).join(',') + '\n';
     });
     csvContent += "\n"; // Add a blank line for separation

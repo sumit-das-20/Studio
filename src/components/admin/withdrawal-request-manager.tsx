@@ -98,7 +98,8 @@ export function WithdrawalRequestManager() {
     
     // Simulate API call to payment gateway
     setTimeout(() => {
-        setRequests(prevRequests => prevRequests.map(req => req.id === id ? { ...req, status: 'Paid' } : req));
+        const transactionId = `T${Date.now()}`;
+        setRequests(prevRequests => prevRequests.map(req => req.id === id ? { ...req, status: 'Paid', transactionId } : req));
         
         setProcessingPayout(prev => {
             const newSet = new Set(prev);
@@ -108,7 +109,7 @@ export function WithdrawalRequestManager() {
 
         toast({
             title: 'Payout Processed!',
-            description: `The payout for request ${id} has been successfully processed.`
+            description: `Payout for request ${id} is complete. TXN ID: ${transactionId}`
         });
     }, 2000);
   }
@@ -173,6 +174,12 @@ export function WithdrawalRequestManager() {
                                     </p>
                                 </div>
                                 <div className="grid gap-2 text-sm">
+                                    {request.transactionId && (
+                                        <div className="grid grid-cols-[1fr_2fr] items-center">
+                                            <span className="font-semibold">Transaction ID</span>
+                                            <span className="font-mono text-xs">{request.transactionId}</span>
+                                        </div>
+                                    )}
                                     {request.method === 'UPI' && request.upiId && (
                                         <div className="grid grid-cols-[1fr_2fr] items-center">
                                             <span className="font-semibold">UPI ID</span>
