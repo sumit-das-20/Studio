@@ -34,7 +34,7 @@ export default function BuyerDashboard() {
               <BarChart className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">5</div>
+              <div className="text-2xl font-bold">0</div>
               <p className="text-xs text-muted-foreground">
                 Currently running
               </p>
@@ -48,7 +48,7 @@ export default function BuyerDashboard() {
               <Users className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">+2,350</div>
+              <div className="text-2xl font-bold">+0</div>
               <p className="text-xs text-muted-foreground">
                 across all campaigns
               </p>
@@ -60,7 +60,7 @@ export default function BuyerDashboard() {
               <Users className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">$1,250.00</div>
+              <div className="text-2xl font-bold">$0.00</div>
               <p className="text-xs text-muted-foreground">
                 in the last 30 days
               </p>
@@ -72,9 +72,9 @@ export default function BuyerDashboard() {
               <Users className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">12.5%</div>
+              <div className="text-2xl font-bold">0%</div>
               <p className="text-xs text-muted-foreground">
-                up 2.1% from last month
+                up 0% from last month
               </p>
             </CardContent>
           </Card>
@@ -88,7 +88,7 @@ export default function BuyerDashboard() {
                 <div className="text-center text-muted-foreground py-12">
                     <p>No campaigns found.</p>
                     <Button variant="link" asChild>
-                        <Link href="#">Create your first campaign</Link>
+                        <Link href="/buyer/campaign/new">Create your first campaign</Link>
                     </Button>
                 </div>
             </CardContent>
