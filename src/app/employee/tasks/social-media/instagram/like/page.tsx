@@ -15,23 +15,23 @@ import { Trophy, Heart } from "lucide-react";
 import { SocialTaskCard } from '@/components/tasks/social-task-card';
 import { SocialTask } from "@/lib/types";
 
-// The rewardPerTask would be set by the admin in the campaign settings.
-const singleCampaign = {
-    id: 1,
-    postDescription: "A photo of a cute puppy.",
-    taskType: "Like & Comment",
-    rewardPerTask: 0.18, // This value would be fetched from the backend.
-    link: "https://instagram.com/p/example",
-};
-
-// Generate a list of tasks based on the campaign.
-const instagramTasks: SocialTask[] = Array.from({ length: 12 }, (_, i) => ({
-    id: i + 1,
-    type: singleCampaign.taskType,
-    title: `Like Post: "${singleCampaign.postDescription}"`,
-    reward: singleCampaign.rewardPerTask,
-    link: singleCampaign.link,
-}));
+// This is a representation of tasks generated from a single buyer's campaign.
+// In a real app, this data would be fetched from a database. The reward for each
+// task is set by the buyer in the admin panel and is part of the task data itself.
+const instagramTasks: SocialTask[] = [
+    { id: 1, type: 'Like & Comment', title: 'Like Post: "A photo of a cute puppy."', reward: 0.18, link: "https://instagram.com/p/example" },
+    { id: 2, type: 'Like & Comment', title: 'Like Post: "A photo of a cute puppy."', reward: 0.18, link: "https://instagram.com/p/example" },
+    { id: 3, type: 'Like & Comment', title: 'Like Post: "A photo of a cute puppy."', reward: 0.18, link: "https://instagram.com/p/example" },
+    { id: 4, type: 'Like & Comment', title: 'Like Post: "A photo of a cute puppy."', reward: 0.18, link: "https://instagram.com/p/example" },
+    { id: 5, type: 'Like & Comment', title: 'Like Post: "A photo of a cute puppy."', reward: 0.18, link: "https://instagram.com/p/example" },
+    { id: 6, type: 'Like & Comment', title: 'Like Post: "A photo of a cute puppy."', reward: 0.18, link: "https://instagram.com/p/example" },
+    { id: 7, type: 'Like & Comment', title: 'Like Post: "A photo of a cute puppy."', reward: 0.18, link: "https://instagram.com/p/example" },
+    { id: 8, type: 'Like & Comment', title: 'Like Post: "A photo of a cute puppy."', reward: 0.18, link: "https://instagram.com/p/example" },
+    { id: 9, type: 'Like & Comment', title: 'Like Post: "A photo of a cute puppy."', reward: 0.18, link: "https://instagram.com/p/example" },
+    { id: 10, type: 'Like & Comment', title: 'Like Post: "A photo of a cute puppy."', reward: 0.18, link: "https://instagram.com/p/example" },
+    { id: 11, type: 'Like & Comment', title: 'Like Post: "A photo of a cute puppy."', reward: 0.18, link: "https://instagram.com/p/example" },
+    { id: 12, type: 'Like & Comment', title: 'Like Post: "A photo of a cute puppy."', reward: 0.18, link: "https://instagram.com/p/example" },
+];
 
 
 export default function InstagramLikePage() {
