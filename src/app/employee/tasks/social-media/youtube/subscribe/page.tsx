@@ -1,7 +1,6 @@
 
 'use client';
 
-import { useState } from 'react';
 import { Header } from "@/components/header";
 import { SidebarNav } from "@/components/sidebar-nav";
 import { BackButton } from "@/components/back-button";
@@ -12,43 +11,29 @@ import {
   SidebarInset,
   SidebarProvider,
 } from "@/components/ui/sidebar";
-import { Trophy, CheckCircle, ExternalLink, UserPlus } from "lucide-react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
+import { Trophy, UserPlus } from "lucide-react";
+import { SocialTaskCard } from "@/components/tasks/social-task-card";
 
-// This is now a representation of tasks generated from a single buyer's campaign.
-// In a real application, this data would be fetched from a database.
+// This is a representation of tasks generated from a single buyer's campaign.
 const singleCampaign = {
     id: 1,
-    channel: "Fashionista Style", // All tasks point to the same channel
+    channel: "Fashionista Style", 
     taskType: "Subscribe",
-    rewardPerTask: 1.50, // This value would come from the campaign data set by the buyer.
+    rewardPerTask: 1.50,
+    link: "https://youtube.com/channel/example", // Example link provided by buyer
 };
 
-// Generate a list of tasks based on the campaign. The number of tasks (e.g., 1000) would also come from the campaign.
+// Generate a list of tasks based on the campaign.
 const youtubeTasks = Array.from({ length: 12 }, (_, i) => ({
-    id: i + 1, // Unique ID for each task instance
+    id: i + 1, 
     type: singleCampaign.taskType,
-    channel: singleCampaign.channel,
+    title: `Subscribe to: ${singleCampaign.channel}`,
+    reward: singleCampaign.rewardPerTask,
+    link: singleCampaign.link,
 }));
 
 
 export default function YoutubeSubscribePage() {
-    const [completedTasks, setCompletedTasks] = useState<Set<number>>(new Set());
-
-    const handleCompleteTask = (taskId: number) => {
-        if (completedTasks.has(taskId)) return;
-
-        setCompletedTasks(prev => new Set(prev).add(taskId));
-         // The reward amount is now sourced from the campaign data, not hardcoded.
-         window.dispatchEvent(
-          new CustomEvent('earn', { detail: { amount: singleCampaign.rewardPerTask } }) 
-        );
-         // In a real app, you would open the link to the buyer's YouTube channel:
-         // window.open('https://youtube.com/channel/SOME_ID_FROM_CAMPAIGN', '_blank');
-    }
-
     return (
     <SidebarProvider>
       <Sidebar>
@@ -73,33 +58,15 @@ export default function YoutubeSubscribePage() {
                 <div>
                 <h2 className="text-2xl font-bold font-headline">YouTube - Subscribe & Earn</h2>
                 <p className="text-muted-foreground">
-                    Complete subscribe tasks from buyer campaigns to earn rewards.
+                    Subscribe to the channel, upload a screenshot as proof, and get paid upon verification.
                 </p>
                 </div>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                {youtubeTasks.map(task => {
-                    const isCompleted = completedTasks.has(task.id);
-                    return (
-                        <Card key={task.id} className={isCompleted ? 'bg-muted/50' : ''}>
-                            <CardHeader>
-                                <CardTitle className="flex items-center justify-between">
-                                    <span>{task.type} Task</span>
-                                    {/* The reward is displayed from the campaign data */}
-                                    <Badge variant="secondary">+{singleCampaign.rewardPerTask.toFixed(2)}</Badge>
-                                </CardTitle>
-                                <CardDescription>Channel: <strong>{task.channel}</strong></CardDescription>
-                            </CardHeader>
-                            <CardContent>
-                                <Button className="w-full" onClick={() => handleCompleteTask(task.id)} disabled={isCompleted}>
-                                    {isCompleted ? <CheckCircle className="mr-2 h-4 w-4" /> : <ExternalLink className="mr-2 h-4 w-4" />}
-                                    {isCompleted ? 'Completed' : 'Start Task'}
-                                </Button>
-                            </CardContent>
-                        </Card>
-                    )
-                })}
+                {youtubeTasks.map(task => (
+                    <SocialTaskCard key={task.id} task={task} />
+                ))}
             </div>
         </main>
       </SidebarInset>

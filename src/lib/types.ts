@@ -1,3 +1,4 @@
+
 export type SimpleTaskType = {
   id: number;
   question: string;
@@ -16,3 +17,11 @@ export type QuizTask = {
   options: string[];
   reward?: number;
 };
+
+export type SocialTask = {
+  id: number;
+  type: string;
+  title: string;
+  reward: number;
+  link: string;
+}

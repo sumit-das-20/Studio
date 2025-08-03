@@ -1,7 +1,6 @@
 
 'use client';
 
-import { useState } from 'react';
 import { Header } from "@/components/header";
 import { SidebarNav } from "@/components/sidebar-nav";
 import { BackButton } from "@/components/back-button";
@@ -12,39 +11,27 @@ import {
   SidebarInset,
   SidebarProvider,
 } from "@/components/ui/sidebar";
-import { Trophy, CheckCircle, ExternalLink, ThumbsUp } from "lucide-react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
+import { Trophy, ThumbsUp } from "lucide-react";
+import { SocialTaskCard } from '@/components/tasks/social-task-card';
 
 const singleCampaign = {
     id: 1,
     videoTitle: "My New Setup Tour 2024",
     taskType: "Like & Comment",
     rewardPerTask: 0.75, 
+    link: "https://youtube.com/watch?v=example", // Example link provided by buyer
 };
 
 const youtubeTasks = Array.from({ length: 12 }, (_, i) => ({
     id: i + 1,
     type: singleCampaign.taskType,
-    title: singleCampaign.videoTitle,
+    title: `Like Video: "${singleCampaign.videoTitle}"`,
+    reward: singleCampaign.rewardPerTask,
+    link: singleCampaign.link,
 }));
 
 
 export default function YoutubeLikePage() {
-    const [completedTasks, setCompletedTasks] = useState<Set<number>>(new Set());
-
-    const handleCompleteTask = (taskId: number) => {
-        if (completedTasks.has(taskId)) return;
-
-        setCompletedTasks(prev => new Set(prev).add(taskId));
-         window.dispatchEvent(
-          new CustomEvent('earn', { detail: { amount: singleCampaign.rewardPerTask } }) 
-        );
-         // In a real app, you would open the link to the buyer's YouTube video:
-         // window.open('https://youtube.com/watch?v=SOME_ID_FROM_CAMPAIGN', '_blank');
-    }
-
     return (
     <SidebarProvider>
       <Sidebar>
@@ -69,32 +56,15 @@ export default function YoutubeLikePage() {
                 <div>
                 <h2 className="text-2xl font-bold font-headline">YouTube - Like, Comment & Earn</h2>
                 <p className="text-muted-foreground">
-                    Complete engagement tasks from buyer campaigns to earn rewards.
+                    Like the video, upload a screenshot as proof, and get paid upon verification.
                 </p>
                 </div>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                {youtubeTasks.map(task => {
-                    const isCompleted = completedTasks.has(task.id);
-                    return (
-                        <Card key={task.id} className={isCompleted ? 'bg-muted/50' : ''}>
-                            <CardHeader>
-                                <CardTitle className="flex items-center justify-between">
-                                    <span>{task.type} Task</span>
-                                    <Badge variant="secondary">+{singleCampaign.rewardPerTask.toFixed(2)}</Badge>
-                                </CardTitle>
-                                <CardDescription>Video: <strong>{task.title}</strong></CardDescription>
-                            </CardHeader>
-                            <CardContent>
-                                <Button className="w-full" onClick={() => handleCompleteTask(task.id)} disabled={isCompleted}>
-                                    {isCompleted ? <CheckCircle className="mr-2 h-4 w-4" /> : <ExternalLink className="mr-2 h-4 w-4" />}
-                                    {isCompleted ? 'Completed' : 'Start Task'}
-                                </Button>
-                            </CardContent>
-                        </Card>
-                    )
-                })}
+                {youtubeTasks.map(task => (
+                    <SocialTaskCard key={task.id} task={task} />
+                ))}
             </div>
         </main>
       </SidebarInset>
