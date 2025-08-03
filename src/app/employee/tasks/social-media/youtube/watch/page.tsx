@@ -1,6 +1,7 @@
 
 'use client';
 
+import { useState } from 'react';
 import { Header } from "@/components/header";
 import { SidebarNav } from "@/components/sidebar-nav";
 import { BackButton } from "@/components/back-button";
@@ -11,9 +12,39 @@ import {
   SidebarInset,
   SidebarProvider,
 } from "@/components/ui/sidebar";
-import { Trophy, Video } from "lucide-react";
+import { Trophy, CheckCircle, ExternalLink, Video } from "lucide-react";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+
+const singleCampaign = {
+    id: 1,
+    videoTitle: "Summer Fashion Lookbook",
+    taskType: "Watch Video",
+    rewardPerTask: 2.00, 
+};
+
+const youtubeTasks = Array.from({ length: 12 }, (_, i) => ({
+    id: i + 1,
+    type: singleCampaign.taskType,
+    title: singleCampaign.videoTitle,
+}));
+
 
 export default function YoutubeWatchPage() {
+    const [completedTasks, setCompletedTasks] = useState<Set<number>>(new Set());
+
+    const handleCompleteTask = (taskId: number) => {
+        if (completedTasks.has(taskId)) return;
+
+        setCompletedTasks(prev => new Set(prev).add(taskId));
+         window.dispatchEvent(
+          new CustomEvent('earn', { detail: { amount: singleCampaign.rewardPerTask } }) 
+        );
+         // In a real app, you would open the link to the buyer's YouTube video:
+         // window.open('https://youtube.com/watch?v=SOME_ID_FROM_CAMPAIGN', '_blank');
+    }
+
     return (
     <SidebarProvider>
       <Sidebar>
@@ -36,14 +67,34 @@ export default function YoutubeWatchPage() {
             <div className="mb-8 flex items-center gap-4">
                 <Video className="h-8 w-8 text-red-600" />
                 <div>
-                <h2 className="text-2xl font-bold font-headline">YouTube - Watch Videos</h2>
+                <h2 className="text-2xl font-bold font-headline">YouTube - Watch & Earn</h2>
                 <p className="text-muted-foreground">
-                    Tasks for watching videos are coming soon.
+                    Complete watch tasks from buyer campaigns to earn rewards.
                 </p>
                 </div>
             </div>
-             <div className="flex items-center justify-center h-48 border-2 border-dashed rounded-lg">
-                <p className="text-muted-foreground">No tasks available yet.</p>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                {youtubeTasks.map(task => {
+                    const isCompleted = completedTasks.has(task.id);
+                    return (
+                        <Card key={task.id} className={isCompleted ? 'bg-muted/50' : ''}>
+                            <CardHeader>
+                                <CardTitle className="flex items-center justify-between">
+                                    <span>{task.type} Task</span>
+                                    <Badge variant="secondary">+{singleCampaign.rewardPerTask.toFixed(2)}</Badge>
+                                </CardTitle>
+                                <CardDescription>Video: <strong>{task.title}</strong></CardDescription>
+                            </CardHeader>
+                            <CardContent>
+                                <Button className="w-full" onClick={() => handleCompleteTask(task.id)} disabled={isCompleted}>
+                                    {isCompleted ? <CheckCircle className="mr-2 h-4 w-4" /> : <ExternalLink className="mr-2 h-4 w-4" />}
+                                    {isCompleted ? 'Completed' : 'Start Task'}
+                                </Button>
+                            </CardContent>
+                        </Card>
+                    )
+                })}
             </div>
         </main>
       </SidebarInset>

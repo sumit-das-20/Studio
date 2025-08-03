@@ -1,6 +1,7 @@
 
 'use client';
 
+import { useState } from 'react';
 import { Header } from "@/components/header";
 import { SidebarNav } from "@/components/sidebar-nav";
 import { BackButton } from "@/components/back-button";
@@ -11,9 +12,39 @@ import {
   SidebarInset,
   SidebarProvider,
 } from "@/components/ui/sidebar";
-import { Trophy, UserPlus } from "lucide-react";
+import { Trophy, CheckCircle, ExternalLink, UserPlus } from "lucide-react";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+
+const singleCampaign = {
+    id: 1,
+    accountName: "@TravelVibes",
+    taskType: "Follow Account",
+    rewardPerTask: 1.10, 
+};
+
+const instagramTasks = Array.from({ length: 12 }, (_, i) => ({
+    id: i + 1,
+    type: singleCampaign.taskType,
+    accountName: singleCampaign.accountName,
+}));
+
 
 export default function InstagramFollowPage() {
+    const [completedTasks, setCompletedTasks] = useState<Set<number>>(new Set());
+
+    const handleCompleteTask = (taskId: number) => {
+        if (completedTasks.has(taskId)) return;
+
+        setCompletedTasks(prev => new Set(prev).add(taskId));
+         window.dispatchEvent(
+          new CustomEvent('earn', { detail: { amount: singleCampaign.rewardPerTask } }) 
+        );
+         // In a real app, you would open the link to the buyer's Instagram account:
+         // window.open('https://instagram.com/SOME_ACCOUNT', '_blank');
+    }
+
     return (
     <SidebarProvider>
       <Sidebar>
@@ -36,14 +67,34 @@ export default function InstagramFollowPage() {
             <div className="mb-8 flex items-center gap-4">
                 <UserPlus className="h-8 w-8 text-pink-600" />
                 <div>
-                <h2 className="text-2xl font-bold font-headline">Instagram - Follow Accounts</h2>
+                <h2 className="text-2xl font-bold font-headline">Instagram - Follow & Earn</h2>
                 <p className="text-muted-foreground">
-                    Tasks for following accounts are coming soon.
+                    Complete follow tasks from buyer campaigns to earn rewards.
                 </p>
                 </div>
             </div>
-             <div className="flex items-center justify-center h-48 border-2 border-dashed rounded-lg">
-                <p className="text-muted-foreground">No tasks available yet.</p>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                {instagramTasks.map(task => {
+                    const isCompleted = completedTasks.has(task.id);
+                    return (
+                        <Card key={task.id} className={isCompleted ? 'bg-muted/50' : ''}>
+                            <CardHeader>
+                                <CardTitle className="flex items-center justify-between">
+                                    <span>{task.type} Task</span>
+                                    <Badge variant="secondary">+{singleCampaign.rewardPerTask.toFixed(2)}</Badge>
+                                </CardTitle>
+                                <CardDescription>Account: <strong>{task.accountName}</strong></CardDescription>
+                            </CardHeader>
+                            <CardContent>
+                                <Button className="w-full" onClick={() => handleCompleteTask(task.id)} disabled={isCompleted}>
+                                    {isCompleted ? <CheckCircle className="mr-2 h-4 w-4" /> : <ExternalLink className="mr-2 h-4 w-4" />}
+                                    {isCompleted ? 'Completed' : 'Start Task'}
+                                </Button>
+                            </CardContent>
+                        </Card>
+                    )
+                })}
             </div>
         </main>
       </SidebarInset>
