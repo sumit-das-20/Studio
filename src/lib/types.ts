@@ -1,6 +1,5 @@
 
 
-
 export type SimpleTaskType = {
   id: number;
   question: string;
@@ -55,4 +54,12 @@ export type AdminWithdrawalRequest = {
   method: 'UPI' | 'Bank Transfer' | 'PayPal';
   status: 'Pending' | 'Approved' | 'On Hold' | 'Cancelled';
   createdAt: string;
+  upiId?: string;
+  paypalEmail?: string;
+  bankDetails?: {
+    accountHolderName: string;
+    bankName: string;
+    accountNumber: string;
+    ifscCode: string;
+  };
 };

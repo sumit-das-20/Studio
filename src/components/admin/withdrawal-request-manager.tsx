@@ -18,10 +18,14 @@ import {
 } from '@/components/ui/table';
 import { Badge } from '../ui/badge';
 import { Button } from '../ui/button';
-import { Banknote, Check, Hourglass, X } from 'lucide-react';
+import { Banknote, Check, Hourglass, X, Eye } from 'lucide-react';
 import type { AdminWithdrawalRequest } from '@/lib/types';
 import { useState } from 'react';
-import { cn } from '@/lib/utils';
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover';
 
 // This is a representation of withdrawal requests fetched from the database.
 const initialRequests: AdminWithdrawalRequest[] = [
@@ -33,6 +37,7 @@ const initialRequests: AdminWithdrawalRequest[] = [
     method: 'UPI',
     status: 'Pending',
     createdAt: '2024-07-30',
+    upiId: 'john.doe@okhdfcbank',
   },
   {
     id: 'WR-002',
@@ -42,6 +47,12 @@ const initialRequests: AdminWithdrawalRequest[] = [
     method: 'Bank Transfer',
     status: 'Pending',
     createdAt: '2024-07-29',
+    bankDetails: {
+        accountHolderName: 'Sam Wilson',
+        bankName: 'State Bank of India',
+        accountNumber: '12345678901',
+        ifscCode: 'SBIN0001234'
+    }
   },
   {
     id: 'WR-003',
@@ -51,6 +62,7 @@ const initialRequests: AdminWithdrawalRequest[] = [
     method: 'PayPal',
     status: 'Pending',
     createdAt: '2024-07-28',
+    paypalEmail: 'emily.white@paypal.com'
   },
 ];
 
@@ -90,14 +102,13 @@ export function WithdrawalRequestManager() {
                 <TableHead>Request ID</TableHead>
                 <TableHead>Employee Email</TableHead>
                 <TableHead className="text-right">Amount (INR)</TableHead>
-                <TableHead>Method</TableHead>
+                <TableHead>Payment Details</TableHead>
                 <TableHead>Status</TableHead>
                 <TableHead className="text-center">Actions</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {requests.map((request) => {
-                const isPending = request.status === 'Pending';
                 const { variant, icon: Icon, label } = statusConfig[request.status];
 
                 return (
@@ -108,7 +119,58 @@ export function WithdrawalRequestManager() {
                       {request.amount.toFixed(2)}
                     </TableCell>
                     <TableCell>
-                      <Badge variant="outline">{request.method}</Badge>
+                      <Popover>
+                        <PopoverTrigger asChild>
+                           <Button variant="outline" size="sm" className="flex items-center gap-2">
+                             <Eye className="h-4 w-4" />
+                             <span>{request.method}</span>
+                           </Button>
+                        </PopoverTrigger>
+                        <PopoverContent className="w-80">
+                            <div className="grid gap-4">
+                               <div className="space-y-2">
+                                    <h4 className="font-medium leading-none">Payment Details</h4>
+                                    <p className="text-sm text-muted-foreground">
+                                        Details for the {request.method} withdrawal method.
+                                    </p>
+                                </div>
+                                <div className="grid gap-2 text-sm">
+                                    {request.method === 'UPI' && request.upiId && (
+                                        <div className="grid grid-cols-[1fr_2fr] items-center">
+                                            <span className="font-semibold">UPI ID</span>
+                                            <span>{request.upiId}</span>
+                                        </div>
+                                    )}
+                                     {request.method === 'PayPal' && request.paypalEmail && (
+                                        <div className="grid grid-cols-[1fr_2fr] items-center">
+                                            <span className="font-semibold">PayPal Email</span>
+                                            <span>{request.paypalEmail}</span>
+                                        </div>
+                                    )}
+                                     {request.method === 'Bank Transfer' && request.bankDetails && (
+                                        <>
+                                            <div className="grid grid-cols-[1fr_2fr] items-center">
+                                                <span className="font-semibold">Holder Name</span>
+                                                <span>{request.bankDetails.accountHolderName}</span>
+                                            </div>
+                                             <div className="grid grid-cols-[1fr_2fr] items-center">
+                                                <span className="font-semibold">Bank Name</span>
+                                                <span>{request.bankDetails.bankName}</span>
+                                            </div>
+                                             <div className="grid grid-cols-[1fr_2fr] items-center">
+                                                <span className="font-semibold">Account No.</span>
+                                                <span>{request.bankDetails.accountNumber}</span>
+                                            </div>
+                                             <div className="grid grid-cols-[1fr_2fr] items-center">
+                                                <span className="font-semibold">IFSC Code</span>
+                                                <span>{request.bankDetails.ifscCode}</span>
+                                            </div>
+                                        </>
+                                    )}
+                                </div>
+                            </div>
+                        </PopoverContent>
+                      </Popover>
                     </TableCell>
                     <TableCell>
                       <Badge variant={variant as any}>
@@ -117,7 +179,7 @@ export function WithdrawalRequestManager() {
                       </Badge>
                     </TableCell>
                     <TableCell className="text-center">
-                      {isPending ? (
+                      {request.status === 'Pending' ? (
                         <div className="flex items-center justify-center gap-2">
                           <Button
                             variant="outline"
