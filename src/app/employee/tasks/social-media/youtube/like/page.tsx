@@ -13,23 +13,16 @@ import {
 } from "@/components/ui/sidebar";
 import { Trophy, ThumbsUp } from "lucide-react";
 import { SocialTaskCard } from '@/components/tasks/social-task-card';
+import { SocialTask } from "@/lib/types";
 
-// The rewardPerTask would be set by the admin in the campaign settings.
-const singleCampaign = {
-    id: 1,
-    videoTitle: "My New Setup Tour 2024",
-    taskType: "Like & Comment",
-    rewardPerTask: 0.10,
-    link: "https://youtube.com/watch?v=example",
-};
-
-// Generate a list of tasks based on the campaign.
-const youtubeTasks = Array.from({ length: 12 }, (_, i) => ({
+// This is a representation of tasks generated from a buyer's campaign.
+// In a real app, this data would be fetched from a database.
+const youtubeTasks: SocialTask[] = Array.from({ length: 12 }, (_, i) => ({
     id: i + 1,
-    type: singleCampaign.taskType,
-    title: `Like Video: "${singleCampaign.videoTitle}"`,
-    reward: singleCampaign.rewardPerTask,
-    link: singleCampaign.link,
+    type: "Like & Comment",
+    title: `Like Video: "My New Setup Tour 2024"`,
+    reward: 0.10,
+    link: "https://youtube.com/watch?v=example",
 }));
 
 

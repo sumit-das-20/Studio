@@ -13,23 +13,16 @@ import {
 } from "@/components/ui/sidebar";
 import { Trophy, Video } from "lucide-react";
 import { SocialTaskCard } from '@/components/tasks/social-task-card';
+import { SocialTask } from "@/lib/types";
 
-// The rewardPerTask would be set by the admin in the campaign settings.
-const singleCampaign = {
-    id: 1,
-    videoTitle: "5-Minute Crafts Compilation",
-    taskType: "Watch Video",
-    rewardPerTask: 0.12,
-    link: "https://facebook.com/watch/example",
-};
-
-// Generate a list of tasks based on the campaign.
-const facebookTasks = Array.from({ length: 12 }, (_, i) => ({
+// This is a representation of tasks generated from a buyer's campaign.
+// In a real app, this data would be fetched from a database.
+const facebookTasks: SocialTask[] = Array.from({ length: 12 }, (_, i) => ({
     id: i + 1,
-    type: singleCampaign.taskType,
-    title: `Watch Video: "${singleCampaign.videoTitle}"`,
-    reward: singleCampaign.rewardPerTask,
-    link: singleCampaign.link,
+    type: "Watch Video",
+    title: `Watch Video: "5-Minute Crafts Compilation"`,
+    reward: 0.12,
+    link: "https://facebook.com/watch/example",
 }));
 
 

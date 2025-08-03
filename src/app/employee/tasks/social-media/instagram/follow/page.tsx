@@ -13,23 +13,16 @@ import {
 } from "@/components/ui/sidebar";
 import { Trophy, UserPlus } from "lucide-react";
 import { SocialTaskCard } from '@/components/tasks/social-task-card';
+import { SocialTask } from "@/lib/types";
 
-// The rewardPerTask would be set by the admin in the campaign settings.
-const singleCampaign = {
-    id: 1,
-    accountName: "@TravelVibes",
-    taskType: "Follow Account",
-    rewardPerTask: 0.30,
-    link: "https://instagram.com/example",
-};
-
-// Generate a list of tasks based on the campaign.
-const instagramTasks = Array.from({ length: 12 }, (_, i) => ({
+// This is a representation of tasks generated from a buyer's campaign.
+// In a real app, this data would be fetched from a database.
+const instagramTasks: SocialTask[] = Array.from({ length: 12 }, (_, i) => ({
     id: i + 1,
-    type: singleCampaign.taskType,
-    title: `Follow Account: ${singleCampaign.accountName}`,
-    reward: singleCampaign.rewardPerTask,
-    link: singleCampaign.link,
+    type: "Follow Account",
+    title: `Follow Account: @TravelVibes`,
+    reward: 0.30,
+    link: "https://instagram.com/example",
 }));
 
 

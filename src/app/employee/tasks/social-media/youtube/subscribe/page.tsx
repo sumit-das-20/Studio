@@ -13,24 +13,16 @@ import {
 } from "@/components/ui/sidebar";
 import { Trophy, UserPlus } from "lucide-react";
 import { SocialTaskCard } from "@/components/tasks/social-task-card";
+import { SocialTask } from "@/lib/types";
 
-// This is a representation of tasks generated from a single buyer's campaign.
-// The rewardPerTask would be set by the admin in the campaign settings.
-const singleCampaign = {
-    id: 1,
-    channel: "Fashionista Style", 
-    taskType: "Subscribe",
-    rewardPerTask: 0.25, 
+// This is a representation of tasks generated from a buyer's campaign.
+// In a real app, this data would be fetched from a database.
+const youtubeTasks: SocialTask[] = Array.from({ length: 12 }, (_, i) => ({
+    id: i + 1,
+    type: "Subscribe",
+    title: `Subscribe to: Tech Reviews`,
+    reward: 0.25,
     link: "https://youtube.com/channel/example",
-};
-
-// Generate a list of tasks based on the campaign.
-const youtubeTasks = Array.from({ length: 12 }, (_, i) => ({
-    id: i + 1, 
-    type: singleCampaign.taskType,
-    title: `Subscribe to: ${singleCampaign.channel}`,
-    reward: singleCampaign.rewardPerTask,
-    link: singleCampaign.link,
 }));
 
 
