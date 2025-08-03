@@ -1,4 +1,6 @@
 
+'use client';
+
 import { Header } from '@/components/header';
 import { SidebarNav } from '@/components/sidebar-nav';
 import { Badge } from '@/components/ui/badge';
@@ -26,48 +28,18 @@ import {
 } from '@/components/ui/table';
 import { History, Trophy } from 'lucide-react';
 import { BackToWithdrawalLink } from '@/components/back-to-withdrawal-link';
-
-
-const withdrawalHistory = [
-  {
-    date: '2024-07-28',
-    amount: 500.0,
-    method: 'UPI',
-    status: 'Completed',
-  },
-  {
-    date: '2024-07-21',
-    amount: 1200.0,
-    method: 'Bank Transfer',
-    status: 'Completed',
-  },
-  {
-    date: '2024-07-15',
-    amount: 250.0,
-    method: 'PayPal',
-    status: 'Completed',
-  },
-  {
-    date: '2024-07-10',
-    amount: 3000.0,
-    method: 'Bank Transfer',
-    status: 'Pending',
-  },
-    {
-    date: '2024-07-05',
-    amount: 150.0,
-    method: 'UPI',
-    status: 'Failed',
-  },
-];
+import { useMockData } from '@/hooks/use-mock-data';
+import { Skeleton } from '@/components/ui/skeleton';
 
 const getStatusVariant = (status: string) => {
   switch (status) {
-    case 'Completed':
+    case 'Paid':
+    case 'Completed': // Keep for backward compatibility of old mock data
       return 'default';
     case 'Pending':
       return 'secondary';
     case 'Failed':
+    case 'Cancelled':
       return 'destructive';
     default:
       return 'outline';
@@ -75,6 +47,9 @@ const getStatusVariant = (status: string) => {
 };
 
 export default function WithdrawalHistoryPage() {
+  const { withdrawalRequests, isLoading } = useMockData();
+  const history = withdrawalRequests.filter(req => req.employeeId === 'EMP-001' || req.employeeId === 'EMP-002' || req.employeeId === 'EMP-003');
+
   return (
     <SidebarProvider>
       <Sidebar>
@@ -122,16 +97,33 @@ export default function WithdrawalHistoryPage() {
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {withdrawalHistory.map((item, index) => (
-                      <TableRow key={index}>
-                        <TableCell className="font-medium">{item.date}</TableCell>
-                        <TableCell className="text-right">{item.amount.toFixed(2)}</TableCell>
-                        <TableCell>{item.method}</TableCell>
-                        <TableCell>
-                          <Badge variant={getStatusVariant(item.status) as any}>{item.status}</Badge>
-                        </TableCell>
-                      </TableRow>
-                    ))}
+                    {isLoading ? (
+                      Array.from({ length: 4 }).map((_, index) => (
+                        <TableRow key={index}>
+                            <TableCell><Skeleton className="h-4 w-24" /></TableCell>
+                            <TableCell className="text-right"><Skeleton className="h-4 w-12 ml-auto" /></TableCell>
+                            <TableCell><Skeleton className="h-4 w-20" /></TableCell>
+                            <TableCell><Skeleton className="h-6 w-24 rounded-full" /></TableCell>
+                        </TableRow>
+                      ))
+                    ) : history.length > 0 ? (
+                      history.map((item, index) => (
+                        <TableRow key={item.id}>
+                          <TableCell className="font-medium">{item.createdAt}</TableCell>
+                          <TableCell className="text-right">{item.amount.toFixed(2)}</TableCell>
+                          <TableCell>{item.method}</TableCell>
+                          <TableCell>
+                            <Badge variant={getStatusVariant(item.status) as any}>{item.status}</Badge>
+                          </TableCell>
+                        </TableRow>
+                      ))
+                    ) : (
+                       <TableRow>
+                          <TableCell colSpan={4} className="h-24 text-center">
+                            No withdrawal history found.
+                          </TableCell>
+                       </TableRow>
+                    )}
                   </TableBody>
                 </Table>
               </CardContent>
