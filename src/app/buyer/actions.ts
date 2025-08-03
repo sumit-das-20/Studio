@@ -104,3 +104,25 @@ export async function resetPasswordBuyer(prevState: any, formData: FormData) {
     return { success: false, error: "An unexpected error occurred." };
   }
 }
+
+const campaignSchema = z.object({
+    campaignName: z.string().min(3, 'Campaign name must be at least 3 characters.'),
+    campaignGoal: z.string().min(1, 'Please select a campaign goal.'),
+    targetAudience: z.string().min(1, 'Please select a target audience.'),
+    budget: z.coerce.number().min(10, 'Budget must be at least $10.'),
+});
+
+
+export async function createCampaign(prevState: any, formData: FormData) {
+    const validatedFields = campaignSchema.safeParse(Object.fromEntries(formData.entries()));
+
+    if (!validatedFields.success) {
+        return { success: false, error: validatedFields.error.flatten().fieldErrors };
+    }
+
+    // In a real app, you would save this data to a database like Firestore.
+    console.log('New Campaign Data:', validatedFields.data);
+
+    // Simulate a successful submission
+    return { success: true, error: null, data: validatedFields.data };
+}
