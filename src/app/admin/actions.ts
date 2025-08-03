@@ -73,6 +73,12 @@ const taskSchema = z.object({
     return true;
 }, { message: 'Question must be at least 10 characters long.', path: ['question']})
 .refine(data => {
+    if (data.type === 'Click and Earn' || data.type === 'Watch and Earn') {
+        return !!data.adUnitId && data.adUnitId.length > 0;
+    }
+    return true;
+}, { message: 'An Ad Unit ID is required for this task type.', path: ['adUnitId']})
+.refine(data => {
     if (data.type === 'Link Shortener') {
         return !!data.link && z.string().url().safeParse(data.link).success;
     }

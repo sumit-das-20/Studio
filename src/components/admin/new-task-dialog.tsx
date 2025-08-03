@@ -175,8 +175,9 @@ export function TaskDialog({ onTaskCreated, onTaskUpdated, task, isFirstTask = f
                 {state.error?.question && <p className="text-sm text-destructive mt-1">{state.error.question[0]}</p>}
               </div>
                <div className="space-y-2">
-                <Label htmlFor="adUnitId">Ad Unit ID (Optional)</Label>
+                <Label htmlFor="adUnitId">Ad Unit ID (Required)</Label>
                 <Input id="adUnitId" name="adUnitId" placeholder="ca-app-pub-..." defaultValue={task?.adUnitId}/>
+                {state.error?.adUnitId && <p className="text-sm text-destructive mt-1">{state.error.adUnitId[0]}</p>}
               </div>
             </>
           )}
