@@ -36,7 +36,6 @@ export function BuyerManager() {
   const { toast } = useToast();
   const [buyers, setBuyers] = useState<AdminBuyer[]>(initialBuyers);
   const [creatingTasks, setCreatingTasks] = useState<Set<string>>(new Set());
-  const [createdTasks, setCreatedTasks] = useState<Set<string>>(new Set());
   const { addSocialTasks } = useMockData();
 
 
@@ -67,6 +66,7 @@ export function BuyerManager() {
                 link: campaign.targetLink,
                 reward: 2.00, // This could be calculated based on buyer spend
                 platform: platform,
+                campaignId: campaign.id,
             }
         });
 
@@ -77,7 +77,7 @@ export function BuyerManager() {
             newSet.delete(campaign.id);
             return newSet;
         });
-        setCreatedTasks(prev => new Set(prev).add(campaign.id));
+        
         toast({
             title: "Tasks Created!",
             description: `${campaign.totalTasks} tasks for campaign "${campaign.serviceType}" have been created and are now available to employees.`
@@ -145,7 +145,7 @@ export function BuyerManager() {
                         <TableBody>
                             {buyer.campaigns.map(campaign => {
                                 const isCreating = creatingTasks.has(campaign.id);
-                                const isCreated = createdTasks.has(campaign.id) || campaign.tasksCreated === campaign.totalTasks;
+                                const isCreated = campaign.tasksCreated === campaign.totalTasks;
                                 return (
                                 <TableRow key={campaign.id}>
                                     <TableCell><Badge>{campaign.serviceType}</Badge></TableCell>

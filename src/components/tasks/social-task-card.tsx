@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState } from 'react';
@@ -8,6 +9,7 @@ import { Input } from '@/components/ui/input';
 import { CheckCircle, ExternalLink, Loader2, UploadCloud } from 'lucide-react';
 import { type SocialTask } from '@/lib/types';
 import { Label } from '../ui/label';
+import { useMockData } from '@/hooks/use-mock-data';
 
 type TaskStatus = 'idle' | 'started' | 'submitted' | 'completed';
 
@@ -18,6 +20,7 @@ type SocialTaskCardProps = {
 export function SocialTaskCard({ task }: SocialTaskCardProps) {
   const [status, setStatus] = useState<TaskStatus>('idle');
   const [file, setFile] = useState<File | null>(null);
+  const { completeSocialTask } = useMockData();
 
   const handleStartTask = () => {
     // In a real app, you would open the link to the buyer's page
@@ -52,6 +55,10 @@ export function SocialTaskCard({ task }: SocialTaskCardProps) {
             new CustomEvent('earn', { detail: { amount: task.reward } })
           );
         }
+        if (task.id && task.campaignId) {
+            completeSocialTask(task.id, task.campaignId);
+        }
+
       } else {
         // Handle failed verification
         alert('Verification failed. Please try again.');

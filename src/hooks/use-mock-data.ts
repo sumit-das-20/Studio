@@ -2,7 +2,7 @@
 'use client';
 
 import { useState, useCallback } from 'react';
-import { socialTasks as initialSocialTasks, addSocialTasks as apiAddSocialTasks } from '@/lib/mock-data';
+import { initialSocialTasks, addSocialTasks as apiAddSocialTasks, completeSocialTask as apiCompleteSocialTask } from '@/lib/mock-data';
 import type { SocialTask } from '@/lib/types';
 
 // In a real-world application, this would use React Context or a state management library
@@ -21,5 +21,11 @@ export const useMockData = () => {
         setSocialTasks([...initialSocialTasks]); 
     }, []);
 
-    return { socialTasks, addSocialTasks };
+    const completeSocialTask = useCallback((taskId: number, campaignId: string) => {
+        apiCompleteSocialTask(taskId, campaignId);
+        // Update the local state to reflect the removal of tasks from completed campaigns
+        setSocialTasks([...initialSocialTasks]);
+    }, []);
+
+    return { socialTasks, addSocialTasks, completeSocialTask };
 };

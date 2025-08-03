@@ -28,6 +28,7 @@ export type SocialTask = {
   reward?: number;
   link: string;
   platform: 'YouTube' | 'Facebook' | 'Instagram';
+  campaignId?: string;
 }
 
 export type AdminTask = {
