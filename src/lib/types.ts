@@ -126,3 +126,11 @@ export type LinkPerformance = {
     clicks: number;
     earnings: number;
 }
+
+export type PaymentGateway = {
+    name: string;
+    icon: React.ComponentType<{ className?: string }>;
+    isEnabled: boolean;
+    apiKey?: string;
+    apiSecret?: string;
+};
