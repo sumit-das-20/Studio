@@ -152,7 +152,7 @@ export default function NewCampaignPage() {
                                     <SelectContent>
                                         {serviceOptions[platform as keyof typeof serviceOptions]?.map(service => (
                                             <SelectItem key={service.id} value={service.id}>
-                                                {service.serviceName} (₹{service.pricePerUnit.toFixed(2)})
+                                                {service.serviceName}
                                             </SelectItem>
                                         ))}
                                     </SelectContent>
