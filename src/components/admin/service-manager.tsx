@@ -34,23 +34,7 @@ import type { SocialService } from '@/lib/types';
 import { useToast } from '@/hooks/use-toast';
 import { Input } from '../ui/input';
 import { Label } from '../ui/label';
-
-// --- Mock Data ---
-// In a real application, this would be fetched from your database.
-const initialServices: SocialService[] = [
-    // YouTube
-    { id: 'yt-sub', platform: 'YouTube', serviceName: 'Subscribers', unit: 'per subscriber', pricePerUnit: 0.10, status: 'Active' },
-    { id: 'yt-like', platform: 'YouTube', serviceName: 'Likes', unit: 'per like', pricePerUnit: 0.02, status: 'Active' },
-    { id: 'yt-comment', platform: 'YouTube', serviceName: 'Comments', unit: 'per comment', pricePerUnit: 0.05, status: 'Active' },
-    { id: 'yt-watch', platform: 'YouTube', serviceName: 'Watch Time', unit: 'per hour', pricePerUnit: 0.25, status: 'Inactive' },
-    // Facebook
-    { id: 'fb-like', platform: 'Facebook', serviceName: 'Page Likes', unit: 'per like', pricePerUnit: 0.08, status: 'Active' },
-    { id: 'fb-follow', platform: 'Facebook', serviceName: 'Followers', unit: 'per follower', pricePerUnit: 0.09, status: 'Active' },
-    { id: 'fb-share', platform: 'Facebook', serviceName: 'Post Shares', unit: 'per share', pricePerUnit: 0.04, status: 'Active' },
-    // Instagram
-    { id: 'ig-follow', platform: 'Instagram', serviceName: 'Followers', unit: 'per follower', pricePerUnit: 0.12, status: 'Active' },
-    { id: 'ig-like', platform: 'Instagram', serviceName: 'Post Likes', unit: 'per like', pricePerUnit: 0.02, status: 'Active' },
-];
+import { initialServices } from '@/lib/mock-data';
 
 const platformConfig = {
     YouTube: { icon: Youtube, color: 'text-red-600' },
@@ -113,6 +97,8 @@ export function ServiceManager() {
 
     const handleSaveService = (updatedService: SocialService) => {
         setServices(services.map(s => s.id === updatedService.id ? updatedService : s));
+        // In a real app, you would also update the mock-data file or a database
+        // For this demo, we are only updating local state.
         toast({
             title: `Service Updated`,
             description: `The price for ${updatedService.serviceName} has been updated.`

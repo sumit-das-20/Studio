@@ -23,7 +23,7 @@ import {
 } from '@/components/ui/select';
 import { BackButton } from '@/components/back-button';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { Loader2, CreditCard, CheckCircle, ShieldCheck } from 'lucide-react';
+import { Loader2, CreditCard, CheckCircle, ShieldCheck, IndianRupee } from 'lucide-react';
 import { processPayment } from '../actions';
 import { useRouter } from 'next/navigation';
 
@@ -72,9 +72,8 @@ export default function BuyerPaymentPage() {
     }
   }, [state.success]);
 
-  const totalAmount = campaignDetails
-    ? (campaignDetails.numberOfTasks * campaignDetails.rewardPerTask).toFixed(2)
-    : '0.00';
+  const totalAmount = campaignDetails ? campaignDetails.totalCost.toFixed(2) : '0.00';
+
 
   if (!campaignDetails) {
     return (
@@ -119,10 +118,13 @@ export default function BuyerPaymentPage() {
           <div className="mb-6 rounded-lg border bg-muted/50 p-4">
             <div className="mb-2 flex justify-between text-lg font-bold">
               <span>Total Amount:</span>
-              <span>₹{totalAmount}</span>
+              <span className='flex items-center gap-1'>
+                <IndianRupee className="h-5 w-5" />
+                {totalAmount}
+              </span>
             </div>
             <p className="text-xs text-muted-foreground">
-              {campaignDetails.numberOfTasks} tasks × ₹{campaignDetails.rewardPerTask.toFixed(2)} / task
+              {campaignDetails.quantity} tasks × ₹{(campaignDetails.totalCost / campaignDetails.quantity).toFixed(2)} / task
             </p>
           </div>
           <form action={formAction} className="space-y-6">
