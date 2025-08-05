@@ -1,7 +1,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { BarChart, PlusCircle, User, Users, IndianRupee } from "lucide-react";
+import { BarChart, PlusCircle, User, IndianRupee } from "lucide-react";
 import Link from "next/link";
 import { SocialMediaStats } from "@/components/buyer/social-media-stats";
 
@@ -26,6 +26,7 @@ export default function BuyerDashboard() {
             </div>
        </header>
       <main className="flex flex-1 flex-col gap-4 p-4 sm:px-6 sm:py-0 md:gap-8">
+        <SocialMediaStats />
         <div className="grid gap-4 md:grid-cols-2 md:gap-8 lg:grid-cols-4">
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -46,7 +47,7 @@ export default function BuyerDashboard() {
               <CardTitle className="text-sm font-medium">
                 Total Followers Gained
               </CardTitle>
-              <Users className="h-4 w-4 text-muted-foreground" />
+              <IndianRupee className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">+0</div>
@@ -73,7 +74,7 @@ export default function BuyerDashboard() {
            <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">Engagement Rate</CardTitle>
-              <Users className="h-4 w-4 text-muted-foreground" />
+              <IndianRupee className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">0%</div>
@@ -83,7 +84,6 @@ export default function BuyerDashboard() {
             </CardContent>
           </Card>
         </div>
-        <SocialMediaStats />
         <Card>
             <CardHeader>
                 <CardTitle>Recent Campaigns</CardTitle>
