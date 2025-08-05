@@ -21,6 +21,7 @@ import {
   HelpCircle,
   ChevronDown,
   Share2,
+  Users,
 } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
@@ -40,6 +41,11 @@ export function SidebarNav() {
       href: '/employee/withdrawal',
       label: 'Withdrawals',
       icon: Wallet,
+    },
+     {
+      href: '/employee/refer-and-earn',
+      label: 'Refer & Earn',
+      icon: Users,
     },
   ];
 
