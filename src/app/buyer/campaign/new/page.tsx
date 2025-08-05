@@ -23,7 +23,7 @@ import {
 } from '@/components/ui/select';
 import { BackButton } from '@/components/back-button';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { Loader2, Sparkles, CreditCard, IndianRupee, Briefcase, HandCoins } from 'lucide-react';
+import { Loader2, Sparkles, CreditCard, IndianRupee, Briefcase } from 'lucide-react';
 import { createCampaign } from '../../actions';
 import { useToast } from '@/hooks/use-toast';
 import { useRouter } from 'next/navigation';
@@ -181,7 +181,7 @@ export default function NewCampaignPage() {
                                 <div className="space-y-2">
                                     <Label>Estimated Total Cost</Label>
                                     <div className="flex h-10 w-full items-center rounded-md border border-input bg-muted px-3 py-2 text-sm">
-                                        <HandCoins className="mr-2 h-5 w-5 text-muted-foreground" />
+                                        <IndianRupee className="mr-2 h-5 w-5 text-muted-foreground" />
                                         <span className="font-bold">₹{totalCost.toFixed(2)}</span>
                                     </div>
                                 </div>
