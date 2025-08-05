@@ -94,7 +94,7 @@ export default function BuyerPaymentPage() {
                         <h2 className="text-2xl font-bold">Payment Successful!</h2>
                         <p className="text-muted-foreground">
                             Your campaign "{campaignDetails.campaignName}" is now live.
-                            The total amount of ${totalAmount} has been charged.
+                            The total amount of ₹{totalAmount} has been charged.
                         </p>
                         <Button onClick={() => router.push('/buyer/dashboard')}>
                             Back to Dashboard
@@ -119,10 +119,10 @@ export default function BuyerPaymentPage() {
           <div className="mb-6 rounded-lg border bg-muted/50 p-4">
             <div className="mb-2 flex justify-between text-lg font-bold">
               <span>Total Amount:</span>
-              <span>${totalAmount}</span>
+              <span>₹{totalAmount}</span>
             </div>
             <p className="text-xs text-muted-foreground">
-              {campaignDetails.numberOfTasks} tasks × ${campaignDetails.rewardPerTask.toFixed(2)} / task
+              {campaignDetails.numberOfTasks} tasks × ₹{campaignDetails.rewardPerTask.toFixed(2)} / task
             </p>
           </div>
           <form action={formAction} className="space-y-6">

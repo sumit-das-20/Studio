@@ -17,7 +17,7 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import type { LinkPerformance } from '@/lib/types';
-import { DollarSign, Link as LinkIcon, MousePointerClick } from 'lucide-react';
+import { IndianRupee, Link as LinkIcon, MousePointerClick } from 'lucide-react';
 
 // This is a representation of link shortener performance data.
 // In a real app, this data would be calculated from user actions in your database.
@@ -71,11 +71,11 @@ export function LinkShortenerPerformance() {
                 </div>
                 <div>
                     <p className="text-sm text-muted-foreground flex items-center gap-1 justify-end">
-                        <DollarSign className='h-4 w-4' />
+                        <IndianRupee className='h-4 w-4' />
                         Total Revenue
                     </p>
                     <p className="text-2xl font-bold">
-                        ${totalEarnings.toFixed(2)}
+                        ₹{totalEarnings.toFixed(2)}
                     </p>
                 </div>
             </div>
@@ -89,7 +89,7 @@ export function LinkShortenerPerformance() {
                 <TableRow>
                     <TableHead>Link URL</TableHead>
                     <TableHead className="text-right">Clicks</TableHead>
-                    <TableHead className="text-right">Earnings (USD)</TableHead>
+                    <TableHead className="text-right">Earnings (INR)</TableHead>
                 </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -97,7 +97,7 @@ export function LinkShortenerPerformance() {
                     <TableRow key={link.linkId}>
                     <TableCell className="font-mono text-xs">{link.url}</TableCell>
                     <TableCell className="text-right">{link.clicks.toLocaleString()}</TableCell>
-                    <TableCell className="text-right font-medium">${link.earnings.toFixed(2)}</TableCell>
+                    <TableCell className="text-right font-medium">₹{link.earnings.toFixed(2)}</TableCell>
                     </TableRow>
                 ))}
                 </TableBody>

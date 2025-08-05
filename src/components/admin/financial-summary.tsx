@@ -13,7 +13,7 @@ import {
   ArrowDown,
   ArrowUp,
   Download,
-  DollarSign,
+  IndianRupee,
   Link as LinkIcon,
   RadioTower,
   ShoppingBag,
@@ -85,7 +85,7 @@ export function FinancialSummary() {
     
     // Section 1: Employee Payouts
     csvContent += "Employee Payouts\n";
-    const payoutHeaders = ["Payment Date", "Transaction ID", "Employee Email", "Amount (USD)", "Payment Method", "Payment Details"];
+    const payoutHeaders = ["Payment Date", "Transaction ID", "Employee Email", "Amount (INR)", "Payment Method", "Payment Details"];
     csvContent += payoutHeaders.map(escapeCsv).join(',') + '\n';
     employeePayoutsData.forEach(p => {
         let details = '';
@@ -101,7 +101,7 @@ export function FinancialSummary() {
 
     // Section 2: Ad Revenue
     csvContent += "Ad Revenue\n";
-    const adHeaders = ["Ad Unit ID", "Type", "Impressions", "Earnings (USD)"];
+    const adHeaders = ["Ad Unit ID", "Type", "Impressions", "Earnings (INR)"];
     csvContent += adHeaders.map(escapeCsv).join(',') + '\n';
     adPerformanceData.forEach(ad => {
         const row = [ad.adUnitId, ad.type, ad.impressions, ad.earnings.toFixed(2)];
@@ -111,7 +111,7 @@ export function FinancialSummary() {
 
     // Section 3: Link Shortener Revenue
     csvContent += "Link Shortener Revenue\n";
-    const linkHeaders = ["Link URL", "Clicks", "Earnings (USD)"];
+    const linkHeaders = ["Link URL", "Clicks", "Earnings (INR)"];
     csvContent += linkHeaders.map(escapeCsv).join(',') + '\n';
     linkPerformanceData.forEach(link => {
         const row = [link.url, link.clicks, link.earnings.toFixed(2)];
@@ -121,7 +121,7 @@ export function FinancialSummary() {
 
     // Section 4: Buyer Payments
     csvContent += "Buyer Payments\n";
-    const buyerHeaders = ["Company Name", "Email", "Total Spent (USD)"];
+    const buyerHeaders = ["Company Name", "Email", "Total Spent (INR)"];
     csvContent += buyerHeaders.map(escapeCsv).join(',') + '\n';
     buyersData.forEach(buyer => {
         const row = [buyer.companyName, buyer.email, buyer.totalSpent.toFixed(2)];
@@ -162,14 +162,14 @@ export function FinancialSummary() {
             <span>Total Revenue</span>
           </h3>
           <p className="text-3xl font-bold flex items-center">
-             <DollarSign className="h-7 w-7 mr-1" />
+             <IndianRupee className="h-7 w-7 mr-1" />
              {financialData.revenue.total.toFixed(2)}
           </p>
           <div className="space-y-2 text-sm">
             {financialData.revenue.sources.map(source => (
                 <div key={source.name} className="flex justify-between items-center text-muted-foreground">
                     <span className="flex items-center gap-2"><source.icon className="h-4 w-4" /> {source.name}</span>
-                    <span className="font-medium text-foreground">${source.amount.toFixed(2)}</span>
+                    <span className="font-medium text-foreground">₹{source.amount.toFixed(2)}</span>
                 </div>
             ))}
           </div>
@@ -182,14 +182,14 @@ export function FinancialSummary() {
             <span>Total Expenses</span>
           </h3>
           <p className="text-3xl font-bold flex items-center">
-            <DollarSign className="h-7 w-7 mr-1" />
+            <IndianRupee className="h-7 w-7 mr-1" />
             {financialData.expenses.total.toFixed(2)}
           </p>
            <div className="space-y-2 text-sm">
             {financialData.expenses.sources.map(source => (
                 <div key={source.name} className="flex justify-between items-center text-muted-foreground">
                     <span className="flex items-center gap-2"><source.icon className="h-4 w-4" /> {source.name}</span>
-                    <span className="font-medium text-foreground">${source.amount.toFixed(2)}</span>
+                    <span className="font-medium text-foreground">₹{source.amount.toFixed(2)}</span>
                 </div>
             ))}
           </div>
@@ -202,7 +202,7 @@ export function FinancialSummary() {
             <span>Net {financialData.net.isProfit ? 'Profit' : 'Loss'}</span>
           </h3>
           <p className={`text-3xl font-bold flex items-center ${financialData.net.isProfit ? 'text-green-700 dark:text-green-200' : 'text-red-700 dark:text-red-200'}`}>
-            <DollarSign className="h-7 w-7 mr-1" />
+            <IndianRupee className="h-7 w-7 mr-1" />
             {financialData.net.total.toFixed(2)}
           </p>
           <p className={`text-sm ${financialData.net.isProfit ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}>

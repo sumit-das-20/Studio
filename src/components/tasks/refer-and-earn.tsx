@@ -41,7 +41,7 @@ export function ReferAndEarn() {
         toast({ title: 'Copied!', description: `${text} copied to clipboard.` });
     };
 
-    const totalReferralEarnings = referredUsers.length * 0.50; // $0.50 per referral
+    const totalReferralEarnings = referredUsers.length * 10;
 
     return (
         <section id="refer-and-earn" className="space-y-8">
@@ -59,7 +59,7 @@ export function ReferAndEarn() {
                 <CardHeader>
                     <CardTitle>Your Referral Link</CardTitle>
                     <CardDescription>
-                        Share this link with your friends. You'll earn a $0.50 bonus for each friend who joins, which you can withdraw after 10 successful referrals. Separately, you will also earn a 0.10% commission on every withdrawal they make for life, which is added directly to your main earnings.
+                        Share this link with your friends. You'll earn a ₹10 bonus for each friend who joins, which you can withdraw after 10 successful referrals. Separately, you will also earn a 0.10% commission on every withdrawal they make for life, which is added directly to your main earnings.
                     </CardDescription>
                 </CardHeader>
                 <CardContent>
@@ -90,7 +90,7 @@ export function ReferAndEarn() {
                     </div>
                     <div className="text-right">
                         <p className="text-sm text-muted-foreground">Referral Bonus Balance</p>
-                        <p className="text-2xl font-bold text-primary">${totalReferralEarnings.toFixed(2)}</p>
+                        <p className="text-2xl font-bold text-primary">₹{totalReferralEarnings.toFixed(2)}</p>
                     </div>
                 </CardHeader>
                 <CardContent>

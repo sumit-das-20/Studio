@@ -82,7 +82,7 @@ const EditServiceDialog = ({ service, onSave }: { service: SocialService; onSave
                 </DialogHeader>
                 <div className="space-y-4 py-4">
                     <div className="space-y-2">
-                        <Label htmlFor="price">Price (USD)</Label>
+                        <Label htmlFor="price">Price (INR)</Label>
                         <Input 
                             id="price" 
                             type="number" 
@@ -154,7 +154,7 @@ export function ServiceManager() {
                                     <TableHeader>
                                         <TableRow>
                                             <TableHead>Service</TableHead>
-                                            <TableHead>Price/Unit (USD)</TableHead>
+                                            <TableHead>Price/Unit (INR)</TableHead>
                                             <TableHead>Actions</TableHead>
                                         </TableRow>
                                     </TableHeader>
@@ -166,7 +166,7 @@ export function ServiceManager() {
                                                     <div className="text-xs text-muted-foreground">{service.unit}</div>
                                                 </TableCell>
                                                 <TableCell className="font-semibold">
-                                                    ${service.pricePerUnit.toFixed(2)}
+                                                    ₹{service.pricePerUnit.toFixed(2)}
                                                 </TableCell>
                                                 <TableCell>
                                                     <EditServiceDialog service={service} onSave={handleSaveService} />

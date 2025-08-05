@@ -263,8 +263,8 @@ export function TaskDialog({ onTaskCreated, onTaskUpdated, task, isFirstTask = f
           )}
 
           <div className="space-y-2">
-            <Label htmlFor="reward">Reward (USD)</Label>
-            <Input id="reward" name="reward" type="number" step="0.01" placeholder="e.g., 0.50" defaultValue={task?.reward} />
+            <Label htmlFor="reward">Reward (INR)</Label>
+            <Input id="reward" name="reward" type="number" step="0.01" placeholder="e.g., 20.00" defaultValue={task?.reward} />
             {state.error?.reward && <p className="text-sm text-destructive mt-1">{state.error.reward[0]}</p>}
           </div>
 

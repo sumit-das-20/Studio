@@ -46,7 +46,7 @@ export function EmployeeManager() {
                 <TableHead>Employee ID</TableHead>
                 <TableHead>Email</TableHead>
                 <TableHead>Referred By</TableHead>
-                <TableHead className="text-right">Total Earnings (USD)</TableHead>
+                <TableHead className="text-right">Total Earnings (INR)</TableHead>
                 <TableHead>Joined On</TableHead>
                 <TableHead>Actions</TableHead>
               </TableRow>
@@ -79,7 +79,7 @@ export function EmployeeManager() {
                              <span className="text-muted-foreground">-</span>
                         )}
                     </TableCell>
-                    <TableCell className="text-right">${employee.totalEarnings.toFixed(2)}</TableCell>
+                    <TableCell className="text-right">₹{employee.totalEarnings.toFixed(2)}</TableCell>
                     <TableCell>{employee.createdAt}</TableCell>
                     <TableCell>
                         <div className="flex items-center justify-center">

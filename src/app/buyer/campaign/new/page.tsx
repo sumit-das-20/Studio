@@ -22,7 +22,7 @@ import {
 } from '@/components/ui/select';
 import { BackButton } from '@/components/back-button';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { Loader2, Sparkles, CreditCard, Users, CircleDollarSign, Link as LinkIcon, Briefcase } from 'lucide-react';
+import { Loader2, Sparkles, CreditCard, Users, IndianRupee, Link as LinkIcon, Briefcase } from 'lucide-react';
 import { createCampaign } from '../../actions';
 import { useToast } from '@/hooks/use-toast';
 import { useRouter } from 'next/navigation';
@@ -123,8 +123,8 @@ export default function NewCampaignPage() {
                                 {state.error?.numberOfTasks && <p className="text-sm text-destructive">{state.error.numberOfTasks[0]}</p>}
                             </div>
                             <div className="space-y-2">
-                                <Label htmlFor="rewardPerTask">Reward per Task (in USD)</Label>
-                                <Input id="rewardPerTask" name="rewardPerTask" type="number" step="0.01" placeholder="e.g., 0.50" />
+                                <Label htmlFor="rewardPerTask">Reward per Task (in INR)</Label>
+                                <Input id="rewardPerTask" name="rewardPerTask" type="number" step="0.01" placeholder="e.g., 5.00" />
                                 {state.error?.rewardPerTask && <p className="text-sm text-destructive">{state.error.rewardPerTask[0]}</p>}
                             </div>
                         </div>
