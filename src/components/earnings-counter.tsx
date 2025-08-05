@@ -50,7 +50,7 @@ export function EarningsCounter() {
   return (
     <div className="inline-flex items-center gap-2 rounded-full bg-primary px-4 py-2 text-primary-foreground shadow-lg transition-transform hover:scale-105">
       <span className="text-xl font-bold font-headline tabular-nums">
-        ₹{earnings.toFixed(2)}
+        {earnings.toFixed(2)}
       </span>
     </div>
   );
