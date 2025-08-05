@@ -140,7 +140,7 @@ export function ServiceManager() {
                                     <TableHeader>
                                         <TableRow>
                                             <TableHead>Service</TableHead>
-                                            <TableHead>Price/Unit (INR)</TableHead>
+                                            <TableHead>Price (INR)</TableHead>
                                             <TableHead>Actions</TableHead>
                                         </TableRow>
                                     </TableHeader>

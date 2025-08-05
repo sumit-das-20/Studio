@@ -5,16 +5,16 @@ import { AdminBuyer, SocialTask, AdminTask, AdminEmployee, AdminWithdrawalReques
 // --- Service Pricing Data (Admin controlled) ---
 export let initialServices: SocialService[] = [
     // YouTube
-    { id: 'yt-sub', platform: 'YouTube', serviceName: 'Subscribers', unit: 'per subscriber', pricePerUnit: 2.50, status: 'Active' },
-    { id: 'yt-like', platform: 'YouTube', serviceName: 'Likes & Comments', unit: 'per like/comment', pricePerUnit: 1.00, status: 'Active' },
-    { id: 'yt-watch', platform: 'YouTube', serviceName: 'Watch Time', unit: 'per hour', pricePerUnit: 5.00, status: 'Active' },
+    { id: 'yt-sub', platform: 'YouTube', serviceName: 'Subscribers', unit: 'subscriber', pricePerUnit: 2.50, status: 'Active' },
+    { id: 'yt-like', platform: 'YouTube', serviceName: 'Likes & Comments', unit: 'like/comment', pricePerUnit: 1.00, status: 'Active' },
+    { id: 'yt-watch', platform: 'YouTube', serviceName: 'Watch Time', unit: 'hour', pricePerUnit: 5.00, status: 'Active' },
     // Facebook
-    { id: 'fb-like', platform: 'Facebook', serviceName: 'Page Likes', unit: 'per like', pricePerUnit: 1.50, status: 'Active' },
-    { id: 'fb-follow', platform: 'Facebook', serviceName: 'Followers', unit: 'per follower', pricePerUnit: 1.75, status: 'Active' },
-    { id: 'fb-share', platform: 'Facebook', serviceName: 'Post Shares', unit: 'per share', pricePerUnit: 0.75, status: 'Active' },
+    { id: 'fb-like', platform: 'Facebook', serviceName: 'Page Likes', unit: 'like', pricePerUnit: 1.50, status: 'Active' },
+    { id: 'fb-follow', platform: 'Facebook', serviceName: 'Followers', unit: 'follower', pricePerUnit: 1.75, status: 'Active' },
+    { id: 'fb-share', platform: 'Facebook', serviceName: 'Post Shares', unit: 'share', pricePerUnit: 0.75, status: 'Active' },
     // Instagram
-    { id: 'ig-follow', platform: 'Instagram', serviceName: 'Followers', unit: 'per follower', pricePerUnit: 3.00, status: 'Active' },
-    { id: 'ig-like', platform: 'Instagram', serviceName: 'Post Likes', unit: 'per like', pricePerUnit: 0.50, status: 'Active' },
+    { id: 'ig-follow', platform: 'Instagram', serviceName: 'Followers', unit: 'follower', pricePerUnit: 3.00, status: 'Active' },
+    { id: 'ig-like', platform: 'Instagram', serviceName: 'Post Likes', unit: 'like', pricePerUnit: 0.50, status: 'Active' },
 ];
 
 
