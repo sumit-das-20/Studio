@@ -11,6 +11,7 @@ export let initialServices: SocialService[] = [
     // Facebook
     { id: 'fb-like', platform: 'Facebook', serviceName: 'Page Likes', unit: 'like', pricePerUnit: 1.50, status: 'Active' },
     { id: 'fb-follow', platform: 'Facebook', serviceName: 'Followers', unit: 'follower', pricePerUnit: 1.75, status: 'Active' },
+    { id: 'fb-watch', platform: 'Facebook', serviceName: 'Watch Time', unit: 'hour', pricePerUnit: 4.00, status: 'Active' },
     { id: 'fb-share', platform: 'Facebook', serviceName: 'Post Shares', unit: 'share', pricePerUnit: 0.75, status: 'Active' },
     // Instagram
     { id: 'ig-follow', platform: 'Instagram', serviceName: 'Followers', unit: 'follower', pricePerUnit: 3.00, status: 'Active' },
