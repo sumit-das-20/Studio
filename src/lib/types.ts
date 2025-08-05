@@ -10,7 +10,7 @@ export type SimpleTaskType = {
 };
 
 export type LinkTask = {
-  id: string;
+  id: number;
   url: string;
   reward?: number;
 };
@@ -63,6 +63,8 @@ export type AdminEmployee = {
   totalEarnings: number;
   withdrawalRequest: AdminWithdrawalRequest | null;
   createdAt: string;
+  referralCode: string;
+  referredBy: string | null;
 };
 
 

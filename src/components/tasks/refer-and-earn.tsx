@@ -1,4 +1,5 @@
 
+
 'use client';
 
 import { useState } from 'react';
@@ -9,15 +10,9 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Badge } from '@/components/ui/badge';
 import { Copy, Gift, Users } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { useMockData } from '@/hooks/use-mock-data';
+import { Skeleton } from '../ui/skeleton';
 
-const referralData = {
-    referralCode: 'AB12CD34',
-    referredUsers: [
-        { id: 1, name: 'Alice', date: '2024-07-28', status: 'Completed', earnings: 50.00 },
-        { id: 2, name: 'Bob', date: '2024-07-29', status: 'Pending', earnings: 0.00 },
-        { id: 3, name: 'Charlie', date: '2024-07-30', status: 'Completed', earnings: 50.00 },
-    ],
-};
 
 const getStatusVariant = (status: string) => {
     switch (status) {
@@ -32,14 +27,21 @@ const getStatusVariant = (status: string) => {
 
 export function ReferAndEarn() {
     const { toast } = useToast();
-    const referralLink = `https://taskrabbit.com/register?ref=${referralData.referralCode}`;
+    const { employees, isLoading } = useMockData();
+
+    // For this example, we'll assume the logged in user is EMP-001
+    const currentUser = employees.find(e => e.id === 'EMP-001');
+    const referralCode = currentUser?.referralCode || '';
+    const referralLink = referralCode ? `https://taskrabbit.com/register?ref=${referralCode}`: '';
+
+    const referredUsers = employees.filter(e => e.referredBy === currentUser?.id);
 
     const handleCopy = (text: string) => {
         navigator.clipboard.writeText(text);
         toast({ title: 'Copied!', description: `${text} copied to clipboard.` });
     };
 
-    const totalReferralEarnings = referralData.referredUsers.reduce((acc, user) => acc + user.earnings, 0);
+    const totalReferralEarnings = referredUsers.length * 50; // Example calculation
 
     return (
         <section id="refer-and-earn" className="space-y-8">
@@ -57,16 +59,23 @@ export function ReferAndEarn() {
                 <CardHeader>
                     <CardTitle>Your Referral Link</CardTitle>
                     <CardDescription>
-                        Share this link with your friends. You'll earn 50 INR for each friend who completes their first task.
+                        Share this link with your friends. You'll earn 50 INR for each friend who completes their first task, plus 0.10% of their lifetime withdrawals.
                     </CardDescription>
                 </CardHeader>
                 <CardContent>
-                    <div className="flex items-center gap-2">
-                        <Input readOnly value={referralLink} />
-                        <Button variant="outline" size="icon" onClick={() => handleCopy(referralLink)}>
-                            <Copy className="h-4 w-4" />
-                        </Button>
-                    </div>
+                    {isLoading ? (
+                        <div className="flex items-center gap-2">
+                           <Skeleton className="h-10 flex-grow" />
+                           <Skeleton className="h-10 w-10" />
+                        </div>
+                    ) : (
+                        <div className="flex items-center gap-2">
+                            <Input readOnly value={referralLink} />
+                            <Button variant="outline" size="icon" onClick={() => handleCopy(referralLink)} disabled={!referralLink}>
+                                <Copy className="h-4 w-4" />
+                            </Button>
+                        </div>
+                    )}
                 </CardContent>
             </Card>
 
@@ -80,7 +89,7 @@ export function ReferAndEarn() {
                         <CardDescription>A list of users you've referred.</CardDescription>
                     </div>
                     <div className="text-right">
-                        <p className="text-sm text-muted-foreground">Total Referral Earnings</p>
+                        <p className="text-sm text-muted-foreground">Initial Referral Earnings</p>
                         <p className="text-2xl font-bold text-primary">{totalReferralEarnings.toFixed(2)} INR</p>
                     </div>
                 </CardHeader>
@@ -91,19 +100,26 @@ export function ReferAndEarn() {
                                 <TableHead>User</TableHead>
                                 <TableHead>Date Joined</TableHead>
                                 <TableHead>Status</TableHead>
-                                <TableHead className="text-right">Earnings (INR)</TableHead>
                             </TableRow>
                         </TableHeader>
                         <TableBody>
-                            {referralData.referredUsers.length > 0 ? (
-                                referralData.referredUsers.map(user => (
+                            {isLoading ? (
+                                 Array.from({length: 2}).map((_, i) => (
+                                     <TableRow key={i}>
+                                         <TableCell><Skeleton className="h-5 w-24" /></TableCell>
+                                         <TableCell><Skeleton className="h-5 w-20" /></TableCell>
+                                         <TableCell><Skeleton className="h-6 w-24 rounded-full" /></TableCell>
+                                     </TableRow>
+                                 ))
+                            ) : referredUsers.length > 0 ? (
+                                referredUsers.map(user => (
                                     <TableRow key={user.id}>
-                                        <TableCell className="font-medium">{user.name}</TableCell>
-                                        <TableCell>{user.date}</TableCell>
+                                        <TableCell className="font-medium">{user.email}</TableCell>
+                                        <TableCell>{user.createdAt}</TableCell>
                                         <TableCell>
-                                            <Badge variant={getStatusVariant(user.status) as any}>{user.status}</Badge>
+                                            {/* In a real app, this status would be dynamic */}
+                                            <Badge variant={getStatusVariant('Completed') as any}>Active</Badge>
                                         </TableCell>
-                                        <TableCell className="text-right font-semibold">{user.earnings.toFixed(2)}</TableCell>
                                     </TableRow>
                                 ))
                             ) : (

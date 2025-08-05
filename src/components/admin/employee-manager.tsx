@@ -45,8 +45,8 @@ export function EmployeeManager() {
               <TableRow>
                 <TableHead>Employee ID</TableHead>
                 <TableHead>Email</TableHead>
+                <TableHead>Referred By</TableHead>
                 <TableHead className="text-right">Total Earnings (INR)</TableHead>
-                <TableHead className="text-right">Withdrawal Request (INR)</TableHead>
                 <TableHead>Joined On</TableHead>
                 <TableHead>Actions</TableHead>
               </TableRow>
@@ -57,7 +57,7 @@ export function EmployeeManager() {
                     <TableRow key={index}>
                         <TableCell><Skeleton className="h-4 w-16" /></TableCell>
                         <TableCell><Skeleton className="h-4 w-48" /></TableCell>
-                        <TableCell className="text-right"><Skeleton className="h-4 w-12 ml-auto" /></TableCell>
+                        <TableCell><Skeleton className="h-4 w-16" /></TableCell>
                         <TableCell className="text-right"><Skeleton className="h-4 w-12 ml-auto" /></TableCell>
                         <TableCell><Skeleton className="h-4 w-24" /></TableCell>
                         <TableCell>
@@ -72,14 +72,14 @@ export function EmployeeManager() {
                     <TableRow key={employee.id}>
                     <TableCell className="font-medium">{employee.id}</TableCell>
                     <TableCell>{employee.email}</TableCell>
-                    <TableCell className="text-right">{employee.totalEarnings.toFixed(2)}</TableCell>
-                    <TableCell className="text-right">
-                        {employee.withdrawalRequest ? (
-                            <Badge variant="destructive">{employee.withdrawalRequest.amount.toFixed(2)}</Badge>
+                    <TableCell>
+                        {employee.referredBy ? (
+                            <Badge variant="outline">{employee.referredBy}</Badge>
                         ) : (
-                            <span className="text-muted-foreground">-</span>
+                             <span className="text-muted-foreground">-</span>
                         )}
                     </TableCell>
+                    <TableCell className="text-right">{employee.totalEarnings.toFixed(2)}</TableCell>
                     <TableCell>{employee.createdAt}</TableCell>
                     <TableCell>
                         <div className="flex items-center justify-center">

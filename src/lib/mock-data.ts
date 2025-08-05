@@ -109,6 +109,8 @@ export let initialEmployees: AdminEmployee[] = [
     totalEarnings: 1250.75,
     withdrawalRequest: null,
     createdAt: '2024-07-20',
+    referralCode: 'JOHN-D-123',
+    referredBy: null,
   },
   {
     id: 'EMP-002',
@@ -116,6 +118,8 @@ export let initialEmployees: AdminEmployee[] = [
     totalEarnings: 750.00,
     withdrawalRequest: null,
     createdAt: '2024-07-22',
+    referralCode: 'JANE-S-456',
+    referredBy: 'EMP-001',
   },
   {
     id: 'EMP-003',
@@ -123,6 +127,8 @@ export let initialEmployees: AdminEmployee[] = [
     totalEarnings: 2800.00,
     withdrawalRequest: null,
     createdAt: '2024-06-15',
+    referralCode: 'SAM-W-789',
+    referredBy: 'EMP-002',
   },
     {
     id: 'EMP-004',
@@ -130,6 +136,8 @@ export let initialEmployees: AdminEmployee[] = [
     totalEarnings: 50.25,
     withdrawalRequest: null,
     createdAt: '2024-05-01',
+    referralCode: 'LINDA-R-101',
+    referredBy: null,
   },
 ];
 
@@ -226,21 +234,37 @@ export function addWithdrawalRequest(request: AdminWithdrawalRequest) {
 }
 
 export function updateWithdrawalRequest(requestId: string, updates: Partial<AdminWithdrawalRequest>) {
-    let employeeIdToUpdate: string | null = null;
+    let employeeToUpdate: AdminEmployee | undefined;
+    let withdrawalAmount = 0;
+
     initialWithdrawalRequests = initialWithdrawalRequests.map(req => {
         if (req.id === requestId) {
-            employeeIdToUpdate = req.employeeId;
+            employeeToUpdate = initialEmployees.find(e => e.id === req.employeeId);
+            withdrawalAmount = req.amount;
             return { ...req, ...updates };
         }
         return req;
     });
 
-    if (employeeIdToUpdate) {
+    if (employeeToUpdate) {
+        // Clear the pending request from the employee object
         if (updates.status && updates.status !== 'Pending') {
-            updateEmployee(employeeIdToUpdate, { withdrawalRequest: null });
+            updateEmployee(employeeToUpdate.id, { withdrawalRequest: null });
+        }
+
+        // If paid, process referral commission
+        if (updates.status === 'Paid' && employeeToUpdate.referredBy) {
+            const referrer = initialEmployees.find(e => e.id === employeeToUpdate!.referredBy);
+            if (referrer) {
+                const commission = withdrawalAmount * 0.0010; // 0.10%
+                const updatedReferrerEarnings = referrer.totalEarnings + commission;
+                console.log(`Paying referral commission of ${commission.toFixed(2)} to ${referrer.email}. New balance: ${updatedReferrerEarnings.toFixed(2)}`);
+                updateEmployee(referrer.id, { totalEarnings: updatedReferrerEarnings });
+            }
         }
     }
 }
+
 
 export function updateCampaign(buyerId: string, campaignId: string, updates: Partial<AdminCampaign>) {
     initialBuyers = initialBuyers.map(b => {
