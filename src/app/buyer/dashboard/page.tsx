@@ -1,7 +1,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { BarChart, PlusCircle, User, Users } from "lucide-react";
+import { BarChart, PlusCircle, User, Users, IndianRupee } from "lucide-react";
 import Link from "next/link";
 
 export default function BuyerDashboard() {
@@ -57,10 +57,13 @@ export default function BuyerDashboard() {
            <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">Total Spent</CardTitle>
-              <Users className="h-4 w-4 text-muted-foreground" />
+              <IndianRupee className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">$0.00</div>
+              <div className="text-2xl font-bold flex items-center">
+                  <IndianRupee className="h-6 w-6 mr-1" />
+                  <span>0.00</span>
+              </div>
               <p className="text-xs text-muted-foreground">
                 in the last 30 days
               </p>
