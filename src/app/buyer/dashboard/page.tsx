@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { BarChart, PlusCircle, User, Users, IndianRupee } from "lucide-react";
 import Link from "next/link";
+import { SocialMediaStats } from "@/components/buyer/social-media-stats";
 
 export default function BuyerDashboard() {
   return (
@@ -82,6 +83,7 @@ export default function BuyerDashboard() {
             </CardContent>
           </Card>
         </div>
+        <SocialMediaStats />
         <Card>
             <CardHeader>
                 <CardTitle>Recent Campaigns</CardTitle>
