@@ -1,3 +1,4 @@
+
 'use client';
 
 import {
@@ -55,7 +56,7 @@ const TaskTable = ({ tasks, onTaskUpdated, onTaskDeleted, onTaskCreated }: { tas
                 <TableHead>Task ID</TableHead>
                 <TableHead>Type</TableHead>
                 <TableHead>Details</TableHead>
-                <TableHead className="text-right">Reward (INR)</TableHead>
+                <TableHead className="text-right">Reward (USD)</TableHead>
                 <TableHead>Actions</TableHead>
               </TableRow>
             </TableHeader>
@@ -91,7 +92,7 @@ const TaskTable = ({ tasks, onTaskUpdated, onTaskDeleted, onTaskCreated }: { tas
             <TableHead>Task ID</TableHead>
             <TableHead>Type</TableHead>
             <TableHead>Details</TableHead>
-            <TableHead className="text-right">Reward (INR)</TableHead>
+            <TableHead className="text-right">Reward (USD)</TableHead>
             <TableHead>Actions</TableHead>
           </TableRow>
         </TableHeader>
@@ -125,7 +126,7 @@ const TaskTable = ({ tasks, onTaskUpdated, onTaskDeleted, onTaskCreated }: { tas
                      )}
                 </div>
               </TableCell>
-              <TableCell className="text-right font-semibold">{task.reward.toFixed(2)}</TableCell>
+              <TableCell className="text-right font-semibold">${task.reward.toFixed(2)}</TableCell>
               <TableCell>
                  <div className="flex items-center gap-2">
                     <TaskDialog onTaskCreated={onTaskCreated} onTaskUpdated={onTaskUpdated} task={task} />

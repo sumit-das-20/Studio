@@ -53,8 +53,8 @@ import type { AdminWithdrawalRequest } from '@/lib/types';
 const formSchema = z.object({
     amount: z.coerce
         .number()
-        .min(100, { message: 'Withdrawal amount must be at least 100 INR.' })
-        .max(3000, { message: 'Withdrawal amount cannot exceed 3000 INR.' }),
+        .min(5, { message: 'Withdrawal amount must be at least $5.' })
+        .max(100, { message: 'Withdrawal amount cannot exceed $100.' }),
     paymentMethod: z.string({ required_error: 'Please select a payment method.' }),
     paypalEmail: z.string().optional(),
     upiId: z.string().optional(),
@@ -123,7 +123,7 @@ export default function WithdrawalPage() {
   const form = useForm<FormSchemaType>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      amount: 100,
+      amount: 5,
       paypalEmail: '',
       upiId: '',
       accountHolderName: '',
@@ -176,8 +176,8 @@ export default function WithdrawalPage() {
     setTimeout(() => {
       console.log('Withdrawal Request:', values);
        // The form validation should handle this, but as a safeguard:
-      if (values.amount < 100 || values.amount > 3000) {
-          setError("Withdrawal amount must be between 100 and 3000 INR.");
+      if (values.amount < 5 || values.amount > 100) {
+          setError("Withdrawal amount must be between $5 and $100.");
       } else {
         
         const newRequest: AdminWithdrawalRequest = {
@@ -200,7 +200,7 @@ export default function WithdrawalPage() {
         addWithdrawalRequest(newRequest);
 
         setSuccess(true);
-        form.reset({ amount: 100, paymentMethod: form.getValues('paymentMethod'), upiId: '', paypalEmail: '' });
+        form.reset({ amount: 5, paymentMethod: form.getValues('paymentMethod'), upiId: '', paypalEmail: '' });
         setVerificationResult(null);
       }
       setIsSubmitting(false);
@@ -211,7 +211,7 @@ export default function WithdrawalPage() {
     setSuccess(false);
     setError(null);
     setVerificationResult(null);
-    form.reset({ amount: 100, paymentMethod: undefined, upiId: '', paypalEmail: ''});
+    form.reset({ amount: 5, paymentMethod: undefined, upiId: '', paypalEmail: ''});
   }
 
   const handlePaymentMethodChange = (value: string) => {
@@ -265,8 +265,8 @@ export default function WithdrawalPage() {
                             </Link>
                         </div>
                         <ul className="list-disc pl-5 mt-4 text-xs text-muted-foreground">
-                            <li>Minimum withdrawal amount is 100 INR.</li>
-                            <li>Maximum withdrawal amount is 3,000 INR.</li>
+                            <li>Minimum withdrawal amount is $5.</li>
+                            <li>Maximum withdrawal amount is $100.</li>
                             <li>Amount will be credited to your account within 72 hours.</li>
                         </ul>
                     </CardHeader>
@@ -294,9 +294,9 @@ export default function WithdrawalPage() {
                                         name="amount"
                                         render={({ field }) => (
                                             <FormItem>
-                                                <FormLabel>Amount (INR)</FormLabel>
+                                                <FormLabel>Amount (USD)</FormLabel>
                                                 <FormControl>
-                                                    <Input type="number" placeholder="e.g., 500" {...field} />
+                                                    <Input type="number" placeholder="e.g., 50" {...field} />
                                                 </FormControl>
                                                 <FormMessage />
                                             </FormItem>
@@ -315,8 +315,8 @@ export default function WithdrawalPage() {
                                                     </SelectTrigger>
                                                     </FormControl>
                                                     <SelectContent>
-                                                        <SelectItem value="bank-transfer">Bank Transfer (NEFT/IMPS)</SelectItem>
-                                                        <SelectItem value="upi">UPI (GPay, PhonePe, etc.)</SelectItem>
+                                                        <SelectItem value="bank-transfer">Bank Transfer (International)</SelectItem>
+                                                        <SelectItem value="upi">UPI (For India)</SelectItem>
                                                         <SelectItem value="paypal">PayPal</SelectItem>
                                                     </SelectContent>
                                                 </Select>
@@ -421,9 +421,9 @@ export default function WithdrawalPage() {
                                                 name="ifscCode"
                                                 render={({ field }) => (
                                                     <FormItem>
-                                                        <FormLabel>IFSC Code</FormLabel>
+                                                        <FormLabel>IFSC / SWIFT Code</FormLabel>
                                                         <FormControl>
-                                                            <Input placeholder="Enter bank's IFSC code" {...field} />
+                                                            <Input placeholder="Enter bank's routing code" {...field} />
                                                         </FormControl>
                                                         <FormMessage />
                                                     </FormItem>

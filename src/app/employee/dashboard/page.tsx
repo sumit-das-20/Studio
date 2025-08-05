@@ -1,3 +1,4 @@
+
 'use client';
 
 import { Header } from "@/components/header";
@@ -11,13 +12,13 @@ import {
 } from "@/components/ui/sidebar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Clapperboard, HelpCircle, IndianRupee, Link as LinkIcon, MousePointerClick, Share2, Trophy, Wallet } from "lucide-react";
+import { ArrowRight, Clapperboard, HelpCircle, DollarSign, Link as LinkIcon, MousePointerClick, Share2, Trophy, Wallet } from "lucide-react";
 import Link from "next/link";
 
 
 const stats = [
-    { title: "Today's Earnings", value: "0.00", icon: IndianRupee },
-    { title: "This Month's Earnings", value: "0.00", icon: IndianRupee },
+    { title: "Today's Earnings", value: "0.00", icon: DollarSign },
+    { title: "This Month's Earnings", value: "0.00", icon: DollarSign },
     { title: "Total Earnings", value: "0.00", icon: Trophy },
     { title: "Total Withdrawal", value: "0.00", icon: Wallet },
 ]
@@ -59,7 +60,7 @@ export default function DashboardPage() {
                             <stat.icon className="h-4 w-4 text-muted-foreground" />
                             </CardHeader>
                             <CardContent>
-                            <div className="text-2xl font-bold">{stat.value}</div>
+                            <div className="text-2xl font-bold">${stat.value}</div>
                             </CardContent>
                         </Card>
                     ))}

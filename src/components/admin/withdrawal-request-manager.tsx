@@ -90,7 +90,7 @@ export function WithdrawalRequestManager() {
               <TableRow>
                 <TableHead>Request ID</TableHead>
                 <TableHead>Employee Email</TableHead>
-                <TableHead className="text-right">Amount (INR)</TableHead>
+                <TableHead className="text-right">Amount (USD)</TableHead>
                 <TableHead>Payment Details</TableHead>
                 <TableHead>Status</TableHead>
                 <TableHead className="text-center">Actions</TableHead>
@@ -106,7 +106,7 @@ export function WithdrawalRequestManager() {
                     <TableCell className="font-medium">{request.id}</TableCell>
                     <TableCell>{request.employeeEmail}</TableCell>
                     <TableCell className="text-right">
-                      {request.amount.toFixed(2)}
+                      ${request.amount.toFixed(2)}
                     </TableCell>
                     <TableCell>
                       <Popover>

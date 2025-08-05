@@ -91,7 +91,7 @@ export default function WithdrawalHistoryPage() {
                   <TableHeader>
                     <TableRow>
                       <TableHead>Date</TableHead>
-                      <TableHead className="text-right">Amount (INR)</TableHead>
+                      <TableHead className="text-right">Amount (USD)</TableHead>
                       <TableHead>Payment Method</TableHead>
                       <TableHead>Status</TableHead>
                     </TableRow>
@@ -110,7 +110,7 @@ export default function WithdrawalHistoryPage() {
                       history.map((item, index) => (
                         <TableRow key={item.id}>
                           <TableCell className="font-medium">{item.createdAt}</TableCell>
-                          <TableCell className="text-right">{item.amount.toFixed(2)}</TableCell>
+                          <TableCell className="text-right">${item.amount.toFixed(2)}</TableCell>
                           <TableCell>{item.method}</TableCell>
                           <TableCell>
                             <Badge variant={getStatusVariant(item.status) as any}>{item.status}</Badge>

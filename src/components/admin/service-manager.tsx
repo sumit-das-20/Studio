@@ -39,17 +39,17 @@ import { Label } from '../ui/label';
 // In a real application, this would be fetched from your database.
 const initialServices: SocialService[] = [
     // YouTube
-    { id: 'yt-sub', platform: 'YouTube', serviceName: 'Subscribers', unit: 'per subscriber', pricePerUnit: 2.00, status: 'Active' },
-    { id: 'yt-like', platform: 'YouTube', serviceName: 'Likes', unit: 'per like', pricePerUnit: 0.50, status: 'Active' },
-    { id: 'yt-comment', platform: 'YouTube', serviceName: 'Comments', unit: 'per comment', pricePerUnit: 1.00, status: 'Active' },
-    { id: 'yt-watch', platform: 'YouTube', serviceName: 'Watch Time', unit: 'per hour', pricePerUnit: 5.00, status: 'Inactive' },
+    { id: 'yt-sub', platform: 'YouTube', serviceName: 'Subscribers', unit: 'per subscriber', pricePerUnit: 0.10, status: 'Active' },
+    { id: 'yt-like', platform: 'YouTube', serviceName: 'Likes', unit: 'per like', pricePerUnit: 0.02, status: 'Active' },
+    { id: 'yt-comment', platform: 'YouTube', serviceName: 'Comments', unit: 'per comment', pricePerUnit: 0.05, status: 'Active' },
+    { id: 'yt-watch', platform: 'YouTube', serviceName: 'Watch Time', unit: 'per hour', pricePerUnit: 0.25, status: 'Inactive' },
     // Facebook
-    { id: 'fb-like', platform: 'Facebook', serviceName: 'Page Likes', unit: 'per like', pricePerUnit: 1.50, status: 'Active' },
-    { id: 'fb-follow', platform: 'Facebook', serviceName: 'Followers', unit: 'per follower', pricePerUnit: 1.75, status: 'Active' },
-    { id: 'fb-share', platform: 'Facebook', serviceName: 'Post Shares', unit: 'per share', pricePerUnit: 0.75, status: 'Active' },
+    { id: 'fb-like', platform: 'Facebook', serviceName: 'Page Likes', unit: 'per like', pricePerUnit: 0.08, status: 'Active' },
+    { id: 'fb-follow', platform: 'Facebook', serviceName: 'Followers', unit: 'per follower', pricePerUnit: 0.09, status: 'Active' },
+    { id: 'fb-share', platform: 'Facebook', serviceName: 'Post Shares', unit: 'per share', pricePerUnit: 0.04, status: 'Active' },
     // Instagram
-    { id: 'ig-follow', platform: 'Instagram', serviceName: 'Followers', unit: 'per follower', pricePerUnit: 2.50, status: 'Active' },
-    { id: 'ig-like', platform: 'Instagram', serviceName: 'Post Likes', unit: 'per like', pricePerUnit: 0.40, status: 'Active' },
+    { id: 'ig-follow', platform: 'Instagram', serviceName: 'Followers', unit: 'per follower', pricePerUnit: 0.12, status: 'Active' },
+    { id: 'ig-like', platform: 'Instagram', serviceName: 'Post Likes', unit: 'per like', pricePerUnit: 0.02, status: 'Active' },
 ];
 
 const platformConfig = {
@@ -82,7 +82,7 @@ const EditServiceDialog = ({ service, onSave }: { service: SocialService; onSave
                 </DialogHeader>
                 <div className="space-y-4 py-4">
                     <div className="space-y-2">
-                        <Label htmlFor="price">Price (INR)</Label>
+                        <Label htmlFor="price">Price (USD)</Label>
                         <Input 
                             id="price" 
                             type="number" 
@@ -154,7 +154,7 @@ export function ServiceManager() {
                                     <TableHeader>
                                         <TableRow>
                                             <TableHead>Service</TableHead>
-                                            <TableHead>Price/Unit (INR)</TableHead>
+                                            <TableHead>Price/Unit (USD)</TableHead>
                                             <TableHead>Actions</TableHead>
                                         </TableRow>
                                     </TableHeader>
@@ -166,7 +166,7 @@ export function ServiceManager() {
                                                     <div className="text-xs text-muted-foreground">{service.unit}</div>
                                                 </TableCell>
                                                 <TableCell className="font-semibold">
-                                                    {service.pricePerUnit.toFixed(2)}
+                                                    ${service.pricePerUnit.toFixed(2)}
                                                 </TableCell>
                                                 <TableCell>
                                                     <EditServiceDialog service={service} onSave={handleSaveService} />
