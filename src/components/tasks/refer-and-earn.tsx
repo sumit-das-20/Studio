@@ -41,7 +41,7 @@ export function ReferAndEarn() {
         toast({ title: 'Copied!', description: `${text} copied to clipboard.` });
     };
 
-    const totalReferralEarnings = referredUsers.length * 10; // Changed from 50 to 10
+    const totalReferralEarnings = referredUsers.length * 10;
 
     return (
         <section id="refer-and-earn" className="space-y-8">
@@ -59,7 +59,7 @@ export function ReferAndEarn() {
                 <CardHeader>
                     <CardTitle>Your Referral Link</CardTitle>
                     <CardDescription>
-                        Share this link with your friends. You'll earn 10 INR for each friend who completes their first task. You can withdraw your referral earnings once you have at least 10 successful referrals. You also earn 0.10% of their lifetime withdrawals.
+                        Share this link with your friends. You'll earn a 10 INR bonus for each friend who joins, which you can withdraw after 10 successful referrals. Separately, you will also earn a 0.10% commission on every withdrawal they make for life, which is added directly to your main earnings.
                     </CardDescription>
                 </CardHeader>
                 <CardContent>
@@ -86,7 +86,7 @@ export function ReferAndEarn() {
                             <Users className="h-6 w-6" />
                             <span>Your Referrals</span>
                         </CardTitle>
-                        <CardDescription>A list of users you've referred. ({referredUsers.length} / 10 required to withdraw)</CardDescription>
+                        <CardDescription>A list of users you've referred. ({referredUsers.length} / 10 required to withdraw bonus)</CardDescription>
                     </div>
                     <div className="text-right">
                         <p className="text-sm text-muted-foreground">Referral Bonus Balance</p>
