@@ -23,7 +23,7 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { useState, useTransition } from 'react';
-import { Banknote, CheckCircle, History, Loader2, ShieldCheck, ShieldX, Pencil } from 'lucide-react';
+import { Banknote, CheckCircle, History, Loader2, ShieldCheck, ShieldX, Pencil, LifeBuoy } from 'lucide-react';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import {
   Select,
@@ -48,6 +48,7 @@ import Link from 'next/link';
 import { buttonVariants } from '@/components/ui/button';
 import { useMockData } from '@/hooks/use-mock-data';
 import type { AdminWithdrawalRequest } from '@/lib/types';
+import { WithdrawalSupportDialog } from '@/components/support/withdrawal-support-dialog';
 
 
 const formSchema = z.object({
@@ -259,10 +260,13 @@ export default function WithdrawalPage() {
                                     </CardDescription>
                                 </div>
                             </div>
-                            <Link href="/employee/withdrawal/history" className={cn(buttonVariants({ variant: 'outline', size: 'sm' }))}>
-                                <History className="mr-2 h-4 w-4" />
-                                View History
-                            </Link>
+                            <div className='flex items-center gap-2'>
+                                <WithdrawalSupportDialog />
+                                <Link href="/employee/withdrawal/history" className={cn(buttonVariants({ variant: 'outline', size: 'sm' }))}>
+                                    <History className="mr-2 h-4 w-4" />
+                                    View History
+                                </Link>
+                            </div>
                         </div>
                         <ul className="list-disc pl-5 mt-4 text-xs text-muted-foreground">
                             <li>Minimum withdrawal amount is ₹400.</li>

@@ -22,6 +22,7 @@ import {
   ChevronDown,
   Share2,
   Users,
+  LifeBuoy,
 } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
@@ -103,6 +104,18 @@ export function SidebarNav() {
           </SidebarMenuSub>
         )}
       </SidebarMenuItem>
+        <SidebarMenuItem>
+            <SidebarMenuButton
+                asChild
+                isActive={pathname.startsWith('/employee/support')}
+                tooltip="Support"
+            >
+                <a href="/employee/support">
+                    <LifeBuoy />
+                    <span>Support</span>
+                </a>
+            </SidebarMenuButton>
+        </SidebarMenuItem>
       <SidebarMenuItem>
           <SidebarMenuButton
             asChild
