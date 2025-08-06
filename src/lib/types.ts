@@ -150,3 +150,14 @@ export type SocialService = {
   pricePerUnit: number;
   status: 'Active' | 'Inactive';
 };
+
+export type SupportTicket = {
+  id: string;
+  userEmail: string;
+  userRole: 'Buyer' | 'Employee';
+  title: string;
+  description: string;
+  category: 'Payment' | 'Campaign' | 'Withdrawal' | 'Technical' | 'Account' | 'General';
+  status: 'Open' | 'In Progress' | 'Resolved';
+  createdAt: string;
+};

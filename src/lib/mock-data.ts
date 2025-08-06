@@ -1,6 +1,6 @@
 
 
-import { AdminBuyer, SocialTask, AdminTask, AdminEmployee, AdminWithdrawalRequest, AdminCampaign, SocialService } from "./types";
+import { AdminBuyer, SocialTask, AdminTask, AdminEmployee, AdminWithdrawalRequest, AdminCampaign, SocialService, SupportTicket } from "./types";
 
 // --- Service Pricing Data (Admin controlled) ---
 export let initialServices: SocialService[] = [
@@ -188,6 +188,20 @@ export let initialWithdrawalRequests: AdminWithdrawalRequest[] = [
   },
 ];
 
+// --- Support Tickets ---
+export let initialSupportTickets: SupportTicket[] = [
+    {
+        id: 'TICKET-1722391035175',
+        userEmail: 'employee@example.com',
+        userRole: 'Employee',
+        title: 'Withdrawal Not Processed',
+        description: 'User is inquiring about a withdrawal that was initiated over 72 hours ago but has not yet been reflected in their bank account. They are seeking an update on the status of the transaction.',
+        category: 'Withdrawal',
+        status: 'Open',
+        createdAt: '2024-07-31T01:57:15.175Z'
+    }
+];
+
 
 // --- Functions to Mutate Mock Data ---
 
@@ -298,4 +312,12 @@ export function updateCampaign(buyerId: string, campaignId: string, updates: Par
         }
         return b;
     });
+}
+
+export function addSupportTicket(ticket: SupportTicket) {
+    initialSupportTickets.unshift(ticket);
+}
+
+export function updateSupportTicket(ticketId: string, updates: Partial<SupportTicket>) {
+    initialSupportTickets = initialSupportTickets.map(t => t.id === ticketId ? { ...t, ...updates } : t);
 }

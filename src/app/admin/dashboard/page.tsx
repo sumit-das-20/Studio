@@ -5,7 +5,7 @@ import { FinancialSummary } from "@/components/admin/financial-summary";
 import { LinkShortenerPerformance } from "@/components/admin/link-shortener-performance";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { BarChart, Users, CircleDollarSign, CreditCard, ClipboardList, ShoppingBag, LandPlot, Tags, Bell } from "lucide-react";
+import { BarChart, Users, CircleDollarSign, CreditCard, ClipboardList, ShoppingBag, LandPlot, Tags, Bell, LifeBuoy } from "lucide-react";
 import Link from "next/link";
 
 
@@ -99,6 +99,20 @@ export default function AdminDashboard() {
               <CardContent>
                    <Button asChild>
                       <Link href="/admin/withdrawals">Manage Withdrawals</Link>
+                  </Button>
+              </CardContent>
+          </Card>
+          <Card className="hover:shadow-lg transition-shadow">
+              <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                      <LifeBuoy className="h-6 w-6 text-primary" />
+                      <span>Support Tickets</span>
+                  </CardTitle>
+                  <CardDescription>View and resolve support tickets submitted by users.</CardDescription>
+              </CardHeader>
+              <CardContent>
+                   <Button asChild>
+                      <Link href="/admin/support-tickets">Manage Tickets</Link>
                   </Button>
               </CardContent>
           </Card>

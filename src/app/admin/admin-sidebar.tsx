@@ -9,7 +9,7 @@ import {
   SidebarMenuItem,
   SidebarMenuButton,
 } from '@/components/ui/sidebar';
-import { LayoutDashboard, Users, CreditCard, ClipboardList, Shield, ShoppingBag, RadioTower, LandPlot, Tags, Bell } from 'lucide-react';
+import { LayoutDashboard, Users, CreditCard, ClipboardList, Shield, ShoppingBag, RadioTower, LandPlot, Tags, Bell, LifeBuoy } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 
 const menuItems = [
@@ -32,6 +32,11 @@ const menuItems = [
       href: '/admin/withdrawals',
       label: 'Withdrawals',
       icon: CreditCard,
+    },
+     {
+      href: '/admin/support-tickets',
+      label: 'Support Tickets',
+      icon: LifeBuoy,
     },
     {
       href: '/admin/tasks',

@@ -12,13 +12,17 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
-import { Loader2, LifeBuoy, Send, Bot, User } from 'lucide-react';
+import { Loader2, LifeBuoy, Send, Bot, User, CheckCircle } from 'lucide-react';
 import { handleBuyerQuery } from '@/ai/flows/buyer-support-flow';
 import { Card, CardContent, CardDescription as CardDescriptionComponent, CardFooter, CardHeader, CardTitle as CardTitleComponent } from '../ui/card';
+import { Alert, AlertDescription, AlertTitle } from '../ui/alert';
+import { createSupportTicket } from '@/app/actions';
 
 type Message = {
     role: 'user' | 'bot';
     text: string;
+    requiresFollowUp?: boolean;
+    ticketCreated?: boolean;
 }
 
 const SupportChat = () => {
@@ -35,17 +39,36 @@ const SupportChat = () => {
 
     useEffect(scrollToBottom, [messages]);
 
+    const handleTicketCreation = (problem: string) => {
+        startTransition(async () => {
+            // In a real app, the user's email would come from their session.
+            const result = await createSupportTicket(problem, { role: 'Buyer', email: 'buyer@example.com' });
+            if (result.success) {
+                 setMessages(prev => [
+                    ...prev, 
+                    { role: 'bot', text: `I've successfully created support ticket #${result.ticketId}. Our team will review it and get back to you shortly.`, ticketCreated: true }
+                ]);
+            } else {
+                 setMessages(prev => [
+                    ...prev, 
+                    { role: 'bot', text: `I'm sorry, but I was unable to create a support ticket at this moment. Please try again later. Error: ${result.error}`, ticketCreated: false }
+                ]);
+            }
+        });
+    }
+
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         if (!query.trim()) return;
 
         const userMessage: Message = { role: 'user', text: query };
         setMessages(prev => [...prev, userMessage]);
+        const currentQuery = query;
         setQuery('');
 
         startTransition(async () => {
-            const result = await handleBuyerQuery({ query });
-            const botMessage: Message = { role: 'bot', text: result.answer };
+            const result = await handleBuyerQuery({ query: currentQuery });
+            const botMessage: Message = { role: 'bot', text: result.answer, requiresFollowUp: result.requiresFollowUp };
             setMessages(prev => [...prev, botMessage]);
         });
     };
@@ -79,11 +102,25 @@ const SupportChat = () => {
                                 {msg.role === 'bot' && <div className="bg-primary text-primary-foreground rounded-full p-2"><Bot size={16} /></div>}
                                 <div className={`rounded-lg px-3 py-2 max-w-sm ${msg.role === 'user' ? 'bg-secondary' : 'bg-muted'}`}>
                                     <p className="text-sm">{msg.text}</p>
+                                     {msg.requiresFollowUp && !msg.ticketCreated && (
+                                        <Button
+                                            size="sm"
+                                            className="mt-2"
+                                            onClick={() => handleTicketCreation(messages[index -1].text)}
+                                            disabled={isPending}
+                                        >
+                                            {isPending ? (
+                                                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                            ) : (
+                                                'Create Support Ticket'
+                                            )}
+                                        </Button>
+                                    )}
                                 </div>
                                 {msg.role === 'user' && <div className="bg-secondary rounded-full p-2"><User size={16} /></div>}
                             </div>
                         ))}
-                        {isPending && (
+                        {isPending && !messages[messages.length-1].ticketCreated && (
                             <div className="flex items-start gap-3">
                                 <div className="bg-primary text-primary-foreground rounded-full p-2"><Bot size={16} /></div>
                                 <div className="rounded-lg px-3 py-2 bg-muted flex items-center gap-2">

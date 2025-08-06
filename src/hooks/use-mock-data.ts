@@ -17,9 +17,12 @@ import {
     addWithdrawalRequest as apiAddWithdrawalRequest,
     updateWithdrawalRequest as apiUpdateWithdrawalRequest,
     initialBuyers,
-    updateCampaign as apiUpdateCampaign
+    updateCampaign as apiUpdateCampaign,
+    initialSupportTickets,
+    addSupportTicket as apiAddSupportTicket,
+    updateSupportTicket as apiUpdateSupportTicket,
 } from '@/lib/mock-data';
-import type { SocialTask, AdminTask, AdminEmployee, AdminWithdrawalRequest, AdminBuyer, AdminCampaign } from '@/lib/types';
+import type { SocialTask, AdminTask, AdminEmployee, AdminWithdrawalRequest, AdminBuyer, AdminCampaign, SupportTicket } from '@/lib/types';
 
 export const useMockData = () => {
     const [socialTasks, setSocialTasks] = useState<SocialTask[]>([]);
@@ -27,6 +30,7 @@ export const useMockData = () => {
     const [employees, setEmployees] = useState<AdminEmployee[]>([]);
     const [withdrawalRequests, setWithdrawalRequests] = useState<AdminWithdrawalRequest[]>([]);
     const [buyers, setBuyers] = useState<AdminBuyer[]>([]);
+    const [supportTickets, setSupportTickets] = useState<SupportTicket[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     // A simple dependency trigger for re-fetching data
     const [dependency, setDependency] = useState(0);
@@ -45,6 +49,7 @@ export const useMockData = () => {
             setEmployees([...initialEmployees]);
             setWithdrawalRequests([...initialWithdrawalRequests]);
             setBuyers([...initialBuyers]);
+            setSupportTickets([...initialSupportTickets]);
             setIsLoading(false);
         }, 100); 
         return () => clearTimeout(timer);
@@ -95,6 +100,16 @@ export const useMockData = () => {
         refetch();
     }, [refetch]);
 
+    const addSupportTicket = useCallback((ticket: SupportTicket) => {
+        apiAddSupportTicket(ticket);
+        refetch();
+    }, [refetch]);
+
+    const updateSupportTicket = useCallback((ticketId: string, updates: Partial<SupportTicket>) => {
+        apiUpdateSupportTicket(ticketId, updates);
+        refetch();
+    }, [refetch]);
+
     return { 
         socialTasks, 
         addSocialTasks, 
@@ -110,6 +125,9 @@ export const useMockData = () => {
         updateWithdrawalRequest,
         buyers,
         updateCampaign,
+        supportTickets,
+        addSupportTicket,
+        updateSupportTicket,
         isLoading
     };
 };

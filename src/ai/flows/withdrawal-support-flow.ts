@@ -18,6 +18,7 @@ export type WithdrawalQueryInput = z.infer<typeof WithdrawalQueryInputSchema>;
 
 const WithdrawalQueryOutputSchema = z.object({
   answer: z.string().describe('The answer to the user\'s query.'),
+  requiresFollowUp: z.boolean().describe('Whether the query requires human intervention and a support ticket should be raised.'),
 });
 export type WithdrawalQueryOutput = z.infer<typeof WithdrawalQueryOutputSchema>;
 
@@ -44,14 +45,14 @@ const withdrawalSupportPrompt = ai.definePrompt({
   Your tasks:
   1.  Analyze the user's query: {{{query}}}
   2.  Provide a clear and concise answer based ONLY on the information provided above.
-  3.  If the user's question is about a topic other than withdrawals (e.g., how to earn more, task issues, account settings), you MUST state that you can only assist with withdrawal-related queries.
-  4.  If you cannot answer the question based on the information, or if the user is expressing frustration or needs human assistance, you MUST instruct them to contact support via email. The support email is: support@taskbatao.com. Do not make up answers.
+  3.  If the user's question is about a topic other than withdrawals, you MUST state that you can only assist with withdrawal-related queries and set 'requiresFollowUp' to false.
+  4.  If you cannot answer the question based on the information, or if the user is expressing frustration or needs human assistance for a complex issue (like a failed withdrawal), you MUST set 'requiresFollowUp' to true and instruct them that you can create a support ticket for them. Do not provide an email address.
 
   Example Responses:
-  - User Query: "What is the minimum amount I can withdraw?" -> Answer: "The minimum amount you can withdraw is ₹400."
-  - User Query: "How long does it take to get my money?" -> Answer: "Withdrawals are processed within 72 hours."
-  - User Query: "How do I change my password?" -> Answer: "I can only assist with questions about the withdrawal process. For help with your account settings, please check the 'Settings' page."
-  - User Query: "My withdrawal failed, what do I do?" -> Answer: "I am sorry to hear you are having trouble with your withdrawal. Please contact our support team at support@taskbatao.com for further assistance."
+  - User Query: "What is the minimum amount I can withdraw?" -> Answer: "The minimum amount you can withdraw is ₹400.", requiresFollowUp: false
+  - User Query: "How long does it take to get my money?" -> Answer: "Withdrawals are processed within 72 hours.", requiresFollowUp: false
+  - User Query: "How do I change my password?" -> Answer: "I can only assist with questions about the withdrawal process. For help with your account settings, please check the 'Settings' page.", requiresFollowUp: false
+  - User Query: "My withdrawal failed, what do I do?" -> Answer: "I am sorry to hear you are having trouble with your withdrawal. I can create a support ticket for our team to look into this. Would you like me to do that?", requiresFollowUp: true
   `,
 });
 
