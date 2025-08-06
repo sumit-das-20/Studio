@@ -1,10 +1,13 @@
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { BarChart, PlusCircle, User, IndianRupee } from "lucide-react";
+import { BarChart, PlusCircle, User, IndianRupee, FileText, Shield, Power } from "lucide-react";
 import Link from "next/link";
 import { SocialMediaStats } from "@/components/buyer/social-media-stats";
 import { BuyerSupportDialog } from "@/components/buyer/buyer-support-dialog";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { signOut } from "../employee/actions";
+
 
 export default function BuyerDashboard() {
   return (
@@ -19,12 +22,39 @@ export default function BuyerDashboard() {
                         New Campaign
                     </Link>
                 </Button>
-                <Button variant="outline" size="icon" asChild>
-                    <Link href="#">
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="outline" size="icon">
                         <User className="h-5 w-5" />
                          <span className="sr-only">My Account</span>
-                    </Link>
-                </Button>
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end">
+                    <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem asChild>
+                      <Link href="/buyer/terms-and-conditions">
+                        <FileText className="mr-2 h-4 w-4" />
+                        <span>Terms & Conditions</span>
+                      </Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem asChild>
+                       <Link href="/buyer/privacy-policy">
+                        <Shield className="mr-2 h-4 w-4" />
+                        <span>Privacy Policy</span>
+                      </Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuSeparator />
+                     <form action={signOut} className="w-full">
+                        <DropdownMenuItem asChild>
+                           <button type="submit" className="w-full">
+                                <Power className="mr-2 h-4 w-4" />
+                                <span>Sign Out</span>
+                           </button>
+                        </DropdownMenuItem>
+                     </form>
+                  </DropdownMenuContent>
+                </DropdownMenu>
             </div>
        </header>
       <main className="flex flex-1 flex-col gap-4 p-4 sm:px-6 sm:py-0 md:gap-8">
