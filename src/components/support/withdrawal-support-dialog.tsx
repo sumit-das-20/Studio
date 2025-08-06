@@ -14,7 +14,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { Loader2, LifeBuoy, Send, Bot, User } from 'lucide-react';
 import { handleWithdrawalQuery } from '@/ai/flows/withdrawal-support-flow';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '../ui/card';
+import { Card, CardContent, CardDescription as CardDescriptionComponent, CardFooter, CardHeader, CardTitle as CardTitleComponent } from '../ui/card';
 
 type Message = {
     role: 'user' | 'bot';
@@ -53,13 +53,13 @@ const SupportChat = ({ isPage = false }: { isPage?: boolean}) => {
     const ChatContent = (
         <Card className="flex flex-col h-full w-full shadow-none border-none">
             <CardHeader>
-                <CardTitle className="flex items-center gap-2">
+                <CardTitleComponent className="flex items-center gap-2">
                     <Bot />
                     <span>AI Withdrawal Support</span>
-                </CardTitle>
-                <CardDescription>
+                </CardTitleComponent>
+                <CardDescriptionComponent>
                     Ask our AI assistant about the withdrawal process.
-                </CardDescription>
+                </CardDescriptionComponent>
             </CardHeader>
             <CardContent className="flex-grow overflow-y-auto pr-4 space-y-4 h-96">
                 {messages.map((msg, index) => (
@@ -111,6 +111,10 @@ const SupportChat = ({ isPage = false }: { isPage?: boolean}) => {
                 </Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-lg p-0">
+                <DialogHeader className="sr-only">
+                    <DialogTitle>AI Withdrawal Support</DialogTitle>
+                    <DialogDescription>Chat with an AI assistant to get help with withdrawal-related questions.</DialogDescription>
+                </DialogHeader>
                 {ChatContent}
             </DialogContent>
         </Dialog>

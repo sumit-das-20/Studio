@@ -14,7 +14,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { Loader2, LifeBuoy, Send, Bot, User } from 'lucide-react';
 import { handleBuyerQuery } from '@/ai/flows/buyer-support-flow';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '../ui/card';
+import { Card, CardContent, CardDescription as CardDescriptionComponent, CardFooter, CardHeader, CardTitle as CardTitleComponent } from '../ui/card';
 
 type Message = {
     role: 'user' | 'bot';
@@ -59,15 +59,19 @@ const SupportChat = () => {
                 </Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-lg p-0">
+                 <DialogHeader className="sr-only">
+                    <DialogTitle>AI Buyer Support</DialogTitle>
+                    <DialogDescription>Chat with an AI assistant to get help with buyer-related questions.</DialogDescription>
+                 </DialogHeader>
                  <Card className="flex flex-col h-full w-full shadow-none border-none">
                     <CardHeader>
-                        <CardTitle className="flex items-center gap-2">
+                        <CardTitleComponent className="flex items-center gap-2">
                             <Bot />
                             <span>AI Buyer Support</span>
-                        </CardTitle>
-                        <CardDescription>
+                        </CardTitleComponent>
+                        <CardDescriptionComponent>
                             Ask our AI assistant about campaigns and payments.
-                        </CardDescription>
+                        </CardDescriptionComponent>
                     </CardHeader>
                     <CardContent className="flex-grow overflow-y-auto pr-4 space-y-4 h-96">
                         {messages.map((msg, index) => (
