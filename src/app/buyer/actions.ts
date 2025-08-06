@@ -71,7 +71,6 @@ export async function signInBuyer(prevState: any, formData: FormData) {
         switch (error.code) {
             case 'auth/invalid-credential':
                 return { success: false, error: 'Invalid email or password. Please try again.' };
-            // These cases are often covered by auth/invalid-credential, but good to have
             case 'auth/user-not-found':
                  return { success: false, error: 'No account found with this email address.' };
             case 'auth/wrong-password':

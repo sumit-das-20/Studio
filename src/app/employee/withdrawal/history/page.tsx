@@ -26,23 +26,24 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { History, Trophy } from 'lucide-react';
+import { History, Trophy, Send, Hourglass, X } from 'lucide-react';
 import { BackToWithdrawalLink } from '@/components/back-to-withdrawal-link';
 import { useMockData } from '@/hooks/use-mock-data';
 import { Skeleton } from '@/components/ui/skeleton';
+import { cn } from '@/lib/utils';
 
-const getStatusVariant = (status: string) => {
+const getStatusConfig = (status: string) => {
   switch (status) {
     case 'Paid':
     case 'Completed': // Keep for backward compatibility of old mock data
-      return 'default';
+      return { variant: "default", icon: Send, className: 'bg-green-600 text-white hover:bg-green-700' };
     case 'Pending':
-      return 'secondary';
+      return { variant: "secondary", icon: Hourglass, className: '' };
     case 'Failed':
     case 'Cancelled':
-      return 'destructive';
+      return { variant: "destructive", icon: X, className: '' };
     default:
-      return 'outline';
+      return { variant: "outline", icon: Hourglass, className: '' };
   }
 };
 
@@ -107,16 +108,22 @@ export default function WithdrawalHistoryPage() {
                         </TableRow>
                       ))
                     ) : history.length > 0 ? (
-                      history.map((item, index) => (
-                        <TableRow key={item.id}>
-                          <TableCell className="font-medium">{item.createdAt}</TableCell>
-                          <TableCell className="text-right">₹{item.amount.toFixed(2)}</TableCell>
-                          <TableCell>{item.method}</TableCell>
-                          <TableCell>
-                            <Badge variant={getStatusVariant(item.status) as any}>{item.status}</Badge>
-                          </TableCell>
-                        </TableRow>
-                      ))
+                      history.map((item, index) => {
+                         const { variant, icon: Icon, className } = getStatusConfig(item.status);
+                         return (
+                            <TableRow key={item.id}>
+                                <TableCell className="font-medium">{item.createdAt}</TableCell>
+                                <TableCell className="text-right">₹{item.amount.toFixed(2)}</TableCell>
+                                <TableCell>{item.method}</TableCell>
+                                <TableCell>
+                                    <Badge variant={variant as any} className={cn(className)}>
+                                        <Icon className="mr-1 h-3 w-3" />
+                                        {item.status}
+                                    </Badge>
+                                </TableCell>
+                            </TableRow>
+                         );
+                      })
                     ) : (
                        <TableRow>
                           <TableCell colSpan={4} className="h-24 text-center">

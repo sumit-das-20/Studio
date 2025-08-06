@@ -1,12 +1,12 @@
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { BarChart, PlusCircle, User, IndianRupee, FileText, Shield, Power } from "lucide-react";
+import { BarChart, PlusCircle, User, IndianRupee, FileText, Shield, Power, Users, Percent } from "lucide-react";
 import Link from "next/link";
 import { SocialMediaStats } from "@/components/buyer/social-media-stats";
 import { BuyerSupportDialog } from "@/components/buyer/buyer-support-dialog";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { signOut } from "../employee/actions";
+import { signOut } from "@/app/employee/actions";
 
 
 export default function BuyerDashboard() {
@@ -79,7 +79,7 @@ export default function BuyerDashboard() {
               <CardTitle className="text-sm font-medium">
                 Total Followers Gained
               </CardTitle>
-              <IndianRupee className="h-4 w-4 text-muted-foreground" />
+              <Users className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">+0</div>
@@ -106,7 +106,7 @@ export default function BuyerDashboard() {
            <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">Engagement Rate</CardTitle>
-              <IndianRupee className="h-4 w-4 text-muted-foreground" />
+              <Percent className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">0%</div>

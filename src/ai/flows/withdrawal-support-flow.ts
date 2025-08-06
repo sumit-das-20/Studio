@@ -30,7 +30,7 @@ export async function handleWithdrawalQuery(
 const withdrawalSupportPrompt = ai.definePrompt({
   name: 'withdrawalSupportPrompt',
   input: { schema: WithdrawalQueryInputSchema },
-  output: { schema: BuyerQueryOutputSchema },
+  output: { schema: WithdrawalQueryOutputSchema },
   prompt: `You are an AI support agent for Taskbatao, a platform where users complete tasks to earn money. Your role is to answer questions strictly related to the withdrawal process.
 
   Here is the information you must use to answer questions:
