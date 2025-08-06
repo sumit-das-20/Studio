@@ -5,7 +5,7 @@ import { FinancialSummary } from "@/components/admin/financial-summary";
 import { LinkShortenerPerformance } from "@/components/admin/link-shortener-performance";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { BarChart, Users, CircleDollarSign, CreditCard, ClipboardList, ShoppingBag, LandPlot, Tags } from "lucide-react";
+import { BarChart, Users, CircleDollarSign, CreditCard, ClipboardList, ShoppingBag, LandPlot, Tags, Bell } from "lucide-react";
 import Link from "next/link";
 
 
@@ -59,7 +59,7 @@ export default function AdminDashboard() {
       <AdPerformanceDashboard />
       <LinkShortenerPerformance />
 
-       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           <Card className="hover:shadow-lg transition-shadow">
               <CardHeader>
                   <CardTitle className="flex items-center gap-2">
@@ -155,6 +155,20 @@ export default function AdminDashboard() {
               <CardContent>
                    <Button asChild>
                       <Link href="/admin/payment-gateways">Manage Gateways</Link>
+                  </Button>
+              </CardContent>
+          </Card>
+           <Card className="hover:shadow-lg transition-shadow">
+              <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                      <Bell className="h-6 w-6 text-primary" />
+                      <span>Push Notifications</span>
+                  </CardTitle>
+                  <CardDescription>Send notifications directly to all employees.</CardDescription>
+              </CardHeader>
+              <CardContent>
+                   <Button asChild>
+                      <Link href="/admin/push-notifications">Send Notifications</Link>
                   </Button>
               </CardContent>
           </Card>
