@@ -23,6 +23,8 @@ import {
   Share2,
   Users,
   LifeBuoy,
+  FileText,
+  Shield,
 } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
@@ -115,6 +117,30 @@ export function SidebarNav() {
                     <span>Support</span>
                 </a>
             </SidebarMenuButton>
+        </SidebarMenuItem>
+        <SidebarMenuItem>
+          <SidebarMenuButton
+            asChild
+            isActive={pathname.startsWith('/employee/terms-and-conditions')}
+            tooltip={'Terms & Conditions'}
+          >
+            <a href="/employee/terms-and-conditions">
+              <FileText />
+              <span>Terms & Conditions</span>
+            </a>
+          </SidebarMenuButton>
+        </SidebarMenuItem>
+         <SidebarMenuItem>
+          <SidebarMenuButton
+            asChild
+            isActive={pathname.startsWith('/employee/privacy-policy')}
+            tooltip={'Privacy Policy'}
+          >
+            <a href="/employee/privacy-policy">
+              <Shield />
+              <span>Privacy Policy</span>
+            </a>
+          </SidebarMenuButton>
         </SidebarMenuItem>
       <SidebarMenuItem>
           <SidebarMenuButton
