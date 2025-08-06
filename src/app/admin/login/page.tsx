@@ -76,7 +76,7 @@ export default function AdminLoginPage() {
                 type="email"
                 placeholder="admin@example.com"
                 required
-                defaultValue="admin@taskrabbit.com"
+                defaultValue="admin@taskbatao.com"
               />
             </div>
             <div className="space-y-2">

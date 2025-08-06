@@ -23,7 +23,7 @@ export function Portals() {
     return (
         <section id="portals">
             <div className="text-center mb-8">
-                <h2 className="text-3xl font-bold font-headline">Welcome to TaskRabbit</h2>
+                <h2 className="text-3xl font-bold font-headline">Welcome to Taskbatao</h2>
                 <p className="text-muted-foreground mt-2">
                     Choose your portal below to get started.
                 </p>

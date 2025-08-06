@@ -26,7 +26,7 @@ export async function signInAdmin(prevState: any, formData: FormData) {
 
   // In a real app, you'd likely want to check against a specific "admin" user role in your database.
   // For this simulation, we will use a hardcoded admin credential.
-  const ADMIN_EMAIL = 'admin@taskrabbit.com';
+  const ADMIN_EMAIL = 'admin@taskbatao.com';
   const ADMIN_PASSWORD = 'password';
 
   if (email !== ADMIN_EMAIL || password !== ADMIN_PASSWORD) {

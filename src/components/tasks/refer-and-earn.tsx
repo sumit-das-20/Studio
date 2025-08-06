@@ -32,7 +32,7 @@ export function ReferAndEarn() {
     // For this example, we'll assume the logged in user is EMP-001
     const currentUser = employees.find(e => e.id === 'EMP-001');
     const referralCode = currentUser?.referralCode || '';
-    const referralLink = referralCode ? `https://taskrabbit.com/register?ref=${referralCode}`: '';
+    const referralLink = referralCode ? `https://taskbatao.com/register?ref=${referralCode}`: '';
 
     const referredUsers = employees.filter(e => e.referredBy === currentUser?.id);
 

@@ -30,8 +30,8 @@ export async function handleWithdrawalQuery(
 const withdrawalSupportPrompt = ai.definePrompt({
   name: 'withdrawalSupportPrompt',
   input: { schema: WithdrawalQueryInputSchema },
-  output: { schema: WithdrawalQueryOutputSchema },
-  prompt: `You are an AI support agent for TaskRabbit, a platform where users complete tasks to earn money. Your role is to answer questions strictly related to the withdrawal process.
+  output: { schema: BuyerQueryOutputSchema },
+  prompt: `You are an AI support agent for Taskbatao, a platform where users complete tasks to earn money. Your role is to answer questions strictly related to the withdrawal process.
 
   Here is the information you must use to answer questions:
   - Minimum withdrawal amount: ₹400
@@ -45,13 +45,13 @@ const withdrawalSupportPrompt = ai.definePrompt({
   1.  Analyze the user's query: {{{query}}}
   2.  Provide a clear and concise answer based ONLY on the information provided above.
   3.  If the user's question is about a topic other than withdrawals (e.g., how to earn more, task issues, account settings), you MUST state that you can only assist with withdrawal-related queries.
-  4.  If you cannot answer the question based on the information, or if the user is expressing frustration or needs human assistance, you MUST instruct them to contact support via email. The support email is: support@taskrabbit.com. Do not make up answers.
+  4.  If you cannot answer the question based on the information, or if the user is expressing frustration or needs human assistance, you MUST instruct them to contact support via email. The support email is: support@taskbatao.com. Do not make up answers.
 
   Example Responses:
   - User Query: "What is the minimum amount I can withdraw?" -> Answer: "The minimum amount you can withdraw is ₹400."
   - User Query: "How long does it take to get my money?" -> Answer: "Withdrawals are processed within 72 hours."
   - User Query: "How do I change my password?" -> Answer: "I can only assist with questions about the withdrawal process. For help with your account settings, please check the 'Settings' page."
-  - User Query: "My withdrawal failed, what do I do?" -> Answer: "I am sorry to hear you are having trouble with your withdrawal. Please contact our support team at support@taskrabbit.com for further assistance."
+  - User Query: "My withdrawal failed, what do I do?" -> Answer: "I am sorry to hear you are having trouble with your withdrawal. Please contact our support team at support@taskbatao.com for further assistance."
   `,
 });
 

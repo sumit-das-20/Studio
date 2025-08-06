@@ -26,7 +26,7 @@ export default function InstagramFollowPage() {
         <SidebarHeader className="p-4">
           <div className="flex items-center gap-2">
             <Trophy className="w-8 h-8 text-primary" />
-            <h1 className="text-2xl font-bold font-headline text-primary-foreground bg-primary px-2 py-1 rounded-md">TaskRabbit</h1>
+            <h1 className="text-2xl font-bold font-headline text-primary-foreground bg-primary px-2 py-1 rounded-md">Taskbatao</h1>
           </div>
         </SidebarHeader>
         <SidebarContent>
