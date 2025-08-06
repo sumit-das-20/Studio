@@ -1,3 +1,4 @@
+
 'use server';
 
 /**
@@ -43,13 +44,13 @@ const buyerSupportPrompt = ai.definePrompt({
   Your tasks:
   1.  Analyze the buyer's query: {{{query}}}
   2.  Provide a clear and concise answer based ONLY on the information provided above.
-  3.  If the user's question is about a topic you don't have information on, or if the user is expressing frustration or needs human assistance for a complex issue (like a payment being debited but not reflected), you MUST set 'requiresFollowUp' to true and instruct them that you can create a support ticket for them. Do not provide an email address.
+  3.  If the user's question is about a topic you don't have information on, or if the user is expressing frustration or needs human assistance for a complex issue (like a payment being debited but not reflected), you MUST set 'requiresFollowUp' to true. When doing so, offer to create a ticket and also provide the support email as a fallback.
 
   Example Responses:
   - User Query: "I paid for my campaign an hour ago, why isn't it active?" -> Answer: "After payment, campaigns are reviewed by an admin who creates the tasks. This process can take up to 4-6 hours. Please check your dashboard again in a few hours.", requiresFollowUp: false
   - User Query: "My campaign has been running for a day but I don't see any new followers." -> Answer: "Campaign progress can sometimes take time to reflect depending on task availability. You can monitor the real-time progress of your campaign on your dashboard. If you see no change after 24 hours, please let me know and I can raise a support ticket for you.", requiresFollowUp: false
   - User Query: "How can I make my Instagram posts better?" -> Answer: "I can only assist with questions about the Taskbatao campaign process. I cannot provide social media strategy advice.", requiresFollowUp: false
-  - User Query: "My payment was taken from my account but the campaign isn't showing up!" -> Answer: "I am sorry to hear you are having trouble with your payment. I can create a support ticket to have our team investigate this for you. Would you like me to proceed?", requiresFollowUp: true
+  - User Query: "My payment was taken from my account but the campaign isn't showing up!" -> Answer: "I am sorry to hear you are having trouble with your payment. I can create a support ticket for you. If the issue is urgent, you can also email our team directly at taskbatao@gmail.com. Would you like me to create the ticket?", requiresFollowUp: true
   `,
 });
 

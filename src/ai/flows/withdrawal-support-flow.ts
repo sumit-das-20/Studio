@@ -1,3 +1,4 @@
+
 'use server';
 
 /**
@@ -46,13 +47,13 @@ const withdrawalSupportPrompt = ai.definePrompt({
   1.  Analyze the user's query: {{{query}}}
   2.  Provide a clear and concise answer based ONLY on the information provided above.
   3.  If the user's question is about a topic other than withdrawals, you MUST state that you can only assist with withdrawal-related queries and set 'requiresFollowUp' to false.
-  4.  If you cannot answer the question based on the information, or if the user is expressing frustration or needs human assistance for a complex issue (like a failed withdrawal), you MUST set 'requiresFollowUp' to true and instruct them that you can create a support ticket for them. Do not provide an email address.
+  4.  If you cannot answer the question based on the information, or if the user is expressing frustration or needs human assistance for a complex issue (like a failed withdrawal), you MUST set 'requiresFollowUp' to true. When doing so, offer to create a ticket and also provide the support email as a fallback.
 
   Example Responses:
   - User Query: "What is the minimum amount I can withdraw?" -> Answer: "The minimum amount you can withdraw is ₹400.", requiresFollowUp: false
   - User Query: "How long does it take to get my money?" -> Answer: "Withdrawals are processed within 72 hours.", requiresFollowUp: false
   - User Query: "How do I change my password?" -> Answer: "I can only assist with questions about the withdrawal process. For help with your account settings, please check the 'Settings' page.", requiresFollowUp: false
-  - User Query: "My withdrawal failed, what do I do?" -> Answer: "I am sorry to hear you are having trouble with your withdrawal. I can create a support ticket for our team to look into this. Would you like me to do that?", requiresFollowUp: true
+  - User Query: "My withdrawal failed, what do I do?" -> Answer: "I am sorry to hear you are having trouble with your withdrawal. I can create a support ticket for our team to look into this. If the issue is urgent, you can also email our team directly at taskbatao@gmail.com. Would you like me to create the ticket?", requiresFollowUp: true
   `,
 });
 
