@@ -106,7 +106,7 @@ export function TaskDialog({ onTaskCreated, onTaskUpdated, task, isFirstTask = f
       }
       handleOpenChange(false); // Use the handler to close and reset
     }
-  }, [state.success, state.data, isFormPending]);
+  }, [state.success, state.data, isFormPending, isEditing, onTaskUpdated, onTaskCreated, task]);
 
 
   const handleAddOption = () => setQuizOptions([...quizOptions, '']);
@@ -239,7 +239,7 @@ export function TaskDialog({ onTaskCreated, onTaskUpdated, task, isFirstTask = f
                 {platform && (
                      <div className="space-y-2">
                         <Label htmlFor="socialTaskType">Task Type</Label>
-                        <Select name="socialTaskType" defaultValue={task?.socialTaskType}>
+                        <Select name="socialTaskType" defaultValue={task?.socialTaskType} key={task?.socialTaskType}>
                             <SelectTrigger id="socialTaskType">
                                 <SelectValue placeholder="Select a social task type" />
                             </SelectTrigger>
