@@ -4,6 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { BarChart, PlusCircle, User, IndianRupee } from "lucide-react";
 import Link from "next/link";
 import { SocialMediaStats } from "@/components/buyer/social-media-stats";
+import { BuyerSupportDialog } from "@/components/buyer/buyer-support-dialog";
 
 export default function BuyerDashboard() {
   return (
@@ -11,6 +12,7 @@ export default function BuyerDashboard() {
        <header className="sticky top-0 z-30 flex h-14 items-center gap-4 border-b bg-background px-4 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6">
            <h1 className="text-2xl font-bold">Buyer Dashboard</h1>
             <div className="ml-auto flex items-center gap-2">
+                <BuyerSupportDialog />
                 <Button asChild>
                     <Link href="/buyer/campaign/new">
                         <PlusCircle className="mr-2 h-4 w-4" />
