@@ -59,6 +59,12 @@ export function Portals() {
                     </Link>
                 </p>
             </div>
+             <div className="mt-12 text-center">
+                <Link href="/admin/login" className="text-xs text-muted-foreground hover:text-primary transition-colors flex items-center justify-center gap-2">
+                    <Shield className="h-4 w-4" />
+                    <span>For Official Use Only</span>
+                </Link>
+            </div>
         </section>
     )
 }
