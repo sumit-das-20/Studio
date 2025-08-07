@@ -24,36 +24,11 @@ import type { AdminBuyer, AdminCampaign, AdPerformance, LinkPerformance, AdminWi
 
 
 // --- Mock Data Imports ---
-// In a real application, this data would come from API calls, not mock imports.
-// This is done for demonstration purposes to build the detailed CSV export.
-
-// Ad Revenue Data
-const adPerformanceData: AdPerformance[] = [
-  { adUnitId: 'ca-app-pub-3940256099942544/6300978111', type: 'Banner', impressions: 12543, earnings: 450.75 },
-  { adUnitId: 'ca-app-pub-3940256099942544/5224354917', type: 'Rewarded Video', impressions: 8765, earnings: 1230.50 },
-  { adUnitId: 'ca-app-pub-3940256099942544/1033173712', type: 'Banner', impressions: 9876, earnings: 320.10 },
-  { adUnitId: 'ca-app-pub-3940256099942544/8691691433', type: 'Other', impressions: 2345, earnings: 150.00 },
-];
-
-// Link Shortener Data
-const linkPerformanceData: LinkPerformance[] = [
-  { linkId: 'LNK-001', url: 'https://short.link/example1', clicks: 1243, earnings: 124.30 },
-  { linkId: 'LNK-002', url: 'https://short.link/example2', clicks: 987, earnings: 98.70 },
-  { linkId: 'LNK-003', url: 'https://short.link/example3', clicks: 1228, earnings: 122.80 },
-];
-
-// Buyer Data
-const buyersData: AdminBuyer[] = [
-  { id: 'BUYER-001', companyName: 'Tech Gadgets Inc.', email: 'contact@techgadgets.com', createdAt: '2024-07-28', totalSpent: 150.00, campaigns: [] },
-  { id: 'BUYER-002', companyName: 'Fashion Forward', email: 'style@fashionforward.co', createdAt: '2024-07-25', totalSpent: 250.00, campaigns: [] },
-];
-
-// Employee Payout Data
-const employeePayoutsData: AdminWithdrawalRequest[] = [
-    { id: 'WR-001', transactionId: 'T20240730A', employeeId: 'EMP-001', employeeEmail: 'john.doe@example.com', amount: 500.0, method: 'UPI', status: 'Paid', createdAt: '2024-07-30', upiId: 'john.doe@okhdfcbank' },
-    { id: 'WR-002', transactionId: 'T20240729B', employeeId: 'EMP-003', employeeEmail: 'sam.wilson@email.com', amount: 1500.0, method: 'Bank Transfer', status: 'Paid', createdAt: '2024-07-29', bankDetails: { accountHolderName: 'Sam Wilson', bankName: 'State Bank of India', accountNumber: '12345678901', ifscCode: 'SBIN0001234' } },
-    { id: 'WR-004', transactionId: 'T20240727C', employeeId: 'EMP-002', employeeEmail: 'jane.smith@example.com', amount: 250.50, method: 'PayPal', status: 'Paid', createdAt: '2024-07-27', paypalEmail: 'jane.s@paypal.com' },
-];
+// Data is cleared for production. In a real application, this would be fetched from APIs.
+const adPerformanceData: AdPerformance[] = [];
+const linkPerformanceData: LinkPerformance[] = [];
+const buyersData: AdminBuyer[] = [];
+const employeePayoutsData: AdminWithdrawalRequest[] = [];
 
 // --- Calculations ---
 const adRevenue = adPerformanceData.reduce((acc, ad) => acc + ad.earnings, 0);
@@ -149,7 +124,7 @@ export function FinancialSummary() {
             An overview of the platform's revenue, expenses, and net profit.
           </CardDescription>
         </div>
-        <Button onClick={handleExport} variant="outline" size="sm">
+        <Button onClick={handleExport} variant="outline" size="sm" disabled={totalRevenue === 0 && totalExpenses === 0}>
           <Download className="mr-2 h-4 w-4" />
           Export Detailed Report (CSV)
         </Button>

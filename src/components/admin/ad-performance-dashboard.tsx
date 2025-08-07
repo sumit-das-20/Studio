@@ -19,35 +19,10 @@ import {
 } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
 import type { AdPerformance } from '@/lib/types';
-import { IndianRupee } from 'lucide-react';
+import { IndianRupee, RadioTower } from 'lucide-react';
 
-// This is a representation of ad performance data fetched from your ad provider (e.g., AdMob).
-const adPerformanceData: AdPerformance[] = [
-  {
-    adUnitId: 'ca-app-pub-3940256099942544/6300978111',
-    type: 'Banner',
-    impressions: 12543,
-    earnings: 450.75,
-  },
-  {
-    adUnitId: 'ca-app-pub-3940256099942544/5224354917',
-    type: 'Rewarded Video',
-    impressions: 8765,
-    earnings: 1230.50,
-  },
-   {
-    adUnitId: 'ca-app-pub-3940256099942544/1033173712',
-    type: 'Banner',
-    impressions: 9876,
-    earnings: 320.10,
-  },
-  {
-    adUnitId: 'ca-app-pub-3940256099942544/8691691433',
-    type: 'Other',
-    impressions: 2345,
-    earnings: 150.00,
-  },
-];
+// This is a representation of ad performance data. For production, it starts empty.
+const adPerformanceData: AdPerformance[] = [];
 
 const chartData = [
     { type: 'Banner', earnings: adPerformanceData.filter(d => d.type === 'Banner').reduce((acc, curr) => acc + curr.earnings, 0) },
@@ -81,22 +56,29 @@ export function AdPerformanceDashboard() {
         <div>
             <h3 className="text-lg font-semibold mb-2">Earnings by Ad Type</h3>
              <div className="h-64 w-full">
-                <ResponsiveContainer width="100%" height="100%">
-                    <BarChart data={chartData} margin={{ top: 5, right: 20, left: -10, bottom: 5 }}>
-                        <CartesianGrid strokeDasharray="3 3" />
-                        <XAxis dataKey="type" />
-                        <YAxis />
-                        <Tooltip
-                            contentStyle={{
-                                background: 'hsl(var(--background))',
-                                border: '1px solid hsl(var(--border))',
-                                borderRadius: 'var(--radius)',
-                            }}
-                            formatter={(value: number) => [`${value.toFixed(2)} INR`, "Earnings"]}
-                        />
-                        <Bar dataKey="earnings" fill="hsl(var(--primary))" radius={[4, 4, 0, 0]} />
-                    </BarChart>
-                </ResponsiveContainer>
+                {adPerformanceData.length > 0 ? (
+                    <ResponsiveContainer width="100%" height="100%">
+                        <BarChart data={chartData} margin={{ top: 5, right: 20, left: -10, bottom: 5 }}>
+                            <CartesianGrid strokeDasharray="3 3" />
+                            <XAxis dataKey="type" />
+                            <YAxis />
+                            <Tooltip
+                                contentStyle={{
+                                    background: 'hsl(var(--background))',
+                                    border: '1px solid hsl(var(--border))',
+                                    borderRadius: 'var(--radius)',
+                                }}
+                                formatter={(value: number) => [`${value.toFixed(2)} INR`, "Earnings"]}
+                            />
+                            <Bar dataKey="earnings" fill="hsl(var(--primary))" radius={[4, 4, 0, 0]} />
+                        </BarChart>
+                    </ResponsiveContainer>
+                ) : (
+                    <div className="flex flex-col items-center justify-center h-full text-muted-foreground">
+                        <RadioTower className="h-10 w-10 mb-2" />
+                        <p>No ad performance data yet.</p>
+                    </div>
+                )}
             </div>
         </div>
         <div>
@@ -111,18 +93,26 @@ export function AdPerformanceDashboard() {
                 </TableRow>
                 </TableHeader>
                 <TableBody>
-                {adPerformanceData.map((ad) => (
-                    <TableRow key={ad.adUnitId}>
-                    <TableCell className="font-mono text-xs">{ad.adUnitId}</TableCell>
-                    <TableCell>
-                        <Badge variant={ad.type === 'Banner' ? 'secondary' : ad.type === 'Rewarded Video' ? 'default' : 'outline'}>
-                            {ad.type}
-                        </Badge>
-                    </TableCell>
-                    <TableCell className="text-right">{ad.impressions.toLocaleString()}</TableCell>
-                    <TableCell className="text-right font-medium">{ad.earnings.toFixed(2)}</TableCell>
+                {adPerformanceData.length > 0 ? (
+                    adPerformanceData.map((ad) => (
+                        <TableRow key={ad.adUnitId}>
+                            <TableCell className="font-mono text-xs">{ad.adUnitId}</TableCell>
+                            <TableCell>
+                                <Badge variant={ad.type === 'Banner' ? 'secondary' : ad.type === 'Rewarded Video' ? 'default' : 'outline'}>
+                                    {ad.type}
+                                </Badge>
+                            </TableCell>
+                            <TableCell className="text-right">{ad.impressions.toLocaleString()}</TableCell>
+                            <TableCell className="text-right font-medium">{ad.earnings.toFixed(2)}</TableCell>
+                        </TableRow>
+                    ))
+                ) : (
+                    <TableRow>
+                        <TableCell colSpan={4} className="text-center h-24">
+                            No ad units have recorded performance data.
+                        </TableCell>
                     </TableRow>
-                ))}
+                )}
                 </TableBody>
             </Table>
         </div>
