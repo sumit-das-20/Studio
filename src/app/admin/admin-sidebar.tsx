@@ -19,11 +19,6 @@ const menuItems = [
       icon: LayoutDashboard,
     },
     {
-      href: '/admin/ad-networks',
-      label: 'Ad Networks',
-      icon: RadioTower
-    },
-    {
       href: '/admin/employees',
       label: 'Employees',
       icon: Users,
@@ -54,15 +49,20 @@ const menuItems = [
       icon: Tags,
     },
     {
+      href: '/admin/push-notifications',
+      label: 'Push Notifications',
+      icon: Bell,
+    },
+    {
       href: '/admin/payment-gateways',
       label: 'Payment Gateways',
       icon: LandPlot
     },
     {
-      href: '/admin/push-notifications',
-      label: 'Push Notifications',
-      icon: Bell,
-    }
+      href: '/admin/ad-networks',
+      label: 'Ad Networks',
+      icon: RadioTower
+    },
   ];
 
 export function AdminSidebar() {

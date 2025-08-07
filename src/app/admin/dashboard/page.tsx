@@ -5,7 +5,7 @@ import { FinancialSummary } from "@/components/admin/financial-summary";
 import { LinkShortenerPerformance } from "@/components/admin/link-shortener-performance";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { BarChart, Users, CircleDollarSign, CreditCard, ClipboardList, ShoppingBag, LandPlot, Tags, Bell, LifeBuoy } from "lucide-react";
+import { BarChart, Users, CircleDollarSign, CreditCard, ClipboardList, ShoppingBag, LandPlot, Tags, Bell, LifeBuoy, RadioTower } from "lucide-react";
 import Link from "next/link";
 
 
@@ -147,14 +147,14 @@ export default function AdminDashboard() {
            <Card className="hover:shadow-lg transition-shadow">
               <CardHeader>
                   <CardTitle className="flex items-center gap-2">
-                      <ClipboardList className="h-6 w-6 text-primary" />
-                      <span>Ad Networks</span>
+                      <Bell className="h-6 w-6 text-primary" />
+                      <span>Push Notifications</span>
                   </CardTitle>
-                  <CardDescription>Manage ad units from all monetization platforms.</CardDescription>
+                  <CardDescription>Send notifications directly to all employees.</CardDescription>
               </CardHeader>
               <CardContent>
                    <Button asChild>
-                      <Link href="/admin/ad-networks">Manage Ad Networks</Link>
+                      <Link href="/admin/push-notifications">Send Notifications</Link>
                   </Button>
               </CardContent>
           </Card>
@@ -175,14 +175,14 @@ export default function AdminDashboard() {
            <Card className="hover:shadow-lg transition-shadow">
               <CardHeader>
                   <CardTitle className="flex items-center gap-2">
-                      <Bell className="h-6 w-6 text-primary" />
-                      <span>Push Notifications</span>
+                      <RadioTower className="h-6 w-6 text-primary" />
+                      <span>Ad Networks</span>
                   </CardTitle>
-                  <CardDescription>Send notifications directly to all employees.</CardDescription>
+                  <CardDescription>Manage ad units from all monetization platforms.</CardDescription>
               </CardHeader>
               <CardContent>
                    <Button asChild>
-                      <Link href="/admin/push-notifications">Send Notifications</Link>
+                      <Link href="/admin/ad-networks">Manage Ad Networks</Link>
                   </Button>
               </CardContent>
           </Card>
