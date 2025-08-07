@@ -76,7 +76,6 @@ export default function AdminLoginPage() {
                 type="email"
                 placeholder="admin@example.com"
                 required
-                defaultValue="admin@taskbatao.com"
               />
             </div>
             <div className="space-y-2">
@@ -89,7 +88,6 @@ export default function AdminLoginPage() {
                 type="password"
                 placeholder="••••••••"
                 required
-                defaultValue="password"
               />
             </div>
             <SubmitButton />
