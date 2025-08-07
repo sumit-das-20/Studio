@@ -47,6 +47,18 @@ const notificationSchema = z.object({
   message: z.string().min(10, 'Message must be at least 10 characters.'),
 });
 
+// A new client component to safely render the relative time
+const TimeAgo = ({ date }: { date: Date }) => {
+    const [timeAgo, setTimeAgo] = useState('');
+
+    useState(() => {
+        setTimeAgo(formatDistanceToNow(date, { addSuffix: true }));
+    });
+
+    return <Badge variant="outline">{timeAgo}</Badge>;
+}
+
+
 export function PushNotificationManager() {
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [isSending, setIsSending] = useState(false);
@@ -148,9 +160,7 @@ export function PushNotificationManager() {
                       <p className="text-sm text-muted-foreground">{notif.message}</p>
                     </TableCell>
                     <TableCell className="text-right">
-                      <Badge variant="outline">
-                        {formatDistanceToNow(notif.sentAt, { addSuffix: true })}
-                      </Badge>
+                        <TimeAgo date={notif.sentAt} />
                     </TableCell>
                   </TableRow>
                 ))}
