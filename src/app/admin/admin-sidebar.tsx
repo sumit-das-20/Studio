@@ -19,6 +19,11 @@ const menuItems = [
       icon: LayoutDashboard,
     },
     {
+      href: '/admin/ad-networks',
+      label: 'Ad Networks',
+      icon: RadioTower
+    },
+    {
       href: '/admin/employees',
       label: 'Employees',
       icon: Users,
@@ -47,11 +52,6 @@ const menuItems = [
       href: '/admin/services',
       label: 'Services',
       icon: Tags,
-    },
-    {
-      href: '/admin/ad-networks',
-      label: 'Ad Networks',
-      icon: RadioTower
     },
     {
       href: '/admin/payment-gateways',
